@@ -1,0 +1,71 @@
+module bmpreg(input clk, input bmpaddress, input wren, input rden, input [1535:0] data, output [23:0] rowout, output [63:0] columnout);
+//bmpreg takes in a 24x64 bitmap and stores it in a register. It 
+
+
+reg [23:0] row0 = data [23:0];
+reg [23:0] row1 = data [23:0];
+reg [23:0] row2 = data [23:0];
+reg [23:0] row3 = data [23:0];
+reg [23:0] row4 = data [23:0];
+reg [23:0] row5 = data [23:0];
+reg [23:0] row6 = data [23:0];
+reg [23:0] row7 = data [23:0];
+reg [23:0] row8 = data [23:0];
+reg [23:0] row9 = data [23:0];
+reg [23:0] row10 = data [23:0];
+reg [23:0] row11 = data [23:0];
+reg [23:0] row12 = data [23:0];
+reg [23:0] row13 = data [23:0];
+reg [23:0] row14 = data [23:0];
+reg [23:0] row15 = data [23:0];
+reg [23:0] row16 = data [23:0];
+reg [23:0] row17 = data [23:0];
+reg [23:0] row18 = data [23:0];
+reg [23:0] row19 = data [23:0];
+reg [23:0] row20 = data [23:0];
+reg [23:0] row21 = data [23:0];
+reg [23:0] row22 = data [23:0];
+reg [23:0] row23 = data [23:0];
+reg [23:0] row24 = data [23:0];
+reg [23:0] row25 = data [23:0];
+reg [23:0] row26 = data [23:0];
+reg [23:0] row27 = data [23:0];
+reg [23:0] row28 = data [23:0];
+reg [23:0] row29 = data [23:0];
+reg [23:0] row30 = data [23:0];
+reg [23:0] row31 = data [23:0];
+reg [23:0] row32 = data [23:0];
+reg [23:0] row33 = data [23:0];
+reg [23:0] row34 = data [23:0];
+reg [23:0] row35 = data [23:0];
+reg [23:0] row36 = data [23:0];
+reg [23:0] row37 = data [23:0];
+reg [23:0] row38 = data [23:0];
+reg [23:0] row39 = data [23:0];
+reg [23:0] row40 = data [23:0];
+reg [23:0] row41 = data [23:0];
+reg [23:0] row42 = data [23:0];
+reg [23:0] row43 = data [23:0];
+reg [23:0] row44 = data [23:0];
+reg [23:0] row45 = data [23:0];
+reg [23:0] row46 = data [23:0];
+reg [23:0] row47 = data [23:0];
+reg [23:0] row48 = data [23:0];
+reg [23:0] row49 = data [23:0];
+reg [23:0] row50 = data [23:0];
+reg [23:0] row51 = data [23:0];
+reg [23:0] row52 = data [23:0];
+reg [23:0] row53 = data [23:0];
+reg [23:0] row54 = data [23:0];
+reg [23:0] row55 = data [23:0];
+reg [23:0] row56 = data [23:0];
+reg [23:0] row57 = data [23:0];
+reg [23:0] row58 = data [23:0];
+reg [23:0] row59 = data [23:0];
+reg [23:0] row60 = data [23:0];
+reg [23:0] row61 = data [23:0];
+reg [23:0] row62 = data [23:0];
+reg [23:0] row63 = data [23:0];
+
+
+
