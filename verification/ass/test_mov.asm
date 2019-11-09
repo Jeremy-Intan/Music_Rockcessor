@@ -1,0 +1,16 @@
+MV r0, 0
+MV r1, 1
+MV r2, 2
+MV r3, 3
+MV r4, 4
+MV r5, 5
+MV r6, 6
+MV r7, 7
+MV r8, -8
+MV r9, -7
+MV r10, -6
+MV r11, -5
+MV r12, -4
+MV r13, -3
+MV r14, -2
+MV r15, -1

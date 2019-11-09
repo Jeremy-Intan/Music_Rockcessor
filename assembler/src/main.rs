@@ -269,7 +269,7 @@ fn main() {
         static ref RERET  : Regex = Regex::new(r"^[ \t]*RET([ \t]*|[ \t]*#.*)$").unwrap();
         static ref REBSH  : Regex = Regex::new(r"^[ \t]*BSH[ \t]+b([0-3])[ \t]*,[ \t]*b([0-3])[ \t]*,[ \t]*r([0-9][0-9]?)([ \t]*|[ \t]*#.*)$").unwrap();
         static ref REBSL  : Regex = Regex::new(r"^[ \t]*BSL[ \t]+b([0-3])[ \t]*,[ \t]*b([0-3])[ \t]*,[ \t]*r([0-9][0-9]?)([ \t]*|[ \t]*#.*)$").unwrap();
-        static ref REMV   : Regex = Regex::new(r"^[ \t]*MV[ \t]+r([0-9][0-9]?)[ \t]*,[ \t]*([a-zA-Z0-9]+)([ \t]*|[ \t]*#.*)$").unwrap(); //instruction wtf
+        static ref REMV   : Regex = Regex::new(r"^[ \t]*MV[ \t]+r([0-9][0-9]?)[ \t]*,[ \t]*(-?[0-9][0-9]?[0-9]?)([ \t]*|[ \t]*#.*)$").unwrap();
         static ref REPLY  : Regex = Regex::new(r"^[ \t]*PLY[ \t]+r([0-9][0-9]?)[ \t]*,[ \t]*r([0-9][0-9]?)[ \t]*,[ \t]*b([0-3])([ \t]*|[ \t]*#.*)$").unwrap();
         static ref REST   : Regex = Regex::new(r"^[ \t]*ST[ \t]+r([0-9][0-9]?)[ \t]*,[ \t]*r([0-9][0-9]?)[ \t]*,[ \t]*(-?[0-9])([ \t]*|[ \t]*#.*)$").unwrap();
         static ref RELD   : Regex = Regex::new(r"^[ \t]*LD[ \t]+r([0-9][0-9]?)[ \t]*,[ \t]*r([0-9][0-9]?)[ \t]*,[ \t]*(-?[0-9])([ \t]*|[ \t]*#.*)$").unwrap();
@@ -318,7 +318,7 @@ fn main() {
                     Some(bits) => inst.push_str(&bits),
                     None => panic!("{}:{},\nValue is out of range", lnno, ln),
                 };
-                println!("{}", inst);
+                prog.push(inst);
                 pc += 1;
             },
             None =>
