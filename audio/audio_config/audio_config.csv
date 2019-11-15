@@ -1,0 +1,32 @@
+# system info audio_config on 2019.11.14.18:29:32
+system_info:
+name,value
+DEVICE,5CSEMA5F31C6
+DEVICE_FAMILY,Cyclone V
+GENERATION_ID,1573777771
+#
+#
+# Files generated for audio_config on 2019.11.14.18:29:32
+files:
+filepath,kind,attributes,module,is_top
+simulation/audio_config.v,VERILOG,,audio_config,true
+simulation/submodules/altera_up_av_config_serial_bus_controller.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_slow_clock_generator.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_dc2.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_d5m.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_lcm.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ltm.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_de1_soc.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_de2_115.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_de2i_150.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_de10_standard.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_audio.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_adv7180.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/altera_up_av_config_auto_init_ob_adv7181.v,VERILOG,,audio_config_audio_and_video_config_0,false
+simulation/submodules/audio_config_audio_and_video_config_0.v,VERILOG,,audio_config_audio_and_video_config_0,false
+#
+# Map from instance-path to kind of module
+instances:
+instancePath,module
+audio_config.audio_and_video_config_0,audio_config_audio_and_video_config_0
