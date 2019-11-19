@@ -15,9 +15,6 @@ wire decout_a;
 wire aluout;
 wire aluout_m;
 
-//memory stage outputs
-
-
 
 instruction inst_stage  (.inst(inst), .clk(clk), .rst_n(rst), .instout(instout));
 isnt_dec_pipe idreg     (.instout(instout), .decin(instout_d));
