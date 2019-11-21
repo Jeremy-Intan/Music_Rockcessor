@@ -7,8 +7,8 @@ assign resout = result;
 
 always @(posedge clk)  begin
     case (wren)
-        1'b1 : result = data;
-        default : result = result;
+        1'b1 : result <= data;
+        default : result <= result;
     endcase   
 end
 

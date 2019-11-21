@@ -1,42 +1,39 @@
-module cmpacc(input clk, input wren, input [1535:0] bitmap, output [15:0] lshift, output [15:0] dshift, output [15:0] hscale, output [15:0] vscale), output done;
+module cmpacc(input clk, input wren, input [1535:0] bitmap, output [15:0] result, output done);
 
 
 //bmp reg to alu
-wire [1535:0] bmpmove;
 wire alustart;
+wire colready;
+wire rowready;
+wire [63:0] columnout;
+wire [23:0] rowout;
+
+//alu to bmp reg
+wire nextcol;
+wire nextrow
+
 
 //alu to res storage
-wire [15:0] lshiftmove;
-wire [15:0] dshiftmove;
-wire [15:0] hscalemove;
-wire [15:0] vscalemove;
+wire [15:0] calc;
+
 
 //output
 wire finished;
-wire lshiftdone;
-wire dshiftdone;
-wire hscaledone;
-wire vscaledone;
-wire [15:0] lshiftres;
-wire [15:0] dshiftres;
-wire [15:0] hscaleres;
-wire [15:0] vscaleres;
+
+wire [15:0] res;
+
 
 assign done = finished;
-assign lshiftres = lshift;
-assign dshiftres = dshift;
-assign hscaleres = hscale;
-assign vscaleres = vscale;
+assign res = result;
+
 
 //module instantiation
 
-bmpreg bmpreg(.clk(clk), .wren(wren), .data(bitmap), .dataout(bmpmove), .alustart(alustart));
+bmpreg bmpreg(.clk(clk), .wren(wren), .data(bitmap), .nextcol(nextcol), .nextrow(nextrow), .columnout(columnout), .rowout(rowout), .alustart(alustart), .rowready(rowready), .colready(colready));
 
-cmpalu alu(.clk(clk), .start(alustart), .bitmap(bmpmove), .lshift(lshiftmove), .dshift(dshiftmove), .hscale(hscalemove), .vscale(vscalemove), .done(finished), .lshiftdone(lshiftdone), .dshiftdone(dshiftdone), .hscaledone(hscaledone), .vscaledone(vscaledone));
+cmpalu alu(.clk(clk), start(alustart), .bitcolumn(columnout), .bitrow(rowout), .result, output done, output nextcolumn, output nextrow);
 
-resreg lshiftreg(.clk(clk), .wren(lshiftdone), .data(lshiftmove), .resout(.lshiftres));
-resreg dshiftreg(.clk(clk), .wren(dshiftdone), .data(dshiftmove), .resout(.dshiftres));
-resreg hscalereg(.clk(clk), .wren(hscaledone), .data(hscalemove), .resout(.hscaleres));
-resreg vscalereg(.clk(clk), .wren(vscaledone), .data(vscalemove), .resout(.vscaleres));
+resreg resultreg(.clk(clk), .wren(lshiftdone), .data(lshiftmove), .resout(.lshiftres));
+
 
 end
