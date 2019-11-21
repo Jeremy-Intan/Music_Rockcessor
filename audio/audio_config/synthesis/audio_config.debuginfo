@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="audio_config" kind="system" version="18.1" fabric="QSYS">
  <!-- Format version 18.1 625 (Future versions may contain additional information.) -->
- <!-- 2019.11.14.18:29:33 -->
+ <!-- 2019.11.19.16:59:38 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1573777773</value>
+  <value>1574204377</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -236,7 +236,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="sampling_rate">
    <type>java.lang.String</type>
-   <value>8 kHz</value>
+   <value>32 kHz</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -252,7 +252,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="sr_register">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -894,5 +894,5 @@ parameters are a RESULT of the module parameters. -->
   <version>18.1</version>
  </plugin>
  <reportVersion>18.1 625</reportVersion>
- <uniqueIdentifier>6C2B59D198F00000016E6C771440</uniqueIdentifier>
+ <uniqueIdentifier>6C2B59D198F00000016E85E48BA3</uniqueIdentifier>
 </EnsembleReport>

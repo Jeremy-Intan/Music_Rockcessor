@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="audio_config" kind="audio_config" version="1.0" fabric="QSYS">
  <!-- Format version 18.1 625 (Future versions may contain additional information.) -->
- <!-- 2019.11.14.18:29:33 -->
+ <!-- 2019.11.19.16:59:37 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1573777773</value>
+  <value>1574204377</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -184,7 +184,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="sampling_rate">
    <type>java.lang.String</type>
-   <value>8 kHz</value>
+   <value>32 kHz</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -200,7 +200,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="sr_register">
    <type>int</type>
-   <value>3</value>
+   <value>6</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>

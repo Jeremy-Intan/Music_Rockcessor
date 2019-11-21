@@ -14,7 +14,7 @@ module reg_file (
     clk);
 
     parameter n = 16;
-    parameter b = 1500;
+    parameter b = 1536;
 
     input rd_addr_1[3:0];
     output rd_data_1[15:0];
@@ -24,9 +24,9 @@ module reg_file (
     input wr_data[15:0];
     input wr;
     input rbm_addr[1:0];
-    output rbm_data[ :0];
+    output rbm_data[1535:0];
     input wbm_addr[1:0];
-    output wbm_data[ :0];
+    output wbm_data[1535:0];
     input wbm;
     input clk;
 

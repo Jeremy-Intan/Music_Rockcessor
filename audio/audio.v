@@ -65,54 +65,66 @@ module audio(
 //  REG/WIRE declarations
 //=======================================================
 wire audio_rst;
-wire [15:0] amplitude1;
-wire [15:0] amplitude2;
 wire [15:0] amplitude;
 
 reg [1:0] write_addr;
-reg [4:0] counter = 0;
-reg [4:0] counter_depth;
 
+reg [20:0] counter = 0;
+reg [20:0] counter_depth;
+reg [15:0] write_wave;
+
+/*
+reg [20:0] t_counter1 = 0;
+reg [20:0] t_counter2 = 0;
+reg [20:0] t_counter3 = 0;
+reg [1:0] chord_matches;
+wire [15:0] test_amp;
+wire [20:0] chord_test;
+localparam mult_1 = 191117;
+localparam mult_2 = 151690;
+localparam mult_3 = 127551;
+*/
 
 //=======================================================
 //  Structural coding
 //=======================================================
 
-//
-//assign amplitude1 = (counter == 0) ? 16'hFFFF : 16'h0000;
+// use push buttons for volume of sound. No sound if no button being pressed
+assign amplitude = (~KEY[1]) ? 16'h7FFF : (~KEY[2]) ? 16'h5FFF : (~KEY[3]) ? 16'h3FFF : 16'h0000;
 
-//assign amplitude2 = (counter == 0) ? 16'h7FFF : 16'h0000;
-
-//assign amplitude = (KEY[1]) ? amplitude1 : amplitude1;
-
-assign amplitude = (counter == 0) ? (~KEY[1]) ? 16'h7FFF : (~KEY[2]) ? 16'h5FFF : (~KEY[3]) ? 16'h3FFF : 16'h0000 : 16'h0000;
-
+// light up when reset is active
 assign LEDR[0] = ~KEY[0];
-
-// evenly spread to left and right buffer
+	
 always @ (posedge CLOCK_50) begin
-	counter_depth <= (SW[0]) ? 32 : (SW[1]) ? 30 : (SW[2]) ? 28 : (SW[3]) ? 26 : (SW[4]) ? 24 : (SW[5]) ? 22 : (SW[6]) ? 20 : (SW[7]) ? 18 : (SW[8]) ? 16 : (SW[9]) ? 14 : 12;
-
+	// set counter depth based on switches
+	// values are calculated for the 50 Mhz clock. 50 Mhz / ({desired frequency}) = counter value
+	// Audio chip's sampling rate and clock shouldn't effect which single note is being played
+   counter_depth <= (SW[0]) ? 191117 : (SW[1]) ? 170265 : (SW[2]) ? 151690 : (SW[3]) ? 143176 : (SW[4]) ? 127551 : (SW[5]) ? 113636 : (SW[6]) ? 101239 : (SW[7]) ? 95555 : (SW[8]) ? 47778 : (SW[9]) ? 382204 : 1;
+	// handle resets
+	if (~KEY[0]) begin
+		write_wave <= 16'h0000;
+		counter <= 20'h00000;
+	end
+	else begin
+		// set 50% duty cycle for a square wave. Could try and make a cosine wave later. 
+		if (counter <= (counter_depth >> 1))
+			write_wave <= amplitude;
+		else
+			write_wave <= 20'h00000;
+		// control the counter for note
+		if (counter >= counter_depth)
+			counter <= 20'h00000;
+		else
+			counter <= counter + 1;
+	end
 	
-	//12: 3055hz
-	//14: 2662
-	//16: 
-	//18: 
-	
-	
-	
-	
-	
-	
-	
-	if (counter >= counter_depth) counter <= 0;
-	else counter <= counter + 1;
-	
-//	write_addr <= 2'b10;
+//	write same data to the right and left sides  
+// (doesn't change frequency stuff above for some reason. Should double counter?)
 	if (write_addr == 2'b10)
 		write_addr <= 2'b11;
 	else
 		write_addr <= 2'b10;
+		
 end
 
 
@@ -131,8 +143,8 @@ audio_output (
 		.chipselect(1'b1),  //                   .chipselect
 //		input  wire        read,        //                   .read
 		.write(1'b1),       //                   .write
-		//.writedata({16'b0,amplitude}),   //                   .writedata
-		.writedata({16'b0,amplitude}),
+		//.writedata({16'b0,chord_test}),
+		.writedata({16'b0,write_wave}),
 //		output wire [31:0] readdata,    //                   .readdata
 		//.clk(AUD_XCK),         //                clk.clk
 		.clk(CLOCK_50),
@@ -157,5 +169,38 @@ audio_config (
 		.I2C_SCLK(FPGA_I2C_SCLK),    //                       .SCLK
 		.reset(audio_rst)        //                  reset.reset
 	);
-
+	
+/*
+	// test when all the switches are off. If so, amplitude gets the added value from 3 counters making the chord. otherwise, it's just one.
+	assign chord_test = (SW[0] | SW[1] | SW[2] | SW[3] | SW[4] | SW[5] | SW[6] | SW[7] | SW[8] | SW[9]) ?  write_wave : test_amp;
+	assign test_amp = (~KEY[1]) ? 16'h7FFF>>(3-chord_matches) : (~KEY[2]) ? 16'h5FFF>>(3-chord_matches) : (~KEY[3]) ? 16'h3FFF>>(3-chord_matches) : 16'h0000;
+	// if there are 3 matched chords, play loud. Otherwise scale back assuming even volume for each wave.
+	always @ (posedge CLOCK_50) begin
+		if (~KEY[0]) begin
+			t_counter1 <= 20'h00000;
+			t_counter2 <= 20'h00000;
+			t_counter3 <= 20'h00000;
+		end
+		else begin 
+			t_counter1 <= t_counter1 + 1;
+			t_counter2 <= t_counter2 + 1;
+			t_counter3 <= t_counter3 + 1;
+			if (t_counter1 >= mult_1)
+				t_counter1 <= 20'h00000;
+			if (t_counter2 >= mult_2)
+				t_counter1 <= 20'h00000;
+			if (t_counter3 >= mult_3)
+				t_counter1 <= 20'h00000;
+			if ((t_counter1 <= (mult_1 >> 1)) && (t_counter2 <= (mult_2 >> 1)) && (t_counter3 <= (mult_3 >> 1)))
+				chord_matches = 3;
+			else if (((t_counter1 <= (mult_1 >> 1)) && (t_counter2 <= (mult_2 >> 1))) || ((t_counter1 <= (mult_1 >> 1)) && (t_counter3 <= (mult_3 >> 1))) || ((t_counter2 <= (mult_2 >> 1)) && (t_counter3 <= (mult_3 >> 1))))
+				chord_matches = 2;
+			else if ((t_counter1 <= (mult_1 >> 1)) || (t_counter2 <= (mult_2 >> 1)) || (t_counter3 <= (mult_3 >> 1)))
+				chord_matches = 1;
+			else
+				chord_matches = 0;
+		end
+	
+	end
+*/
 endmodule

@@ -226,7 +226,7 @@ module  audio_clk_audio_pll_0_audio_pll
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.n_cnt_odd_div_duty_en = "false",
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.number_of_clocks = 1,
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.operation_mode = "direct",
-		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.output_clock_frequency0 = "12.288135 MHz",
+		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.output_clock_frequency0 = "18.432203 MHz",
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.output_clock_frequency1 = "0 MHz",
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.output_clock_frequency10 = "0 MHz",
 		audio_clk_audio_pll_0_audio_pll_altera_pll_altera_pll_i_639.output_clock_frequency11 = "0 MHz",

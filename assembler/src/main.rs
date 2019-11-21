@@ -9,7 +9,6 @@ fn cnv_bitmap_reg(s: &str) -> Option<String> {
         "0"  => Some(String::from("00")),
         "1"  => Some(String::from("01")),
         "2"  => Some(String::from("10")),
-        "3"  => Some(String::from("11")),
         _ => None,
     }
 }
@@ -46,8 +45,8 @@ fn cnv_val_4(s: &str) -> Option<String> {
         "5"   => Some(String::from("0101")),
         "6"   => Some(String::from("0110")),
         "7"   => Some(String::from("0111")),
-        "-8"   => Some(String::from("1000")),
-        "-7"   => Some(String::from("1001")),
+        "-8"  => Some(String::from("1000")),
+        "-7"  => Some(String::from("1001")),
         "-6"  => Some(String::from("1010")),
         "-5"  => Some(String::from("1011")),
         "-4"  => Some(String::from("1100")),

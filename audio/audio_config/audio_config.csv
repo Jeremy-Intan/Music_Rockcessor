@@ -1,12 +1,12 @@
-# system info audio_config on 2019.11.14.18:29:32
+# system info audio_config on 2019.11.19.16:59:36
 system_info:
 name,value
 DEVICE,5CSEMA5F31C6
 DEVICE_FAMILY,Cyclone V
-GENERATION_ID,1573777771
+GENERATION_ID,1574204375
 #
 #
-# Files generated for audio_config on 2019.11.14.18:29:32
+# Files generated for audio_config on 2019.11.19.16:59:36
 files:
 filepath,kind,attributes,module,is_top
 simulation/audio_config.v,VERILOG,,audio_config,true
