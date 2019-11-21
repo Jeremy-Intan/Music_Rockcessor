@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2019.11.14.18:29:33"
+ date="2019.11.19.16:59:38"
  outputDirectory="C:/Users/ECE_STUDENT/Documents/audio/audio_config/">
  <perimeter>
   <parameter
@@ -117,13 +117,13 @@
  </perimeter>
  <entity
    path=""
-   parameterizationKey="audio_config:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=5CSEMA5F31C6,AUTO_DEVICE_FAMILY=Cyclone V,AUTO_DEVICE_SPEEDGRADE=6,AUTO_GENERATION_ID=1573777773,AUTO_UNIQUE_ID=(altera_up_avalon_audio_and_video_config:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,audio_in=Microphone to ADC,bit_length=16,board=DE1-SoC,bosr=250fs/256fs,d5m_resolution=2592 x 1944,dac_enable=true,data_format=Left Justified,device=On-Board Peripherals,eai=true,exposure=false,line_in_bypass=false,mic_attenuation=-6dB,mic_bypass=false,sampling_rate=8 kHz,sr_register=3,video_format=NTSC)"
+   parameterizationKey="audio_config:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=5CSEMA5F31C6,AUTO_DEVICE_FAMILY=Cyclone V,AUTO_DEVICE_SPEEDGRADE=6,AUTO_GENERATION_ID=1574204377,AUTO_UNIQUE_ID=(altera_up_avalon_audio_and_video_config:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,audio_in=Microphone to ADC,bit_length=16,board=DE1-SoC,bosr=250fs/256fs,d5m_resolution=2592 x 1944,dac_enable=true,data_format=Left Justified,device=On-Board Peripherals,eai=true,exposure=false,line_in_bypass=false,mic_attenuation=-6dB,mic_bypass=false,sampling_rate=32 kHz,sr_register=6,video_format=NTSC)"
    instancePathKey="audio_config"
    kind="audio_config"
    version="1.0"
    name="audio_config">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
-  <parameter name="AUTO_GENERATION_ID" value="1573777773" />
+  <parameter name="AUTO_GENERATION_ID" value="1574204377" />
   <parameter name="AUTO_DEVICE" value="5CSEMA5F31C6" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />
@@ -239,7 +239,7 @@
  </entity>
  <entity
    path="submodules/"
-   parameterizationKey="altera_up_avalon_audio_and_video_config:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,audio_in=Microphone to ADC,bit_length=16,board=DE1-SoC,bosr=250fs/256fs,d5m_resolution=2592 x 1944,dac_enable=true,data_format=Left Justified,device=On-Board Peripherals,eai=true,exposure=false,line_in_bypass=false,mic_attenuation=-6dB,mic_bypass=false,sampling_rate=8 kHz,sr_register=3,video_format=NTSC"
+   parameterizationKey="altera_up_avalon_audio_and_video_config:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,audio_in=Microphone to ADC,bit_length=16,board=DE1-SoC,bosr=250fs/256fs,d5m_resolution=2592 x 1944,dac_enable=true,data_format=Left Justified,device=On-Board Peripherals,eai=true,exposure=false,line_in_bypass=false,mic_attenuation=-6dB,mic_bypass=false,sampling_rate=32 kHz,sr_register=6,video_format=NTSC"
    instancePathKey="audio_config:.:audio_and_video_config_0"
    kind="altera_up_avalon_audio_and_video_config"
    version="18.0"
@@ -255,8 +255,8 @@
   <parameter name="eai" value="true" />
   <parameter name="line_in_bypass" value="false" />
   <parameter name="bit_length" value="16" />
-  <parameter name="sampling_rate" value="8 kHz" />
-  <parameter name="sr_register" value="3" />
+  <parameter name="sampling_rate" value="32 kHz" />
+  <parameter name="sr_register" value="6" />
   <parameter name="mic_bypass" value="false" />
   <parameter name="exposure" value="false" />
   <parameter name="mic_attenuation" value="-6dB" />

@@ -5,8 +5,8 @@ preplace inst audio_clk.audio_pll_0.reset_from_locked -pg 1
 preplace inst audio_clk.audio_pll_0 -pg 1 -lvl 1 -y 50
 preplace inst audio_clk.audio_pll_0.audio_pll -pg 1
 preplace netloc EXPORT<net_container>audio_clk</net_container>(MASTER)audio_clk.audio_clk,(MASTER)audio_pll_0.audio_clk) 1 1 1 NJ
-preplace netloc EXPORT<net_container>audio_clk</net_container>(MASTER)audio_pll_0.reset_source,(MASTER)audio_clk.reset_source) 1 1 1 NJ
-preplace netloc EXPORT<net_container>audio_clk</net_container>(SLAVE)audio_clk.ref_reset,(SLAVE)audio_pll_0.ref_reset) 1 0 1 NJ
 preplace netloc EXPORT<net_container>audio_clk</net_container>(SLAVE)audio_clk.ref_clk,(SLAVE)audio_pll_0.ref_clk) 1 0 1 NJ
+preplace netloc EXPORT<net_container>audio_clk</net_container>(MASTER)audio_clk.reset_source,(MASTER)audio_pll_0.reset_source) 1 1 1 NJ
+preplace netloc EXPORT<net_container>audio_clk</net_container>(SLAVE)audio_pll_0.ref_reset,(SLAVE)audio_clk.ref_reset) 1 0 1 NJ
 levelinfo -pg 1 0 70 430
 levelinfo -hier audio_clk 80 160 320

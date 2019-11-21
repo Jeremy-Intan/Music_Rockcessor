@@ -1,5 +1,5 @@
 Flow report for audio
-Thu Nov 14 18:32:09 2019
+Wed Nov 20 19:22:42 2019
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,15 +40,15 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Thu Nov 14 18:32:02 2019       ;
+; Flow Status                     ; Successful - Wed Nov 20 19:22:34 2019       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; audio                                       ;
 ; Top-level Entity Name           ; audio                                       ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA5F31C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 159 / 32,070 ( < 1 % )                      ;
-; Total registers                 ; 219                                         ;
+; Logic utilization (in ALMs)     ; 207 / 32,070 ( < 1 % )                      ;
+; Total registers                 ; 255                                         ;
 ; Total pins                      ; 104 / 457 ( 23 % )                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 4,096 / 4,065,280 ( < 1 % )                 ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 11/14/2019 18:31:06 ;
+; Start date & time ; 11/20/2019 19:21:40 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; audio               ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+-------------------------------------------------------------------------------------+---------------+--------------+------------+
 ; Assignment Name                     ; Value                                                                               ; Default Value ; Entity Name  ; Section Id ;
 +-------------------------------------+-------------------------------------------------------------------------------------+---------------+--------------+------------+
-; COMPILER_SIGNATURE_ID               ; 118933446301936.157377786501840                                                     ; --            ; --           ; --         ;
+; COMPILER_SIGNATURE_ID               ; 118933446301936.157429930001236                                                     ; --            ; --           ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                                                                  ; --            ; --           ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                                                                   ; --            ; --           ; --         ;
 ; MISC_FILE                           ; audio_config/simulation/../../audio_config.qsys                                     ; --            ; --           ; --         ;
@@ -117,6 +117,8 @@ refer to the applicable agreement for further details.
 ; MISC_FILE                           ; audio_output/synthesis/../../audio_output.qsys                                      ; --            ; --           ; --         ;
 ; MISC_FILE                           ; audio_config/synthesis/../audio_config.cmp                                          ; --            ; --           ; --         ;
 ; MISC_FILE                           ; audio_config/synthesis/../../audio_config.qsys                                      ; --            ; --           ; --         ;
+; MISC_FILE                           ; clocks.cmp                                                                          ; --            ; --           ; --         ;
+; MISC_FILE                           ; clocks_sim/clocks.vo                                                                ; --            ; --           ; --         ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family)                                              ; --            ; --           ; Top        ;
 ; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family)                                              ; --            ; --           ; Top        ;
 ; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family)                                              ; --            ; --           ; Top        ;
@@ -125,8 +127,8 @@ refer to the applicable agreement for further details.
 ; SLD_FILE                            ; audio_clk/synthesis/audio_clk.debuginfo                                             ; --            ; --           ; --         ;
 ; SLD_FILE                            ; audio_output/synthesis/audio_output.debuginfo                                       ; --            ; --           ; --         ;
 ; SLD_FILE                            ; audio_config/synthesis/audio_config.debuginfo                                       ; --            ; --           ; --         ;
-; SLD_INFO                            ; QSYS_NAME audio_clk HAS_SOPCINFO 1 GENERATION_ID 1573777831                         ; --            ; audio_clk    ; --         ;
-; SLD_INFO                            ; QSYS_NAME audio_config HAS_SOPCINFO 1 GENERATION_ID 1573777773                      ; --            ; audio_config ; --         ;
+; SLD_INFO                            ; QSYS_NAME audio_clk HAS_SOPCINFO 1 GENERATION_ID 1574096884                         ; --            ; audio_clk    ; --         ;
+; SLD_INFO                            ; QSYS_NAME audio_config HAS_SOPCINFO 1 GENERATION_ID 1574204377                      ; --            ; audio_config ; --         ;
 ; SLD_INFO                            ; QSYS_NAME audio_output HAS_SOPCINFO 1 GENERATION_ID 1573598963                      ; --            ; audio_output ; --         ;
 ; SOPCINFO_FILE                       ; audio_clk/synthesis/../../audio_clk.sopcinfo                                        ; --            ; --           ; --         ;
 ; SOPCINFO_FILE                       ; audio_output/synthesis/../../audio_output.sopcinfo                                  ; --            ; --           ; --         ;
@@ -134,6 +136,8 @@ refer to the applicable agreement for further details.
 ; SPD_FILE                            ; audio_config/simulation/../audio_config.spd                                         ; --            ; --           ; --         ;
 ; SPD_FILE                            ; audio_output/simulation/../audio_output.spd                                         ; --            ; --           ; --         ;
 ; SPD_FILE                            ; audio_clk/simulation/../audio_clk.spd                                               ; --            ; --           ; --         ;
+; SPD_FILE                            ; clocks.spd                                                                          ; --            ; --           ; --         ;
+; SYNTHESIS_ONLY_QIP                  ; On                                                                                  ; --            ; --           ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                                                  ; --            ; --           ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                                                  ; --            ; --           ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                                                  ; --            ; --           ; --         ;
@@ -145,11 +149,11 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:10     ; 1.0                     ; 4895 MB             ; 00:00:19                           ;
-; Fitter               ; 00:00:38     ; 1.0                     ; 6922 MB             ; 00:01:27                           ;
-; Assembler            ; 00:00:06     ; 1.0                     ; 4853 MB             ; 00:00:06                           ;
-; Timing Analyzer      ; 00:00:06     ; 1.1                     ; 5236 MB             ; 00:00:07                           ;
-; Total                ; 00:01:00     ; --                      ; --                  ; 00:01:59                           ;
+; Analysis & Synthesis ; 00:00:10     ; 1.0                     ; 4894 MB             ; 00:00:19                           ;
+; Fitter               ; 00:00:36     ; 1.0                     ; 6868 MB             ; 00:01:19                           ;
+; Assembler            ; 00:00:05     ; 1.0                     ; 4856 MB             ; 00:00:06                           ;
+; Timing Analyzer      ; 00:00:07     ; 1.2                     ; 5235 MB             ; 00:00:07                           ;
+; Total                ; 00:00:58     ; --                      ; --                  ; 00:01:51                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
