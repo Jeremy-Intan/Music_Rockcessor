@@ -4,24 +4,22 @@ module cmpacc(input clk, input wren, input [1535:0] bitmap, output [15:0] result
 //bmp reg to alu
 wire alustart;
 wire colready;
-wire rowready;
+wire rowtopready;
+wire rowbotready;
+wire finalcolumn;
 wire [63:0] columnout;
-wire [23:0] rowout;
+wire [23:0] toprowout;
+wire [23:0] botrowout;
 
 //alu to bmp reg
 wire nextcol;
-wire nextrow
-
-
-//alu to res storage
-wire [15:0] calc;
+wire nextrowbot;
+wire nextrowtop;
 
 
 //output
 wire finished;
-
 wire [15:0] res;
-
 
 assign done = finished;
 assign res = result;
@@ -29,11 +27,9 @@ assign res = result;
 
 //module instantiation
 
-bmpreg bmpreg(.clk(clk), .wren(wren), .data(bitmap), .nextcol(nextcol), .nextrow(nextrow), .columnout(columnout), .rowout(rowout), .alustart(alustart), .rowready(rowready), .colready(colready));
+bmpreg bmpreg(.clk(clk), .wren(wren), .data(bitmap), .nextcol(nextcol), .nextrowbot(nextrowbot), .nextrowtop(nextrowtop), .nextrowbot(nextrowbot), .columnout(columnout), .toprowout(toprowout), .botrowout(botrowout), .alustart(alustart), .rowbotready(rowbotready), .rowtopready(rowtopready), .colready(colready), .finalcolumn(finalcolumn));
 
-cmpalu alu(.clk(clk), start(alustart), .bitcolumn(columnout), .bitrow(rowout), .result, output done, output nextcolumn, output nextrow);
-
-resreg resultreg(.clk(clk), .wren(lshiftdone), .data(lshiftmove), .resout(.lshiftres));
+cmpalu alu(.clk(clk), start(alustart), .bitcolumn(columnout), .bitrowbot(botrowout), .bitrowtop(toprowout), .nextrowtopready(rowtopready), .nextrowbotready(rowbotready), .nextcolumnready(colready), .lastcolumn(finalcolumn), .result(result), .done(done), .nextcolumn(nextcol), .nextrowtop(nextrowtop), .nextrowbot(nextrowbot));
 
 
 end

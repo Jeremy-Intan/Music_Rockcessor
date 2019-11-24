@@ -1,19 +1,15 @@
-module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitrow, input nextrowready, input nextcolumnready, output [15:0] result, output done, output nextcolumn, output nextrow);
+module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitrowtop, input [23:0] bitrowbot, input nextrowtopready, input nextrowbotready, input nextcolumnready, input lastcolumn, output [15:0] result, output done, output nextcolumn, output nextrowtop, output nextrowbot);
 
+//Takes in slices of a 64x24 bitmap and determines how far it should be shifted left and down, and whether or not it should be scaled by 2x
 
-
-
-reg [3:0] calcdone;
-reg finished;
+//output signals
+wire finished;
+wire botrowchecked;
+wire toprowchecked;
 assign done = finished;
-
-wire columndone;
-wire toprowdone;
-wire botrowdone;
-
-reg [63:0] currcol;
-reg [23:0] currrowtop;
-reg [23:0] currrowbot;
+assign result = res;
+assign nextrowtop = toprowchecked;
+assign nextrowbot = botrowchecked;
 
 //[4:0] = lshift
 //[10:5] = dshift
@@ -21,24 +17,40 @@ reg [23:0] currrowbot;
 //[12] = scale 2x vertical
 reg [15:0] res;
 
+//input
+//bitmap staging
+reg [63:0] currcol;
+reg [23:0] currrowtop;
+reg [23:0] currrowbot;
+
 //number of empty columns and rows
 reg [4:0] emptycolumns;
 reg [5:0] emptyrows;
 reg [5:0] emptyrowsupper;
 reg [5:0] emptyrowslower;
 
+//booleans
 
-//should we check the next column or row?
+//1 indicates that the row or column needs to be checked
 reg checkcol;
 reg checkrowtop;
 reg checkrowbot;
+
+//1 indicates that the boundary has been found
 reg lboundaryfound;
 reg topboundaryfound;
 reg botboundaryfound;
+
+//1 indicates that the boundary has been stored in the result
 reg lboundarystored;
 reg topboundarystored;
 reg botboundarystored;
 
+//[0] is the calculation for left columns
+//[1] is the calculation for bot rows
+//[2] is the calculation for horizontal scaling
+//[3] is the calculation for vertical scaling
+reg [3:0] calcdone;
 
 //Row check logic
 //checks from top to bot
@@ -52,6 +64,7 @@ always @(posedge clk) begin
         {1'b1,24'h00} : begin
                         emptyrowsupper <= emptyrowsupper + 1;
                         checkrowtop <= 1'b0;
+                        toprowchecked <= 1'b1;
                         end
 
         //don't cares if we shouldn't check row
@@ -62,6 +75,7 @@ always @(posedge clk) begin
                     emptyrowsupper <= emptyrowsupper;
                     topboundaryfound <= 1'b1;
                     checkrowtop <= 1'b0;
+                    toprowchecked <= 1'b1;
                     end
     endcase
 end
@@ -74,6 +88,7 @@ always @(posedge clk) begin
         {1'b1,24'h00} : begin
                         emptyrowslower <= emptyrowlower + 1;
                         checkrowbot <= 1'b0;
+                        botrowchecked <= 1'b1;
                         end
 
         //don't cares if we shouldn't check row
@@ -84,6 +99,7 @@ always @(posedge clk) begin
                     emptyrowslower <= emptyrowslower;
                     botboundaryfound <= 1'b1;
                     checkrowbot <= 1'b0;
+                    botrowchecked <- 1'b1;
                     end
     endcase
 end
@@ -159,7 +175,7 @@ always @(posedge clk) begin
         65'h10000 : begin
                     emptycolumns <= emptycolumns + 1;
                     checkcol <= 1'b0;
-                    columndone <= 1'b1;
+
                     send
                     end
 
@@ -173,11 +189,9 @@ always @(posedge clk) begin
                     emptycolumns <= emptycolumns;
                     checkcol <= 1'b0;
                     lboundaryfound <= 1'b1;
-                    columndone <= 1'b1;
                     end
     endcase
 end
-
 
 //move current row and column into reg banks
 always @(posedge clk)  begin
@@ -192,26 +206,29 @@ always @(posedge clk)  begin
 
     //nexttoprow
     case (nextrowtopready)
-        1'b1  : currrowtop <= bitrowtop;
+        1'b1  : begin
+                currrowtop <= bitrowtop;
+                checkrowtop <= 1'b1;
+                end
         default: currrowtop <= currrowtop;
     endcase
 
     //nextbotrow
     case (nextrowbotready)
-        1'b1  : currrowbot <= bitrowbot;
+        1'b1  : begin
+                currrowbot <= bitrowbot;
+                checkrowbot <= 1'b1;
+                end
         default: currrowbot <= currrowbot;
     endcase  
-end
 
-//once all 4 calcs are done, send finish signal
-always @(posedge clk) begin
+    //once all 4 calcs are done, send finish signal
     case (calcdone)
         4'b1111 : finished <= 1'b1; 
         default : finished <= 1'b0;
     endcase
-end
 
-always @(posedge clk) begin
+    //reset alu on start
     case (alustart)
         1'b1 : begin
                 emptycolumns <= 5'b0;
