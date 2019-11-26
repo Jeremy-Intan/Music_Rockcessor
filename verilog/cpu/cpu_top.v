@@ -16,12 +16,12 @@ wire aluout;
 wire aluout_m;
 
 
-instruction inst_stage  (.inst(inst), .clk(clk), .rst_n(rst), .instout(instout));
+inst_stage inst_stage  (.inst(inst), .clk(clk), .rst_n(rst), .instout(instout));
 isnt_dec_pipe idreg     (.instout(instout), .decin(instout_d));
-decode dec_stage        (.decin(instout_d), .decout(decout));
+dec_stage dec_stage        (.decin(instout_d), .decout(decout));
 dec_alu_pipe dareg      (.decout(decout), .aluin(decout_a));
-alu alu_stage           (.aluin(decout_a), .aluout(aluout));
+exe_stage alu_stage           (.aluin(decout_a), .aluout(aluout));
 alu_mem_pipe amreg      (.alout(aluout), .memin(aluout_m));
-memory mem_stage        (.memin(aluout_m));
+wb_stage mem_stage        (.memin(aluout_m));
 
 end
