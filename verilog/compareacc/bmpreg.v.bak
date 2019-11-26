@@ -94,7 +94,6 @@ always @(posedge clk)  begin
 		bitcolumns <= bitcolumns;
                 alustart <= 1'b0;
                 end
-	endcase
     
 end
 
