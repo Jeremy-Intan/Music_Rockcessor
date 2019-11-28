@@ -54,12 +54,13 @@ module audio(
 	output		     [7:0]		VGA_R,
 	output		          		VGA_SYNC_N,
 	output		          		VGA_VS
+	
+	/*
+	input [7:0] bpm_in,
+	input [1:0] curr_note_beats_in,
+	input [20:0] curr_note_freq_in
+	*/
 );
-
-
-//TODO: make it less of a vaccuum cleaner/random
-// figure out why it's only playing during reset (queue over filled/not reading?)
-// make buttons do different frequencies to DAC while switches control frequency?
 
 //=======================================================
 //  REG/WIRE declarations
@@ -70,70 +71,181 @@ wire [15:0] amplitude;
 reg [1:0] write_addr;
 
 reg [20:0] counter = 0;
-reg [20:0] counter_depth;
 reg [15:0] write_wave;
 
-/*
-reg [20:0] t_counter1 = 0;
-reg [20:0] t_counter2 = 0;
-reg [20:0] t_counter3 = 0;
-reg [1:0] chord_matches;
-wire [15:0] test_amp;
-wire [20:0] chord_test;
-localparam mult_1 = 191117;
-localparam mult_2 = 151690;
-localparam mult_3 = 127551;
-*/
+reg [2:0] state = 0;
+reg [2:0] next_state = 1;
+localparam RESET = 0;
+localparam WAIT_FOR_NOTE = 1;
+localparam PLAY_NOTE = 2;
+localparam CHECK_DONE_PLAYING_NOTE = 3;
+localparam F = 4;
+
+reg [10:0] bpm_in; // set the bpm of music
+reg [2:0] curr_note_beats_in = 2; // do actual number of expected beats
+reg [20:0] curr_note_freq_in; // frequency of note. a "1" is taken as PLAY NO NOTE.
+
+reg [3:0] stim_counter = 0; // added for testing
+
+wire reset; // INPUT - active high resets music device
+reg [10:0] bpm = 500; // INPUT - stores music tempo as BEATS PER MINUTE. Error if this is set to 0;
+reg [2:0] curr_note_beats = 0; // INPUT - set to the number of beats for the current note
+reg [20:0] curr_note_freq = 1; // INPUT - set to the frequency of the current note.  = 50 MHz / {desired note freq}
+localparam clocks_per_minute = 50000000 * 60; // 50 MHz * 60 seconds per minute = clocks per minute
+wire [31:0] clocks_per_beat; // allows down to 1 bpm
+reg [31:0] note_length_counter = 0; // count clocks to count the number of beats played
+reg [2:0] beats_played_counter = 0; // count the number of beats played to know when to stop the note
+
+// fill curr_note_freq with these maybe? user selects a number 1-8?
+localparam c_low = 191117;
+localparam d = 170265;
+localparam e_flat = 160710;
+localparam e = 151690;
+localparam f = 143176;
+localparam g = 127551;
+localparam a_flat = 120395;
+localparam a = 113636;
+localparam b_flat = 107259;
+localparam b = 101239;
+localparam c_high = 95555;
+localparam d_flat_high = 90194;
+localparam d_high = 85132;
+localparam e_flat_high = 80352;
+localparam e_high = 75843;
+localparam f_high = 71586;
 
 //=======================================================
 //  Structural coding
 //=======================================================
 
-// use push buttons for volume of sound. No sound if no button being pressed
-assign amplitude = (~KEY[1]) ? 16'h7FFF : (~KEY[2]) ? 16'h5FFF : (~KEY[3]) ? 16'h3FFF : 16'h0000;
+assign amplitude = (((state == PLAY_NOTE) || (state == CHECK_DONE_PLAYING_NOTE)) && (curr_note_freq != 1)) ? 16'h3FFF : 16'h0000;
 
-// light up when reset is active
-assign LEDR[0] = ~KEY[0];
-	
+assign clocks_per_beat = clocks_per_minute / bpm;
+
+
+// TESTING STIMULUS 
 always @ (posedge CLOCK_50) begin
-	// set counter depth based on switches
-	// values are calculated for the 50 Mhz clock. 50 Mhz / ({desired frequency}) = counter value
-	// Audio chip's sampling rate and clock shouldn't effect which single note is being played
-   counter_depth <= (SW[0]) ? 191117 : (SW[1]) ? 170265 : (SW[2]) ? 151690 : (SW[3]) ? 143176 : (SW[4]) ? 127551 : (SW[5]) ? 113636 : (SW[6]) ? 101239 : (SW[7]) ? 95555 : (SW[8]) ? 47778 : (SW[9]) ? 382204 : 1;
-	// handle resets
-	if (~KEY[0]) begin
-		write_wave <= 16'h0000;
-		counter <= 20'h00000;
+	if (reset) begin
+		bpm_in <= 500; // clocked at 16th notes for "Keg in the Closet"
+		curr_note_beats_in = 1;
+		stim_counter <= 0;
+		curr_note_freq_in <= a_flat;
 	end
-	else begin
-		// set 50% duty cycle for a square wave. Could try and make a cosine wave later. 
-		if (counter <= (counter_depth >> 1))
-			write_wave <= amplitude;
-		else
-			write_wave <= 20'h00000;
-		// control the counter for note
-		if (counter >= counter_depth)
-			counter <= 20'h00000;
-		else
-			counter <= counter + 1;
+	else if (state == F) begin
+		// could put these in a different always @ block ?
+		stim_counter <= (stim_counter > 11) ? 12 : stim_counter + 1;
 	end
+	// use registers to set a sequence of notes by frequency and length
+	case (stim_counter)
+		11: curr_note_freq_in <= f;
+		10: begin curr_note_freq_in <= a; curr_note_beats_in <= 4; end
+		9: begin curr_note_freq_in <= g; curr_note_beats_in <= 2; end
+		8: begin curr_note_freq_in <= 1; curr_note_beats_in <= 1; end
+		7: begin curr_note_freq_in <= f; curr_note_beats_in <= 3; end
+		6: begin curr_note_freq_in <= f; curr_note_beats_in <= 2; end
+		5: curr_note_freq_in <= c_low;
+		4: begin curr_note_freq_in <= e; curr_note_beats_in <= 4; end
+		3: begin curr_note_freq_in <= d; curr_note_beats_in <= 2; end
+		2: begin curr_note_freq_in <= 1; curr_note_beats_in <= 1; end
+		1: begin curr_note_freq_in <= c_low; curr_note_beats_in <= 3; end
+		0: curr_note_freq_in <= c_low;
+		default: curr_note_beats_in <= 0;
+	endcase
+end
+
+// reset on a switch for now, should be put in from master for normal operation
+assign reset = ~KEY[3];
+assign LEDR[0] = reset;
+// seeing how note lengths line up
+assign LEDR[1] = (curr_note_beats == 1) ? 1 : 0;
+assign LEDR[2] = (curr_note_beats == 2) ? 1 : 0;
+assign LEDR[3] = (curr_note_beats == 3) ? 1 : 0;
+assign LEDR[4] = (curr_note_beats == 4) ? 1 : 0;
+
+// set next state for state machine
+always @ (*) begin
+	case (state)
+		RESET: next_state <= WAIT_FOR_NOTE;
+		WAIT_FOR_NOTE: begin
+			if (curr_note_beats == 0) next_state <= WAIT_FOR_NOTE;
+			else next_state <= PLAY_NOTE;
+		end
+		PLAY_NOTE: begin
+			if (note_length_counter < clocks_per_beat) next_state <= PLAY_NOTE;
+			else next_state <= CHECK_DONE_PLAYING_NOTE;
+		end
+		CHECK_DONE_PLAYING_NOTE: begin
+			if (beats_played_counter >= curr_note_beats) next_state <= F;
+			else next_state <= PLAY_NOTE;
+		end
+		default: next_state <= WAIT_FOR_NOTE;
+	endcase
+end
+
+// state operations and outputs
+always @ (posedge CLOCK_50) begin	
+	if (reset)
+		state <= RESET;
+	else 
+		state <= next_state;
+		case (state)
+		RESET: begin
+			bpm <= 120;
+			curr_note_beats <= 0;
+			curr_note_freq <= 1;
+			note_length_counter <= 0;
+			beats_played_counter <= 0;
+		end
+		WAIT_FOR_NOTE: begin
+			bpm <= bpm_in;
+			curr_note_beats <= curr_note_beats_in;
+			curr_note_freq <= curr_note_freq_in;
+		end
+		PLAY_NOTE: begin
+			note_length_counter <= note_length_counter + 1;
+		end
+		CHECK_DONE_PLAYING_NOTE: begin
+			beats_played_counter <= beats_played_counter + 1;
+			note_length_counter <= 0;
+		end
+		default: begin // F
+			curr_note_beats <= 0;
+			note_length_counter <= 0;
+			beats_played_counter <= 0;
+			// have notes wait until completion of a wave to cut off?
+		end
+		endcase
+end
+
 	
+always @ (posedge CLOCK_50) begin	
+// set 50% duty cycle for a square wave. Could try and make a cosine wave later. 
+if (counter <= (curr_note_freq >> 1))
+	write_wave <= amplitude;
+else
+	write_wave <= 20'h00000;
+// control the counter for note
+if (state != WAIT_FOR_NOTE) begin
+	if (counter >= curr_note_freq)
+		counter <= 20'h00000;
+	else
+		counter <= counter + 1;
+end
+else
+	counter <= 20'h00000;
+
 //	write same data to the right and left sides  
-// (doesn't change frequency stuff above for some reason. Should double counter?)
 	if (write_addr == 2'b10)
 		write_addr <= 2'b11;
 	else
 		write_addr <= 2'b10;
-		
 end
-
-
 
 // IP to generate a slower clock for the AV chip
 audio_clk (
 		.audio_clk_clk(AUD_XCK),      //    audio_clk.clk
 		.ref_clk_clk(CLOCK_50),        //      ref_clk.clk
-		.ref_reset_reset(~KEY[0]),    //    ref_reset.reset
+		.ref_reset_reset(reset),    //    ref_reset.reset
 		.reset_source_reset(audio_rst)  // reset_source.reset
 	);
 
@@ -143,10 +255,8 @@ audio_output (
 		.chipselect(1'b1),  //                   .chipselect
 //		input  wire        read,        //                   .read
 		.write(1'b1),       //                   .write
-		//.writedata({16'b0,chord_test}),
 		.writedata({16'b0,write_wave}),
 //		output wire [31:0] readdata,    //                   .readdata
-		//.clk(AUD_XCK),         //                clk.clk
 		.clk(CLOCK_50),
 		.AUD_BCLK(AUD_BCLK),    // external_interface.BCLK
 		.AUD_DACDAT(AUD_DACDAT),  //                   .DACDAT
@@ -169,38 +279,5 @@ audio_config (
 		.I2C_SCLK(FPGA_I2C_SCLK),    //                       .SCLK
 		.reset(audio_rst)        //                  reset.reset
 	);
-	
-/*
-	// test when all the switches are off. If so, amplitude gets the added value from 3 counters making the chord. otherwise, it's just one.
-	assign chord_test = (SW[0] | SW[1] | SW[2] | SW[3] | SW[4] | SW[5] | SW[6] | SW[7] | SW[8] | SW[9]) ?  write_wave : test_amp;
-	assign test_amp = (~KEY[1]) ? 16'h7FFF>>(3-chord_matches) : (~KEY[2]) ? 16'h5FFF>>(3-chord_matches) : (~KEY[3]) ? 16'h3FFF>>(3-chord_matches) : 16'h0000;
-	// if there are 3 matched chords, play loud. Otherwise scale back assuming even volume for each wave.
-	always @ (posedge CLOCK_50) begin
-		if (~KEY[0]) begin
-			t_counter1 <= 20'h00000;
-			t_counter2 <= 20'h00000;
-			t_counter3 <= 20'h00000;
-		end
-		else begin 
-			t_counter1 <= t_counter1 + 1;
-			t_counter2 <= t_counter2 + 1;
-			t_counter3 <= t_counter3 + 1;
-			if (t_counter1 >= mult_1)
-				t_counter1 <= 20'h00000;
-			if (t_counter2 >= mult_2)
-				t_counter1 <= 20'h00000;
-			if (t_counter3 >= mult_3)
-				t_counter1 <= 20'h00000;
-			if ((t_counter1 <= (mult_1 >> 1)) && (t_counter2 <= (mult_2 >> 1)) && (t_counter3 <= (mult_3 >> 1)))
-				chord_matches = 3;
-			else if (((t_counter1 <= (mult_1 >> 1)) && (t_counter2 <= (mult_2 >> 1))) || ((t_counter1 <= (mult_1 >> 1)) && (t_counter3 <= (mult_3 >> 1))) || ((t_counter2 <= (mult_2 >> 1)) && (t_counter3 <= (mult_3 >> 1))))
-				chord_matches = 2;
-			else if ((t_counter1 <= (mult_1 >> 1)) || (t_counter2 <= (mult_2 >> 1)) || (t_counter3 <= (mult_3 >> 1)))
-				chord_matches = 1;
-			else
-				chord_matches = 0;
-		end
-	
-	end
-*/
+
 endmodule
