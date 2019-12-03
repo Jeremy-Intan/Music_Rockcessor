@@ -102,7 +102,7 @@ initial begin
 	
 	@(negedge clk);
 	while (counter < 1000) begin
-		if (result[11] == 0 && result [12] == 0 && result[4:0] == 5'b00010 && result[10:5] == 6'b00010) begin
+		if (result[11] == 0 && result [12] == 0 && result[4:0] == 5'b00010 && result[10:5] == 6'b00010 && done == 1) begin
 			res_correct = 1;
 			break;
 		end

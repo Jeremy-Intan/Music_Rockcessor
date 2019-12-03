@@ -9,13 +9,13 @@ z2
 cModel Technology
 dC:/Users/ECE_STUDENT/Desktop/ECE554/mP1
 vbmpreg
-Z0 !s110 1575412146
+Z0 !s110 1575415004
 !i10b 1
-!s100 <G1<8ZB8ekIDeNbAUNG8`1
-I9^MR2CDNb@Id<@6Ehg:g;2
+!s100 BCPmEf9Fok9Sm9O]KF^3]2
+Ic^VDPiJCKgGGYPMEDSZG53
 Z1 VDg1SIo80bB@j0V0VzS_@n1
 Z2 dC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc
-w1575412140
+w1575412943
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
 L0 1
@@ -23,7 +23,7 @@ Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1575412146.000000
+Z4 !s108 1575415004.000000
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v|
 !i113 1
@@ -77,11 +77,11 @@ R6
 vcmpalu
 R0
 !i10b 1
-!s100 jTZhDKJg7Pa>gJEn@e_6D2
-IkjZ3L3K9Vg9[2lVLKc78;0
+!s100 l`If=Caz0@<eHzRB4_d9E2
+I=AmT?Rl:0_N?1M9C5XO^n3
 R1
 R2
-w1575411462
+w1575414998
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v
 L0 1

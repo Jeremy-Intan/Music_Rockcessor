@@ -11,7 +11,6 @@ wire [23:0] bitrows [63:0];
 wire [63:0] bitcolumns[23:0];
 
 
-
 reg [5:0] colcount;
 reg [5:0] botrowcount;
 reg [5:0] toprowcount;
@@ -43,7 +42,7 @@ assign botrowout = currrowbot;
 //is this the last column?
 always @(posedge clk) begin
         case (colcount)
-            6'd0 : lastcolumn <= 1'b1;
+            6'b000000 : lastcolumn <= 1'b1;
             default : lastcolumn <= 1'b0;
         endcase
       
@@ -100,7 +99,7 @@ always @(posedge clk)  begin
     case (wren)
         1'b1:   begin
 				data <= bmpin;
-                colcount <= 6'b111111;
+                colcount <= 6'b010111;
                 ready <= 1'b1; 
                 botrowcount <= 7'b0;
                 toprowcount <= 7'h3f;
@@ -123,6 +122,7 @@ generate
 						end 
 						
 						for (colindex = 0; colindex < 24; colindex = colindex + 1) begin
+							
 							assign bitcolumns [colindex] = {data[colindex], data[colindex + 24], data[colindex + 48], data[colindex + 72], data[colindex + 96], data[colindex + 120], data[colindex + 144], data[colindex + 168], data[colindex + 192], data[colindex + 216], data[colindex + 240], data[colindex + 264], data[colindex + 288], data[colindex + 312], data[colindex + 336], data[colindex + 360], data[colindex + 384], data[colindex + 408], data[colindex + 432], data[colindex + 456], data[colindex + 480], data[colindex + 504], data[colindex + 528], data[colindex + 552], data[colindex + 576], data[colindex + 600], data[colindex + 624], data[colindex + 648], data[colindex + 672], data[colindex + 696], data[colindex + 720], data[colindex + 744], data[colindex + 768], data[colindex + 792], data[colindex + 816], data[colindex + 840], data[colindex + 864], data[colindex + 888], data[colindex + 912], data[colindex + 936], data[colindex + 960], data[colindex + 984], data[colindex + 1008], data[colindex + 1032], data[colindex + 1056], data[colindex + 1080], data[colindex + 1104], data[colindex + 1128], data[colindex + 1152], data[colindex + 1176], data[colindex + 1200], data[colindex + 1224], data[colindex + 1248], data[colindex + 1272], data[colindex + 1296], data[colindex + 1320], data[colindex + 1344], data[colindex + 1368], data[colindex + 1392], data[colindex + 1416], data[colindex + 1440], data[colindex + 1464], data[colindex + 1488], data[colindex + 1512]};
 						end
 endgenerate

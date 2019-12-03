@@ -4,11 +4,15 @@ module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitro
 
 //output signals
 reg finished;
-reg botrowchecked;
-reg toprowchecked;
+reg rowbotchecked;
+reg rowtopchecked;
+reg colchecked;
 assign done = finished;
-assign nextrowtop = toprowchecked;
-assign nextrowbot = botrowchecked;
+
+//send the next row/column when current one has been checked
+assign nextrowtop = rowtopchecked;
+assign nextrowbot = rowbotchecked;
+assign nextcolumn = colchecked;
 
 //[4:0] = lshift
 //[10:5] = dshift
@@ -31,10 +35,6 @@ reg [5:0] emptyrowslower;
 
 //booleans
 
-//1 indicates that the row or column needs to be checked
-reg checkcol;
-reg checkrowtop;
-reg checkrowbot;
 
 //1 indicates that the boundary has been found
 reg lboundaryfound;
@@ -58,13 +58,12 @@ reg [3:0] calcdone;
 
 //finds empty rows on top
 always @(posedge clk) begin
-    casez ({checkrowtop, currrowtop})
+    casez ({rowtopchecked, currrowtop})
         //check each row only once
         //checkrow, rowempty
-        {1'b1,24'h00} : begin
+        {1'b0,24'h00} : begin
                         emptyrowsupper <= emptyrowsupper + 1;
-                        checkrowtop <= 1'b0;
-                        toprowchecked <= 1'b1;
+                        rowtopchecked <= 1'b1;  
                         end
 
         //don't cares if we shouldn't check row
@@ -74,21 +73,19 @@ always @(posedge clk) begin
         default :   begin
                     emptyrowsupper <= emptyrowsupper;
                     topboundaryfound <= 1'b1;
-                    checkrowtop <= 1'b0;
-                    toprowchecked <= 1'b1;
+                    rowtopchecked <= 1'b1;
                     end
     endcase
 end
 
 //finds empty rows on bot
 always @(posedge clk) begin
-    casez ({checkrowbot, currrowbot})
+    casez ({rowbotchecked, currrowbot})
         //check each row only once
         //checkrow, rowempty
-        {1'b1,24'h00} : begin
+        {1'b0,24'h00} : begin
                         emptyrowslower <= emptyrowslower + 1;
-                        checkrowbot <= 1'b0;
-                        botrowchecked <= 1'b1;
+                        rowbotchecked <= 1'b1;
                         end
 
         //don't cares if we shouldn't check row
@@ -98,8 +95,7 @@ always @(posedge clk) begin
         default :   begin
                     emptyrowslower <= emptyrowslower;
                     botboundaryfound <= 1'b1;
-                    checkrowbot <= 1'b0;
-                    botrowchecked <= 1'b1;
+                    rowbotchecked <= 1'b1;
                     end
     endcase
 end
@@ -169,23 +165,23 @@ end
 
 always @(posedge clk) begin
 
-    casez ({checkcol, currcol})
+    casez ({colchecked, currcol})
         //check each column only once
         //checkcolumn, column empty
-        65'h10000 : begin
+        65'h00000 : begin
                     emptycolumns <= emptycolumns + 1;
-                    checkcol <= 1'b0;
+                    colchecked <= 1'b1;
                     end
 
         //don't cares if column has been checked
-        65'h0????:  begin
+        65'h1????:  begin
                     emptycolumns <= emptycolumns;
                     end
 
         //checkcolumn, column not empty
         default :   begin
                     emptycolumns <= emptycolumns;
-                    checkcol <= 1'b0;
+                    colchecked <= 1'b1;
                     lboundaryfound <= 1'b1;
                     end
     endcase
@@ -197,7 +193,7 @@ always @(posedge clk)  begin
     case (nextcolumnready)
         1'b1  : begin
                 currcol <= bitcolumn;
-                checkcol <= 1'b1;
+                colchecked <= 1'b0;
                 end
         default: currcol <= currcol;
     endcase  
@@ -206,7 +202,8 @@ always @(posedge clk)  begin
     case (nextrowtopready)
         1'b1  : begin
                 currrowtop <= bitrowtop;
-                checkrowtop <= 1'b1;
+                rowtopchecked <= 1'b0;
+				
                 end
         default: currrowtop <= currrowtop;
     endcase
@@ -215,7 +212,7 @@ always @(posedge clk)  begin
     case (nextrowbotready)
         1'b1  : begin
                 currrowbot <= bitrowbot;
-                checkrowbot <= 1'b1;
+                rowbotchecked <= 1'b0;
                 end
         default: currrowbot <= currrowbot;
     endcase  
@@ -239,7 +236,7 @@ always @(posedge clk)  begin
                 botboundaryfound <= 1'b0;
                 topboundarystored <= 1'b0;
                 botboundarystored <= 1'b0;
-                res <= 16'h0;
+                res <= 16'h0000;
 				calcdone<= 4'b0;
                 end
         default : finished <= 1'b0;
