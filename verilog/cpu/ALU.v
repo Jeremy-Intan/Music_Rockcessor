@@ -10,8 +10,9 @@ output wire [15:0] alu_output;
 
 wire [15:0] pnz_check;
 wire rs_down, rs_left, rs_scale; //unknown sizes !!!!!!!!!!!!
-wire [1535:0] down_shift, left_shift, scale;
+reg [1535:0] down_shift_1, down_shift_2, down_shift_4, down_shift_8, down_shift_16, down_shift_32, left_shift_1, left_shift_2, left_shift_4, left_shift_8, left_shift_16, scale;
 wire [15:0] ADD, SUB, BR, LDST; // BR, BRR use same output, LD and ST use same output
+
 
 assign ADD = rs1 + rs2; //reg + reg
 assign SUB = rs1 - rs2; //reg - reg
@@ -29,25 +30,98 @@ assign rs_down = rs1[]; //unknown size and location in reg !!!!!!!!!!!!!!!
 assign rs_left = rs1[]; //unknown size and location in reg !!!!!!!!!!!!!!!
 assign rs_scale = rs1[]; //unknown size and location in reg !!!!!!!!!!!!!!!
 
-assign down_shift = rs_down[0] ? {24'b0,bmr[1535:24]} : //more down shifts based on size of rs_down
+assign down_shift_1  = rs_down[0] ? {24'd0,bmr[1535:24]} : bmr;
+assign down_shift_2  = rs_down[1] ? {48'd0,down_shift_1[1535:48]} : down_shift_1;
+assign down_shift_4  = rs_down[2] ? {96'd0,down_shift_2[1535:96]} : down_shift_2;
+assign down_shift_8  = rs_down[3] ? {192'd0,down_shift_4[1535:192]} : down_shift_4;
+assign down_shift_16 = rs_down[4] ? {384'd0,down_shift_8[1535:384]} : down_shift_8;
+assign down_shift_32 = rs_down[5] ? {768'd0,down_shift_16[1535:768]} : down_shift_16;
 
-assign left_shift = rs_left[0] ? {down_shift[1534:1512],1'b0, down_shift[1510:1488],1'b0, down_shift[1486:1464],1'b0, down_shift[1462:1440],1'b0,
-								  down_shift[1438:1416],1'b0, down_shift[1414:1392],1'b0, down_shift[1390:1368],1'b0, down_shift[1366:1344],1'b0,
-								  down_shift[1342:1320],1'b0, down_shift[1318:1296],1'b0, down_shift[1294:1272],1'b0, down_shift[1270:1248],1'b0,
-								  down_shift[1246:1224],1'b0, down_shift[1222:1200],1'b0, down_shift[1198:1176],1'b0, down_shift[1174:1152],1'b0,
-								  down_shift[1150:1128],1'b0, down_shift[1126:1104],1'b0, down_shift[1102:1080],1'b0, down_shift[1078:1056],1'b0,
-								  down_shift[1054:1032],1'b0, down_shift[1030:1008],1'b0, down_shift[1006:984],1'b0, down_shift[982:960],1'b0,
-								  down_shift[958:936],1'b0, down_shift[934:912],1'b0, down_shift[910:888],1'b0, down_shift[886:864],1'b0,
-								  down_shift[862:840],1'b0, down_shift[838:816],1'b0, down_shift[814:792],1'b0, down_shift[790:768],1'b0,
-								  down_shift[766:744],1'b0, down_shift[742:720],1'b0, down_shift[718:696],1'b0, down_shift[694:672],1'b0,
-								  down_shift[670:648],1'b0, down_shift[646:624],1'b0, down_shift[622:600],1'b0, down_shift[598:576],1'b0,
-								  down_shift[574:552],1'b0, down_shift[550:528],1'b0, down_shift[526:504],1'b0, down_shift[502:480],1'b0,
-								  down_shift[478:456],1'b0, down_shift[454:432],1'b0, down_shift[430:408],1'b0, down_shift[406:384],1'b0,
-								  down_shift[382:360],1'b0, down_shift[358:336],1'b0, down_shift[334:312],1'b0, down_shift[310:288],1'b0,
-								  down_shift[286:264],1'b0, down_shift[262:240],1'b0, down_shift[238:216],1'b0, down_shift[214:192],1'b0,
-								  down_shift[190:168],1'b0, down_shift[166:144],1'b0, down_shift[142:120],1'b0, down_shift[118:96],1'b0,
-								  down_shift[94:72],1'b0, down_shift[70:48],1'b0, down_shift[46:24],1'b0, down_shift[22:0],1'b0} : //more left shifts based on size of rs_left
+assign left_shift_1 = rs_left[0] ? {down_shift_32[1534:1512],1'b0, down_shift_32[1510:1488],1'b0, down_shift_32[1486:1464],1'b0, down_shift_32[1462:1440],1'b0,
+                                  down_shift_32[1438:1416],1'b0, down_shift_32[1414:1392],1'b0, down_shift_32[1390:1368],1'b0, down_shift_32[1366:1344],1'b0,
+                                  down_shift_32[1342:1320],1'b0, down_shift_32[1318:1296],1'b0, down_shift_32[1294:1272],1'b0, down_shift_32[1270:1248],1'b0,
+                                  down_shift_32[1246:1224],1'b0, down_shift_32[1222:1200],1'b0, down_shift_32[1198:1176],1'b0, down_shift_32[1174:1152],1'b0,
+                                  down_shift_32[1150:1128],1'b0, down_shift_32[1126:1104],1'b0, down_shift_32[1102:1080],1'b0, down_shift_32[1078:1056],1'b0,
+                                  down_shift_32[1054:1032],1'b0, down_shift_32[1030:1008],1'b0, down_shift_32[1006:984],1'b0, down_shift_32[982:960],1'b0,
+                                  down_shift_32[958:936],1'b0, down_shift_32[934:912],1'b0, down_shift_32[910:888],1'b0, down_shift_32[886:864],1'b0,
+                                  down_shift_32[862:840],1'b0, down_shift_32[838:816],1'b0, down_shift_32[814:792],1'b0, down_shift_32[790:768],1'b0,
+                                  down_shift_32[766:744],1'b0, down_shift_32[742:720],1'b0, down_shift_32[718:696],1'b0, down_shift_32[694:672],1'b0,
+                                  down_shift_32[670:648],1'b0, down_shift_32[646:624],1'b0, down_shift_32[622:600],1'b0, down_shift_32[598:576],1'b0,
+                                  down_shift_32[574:552],1'b0, down_shift_32[550:528],1'b0, down_shift_32[526:504],1'b0, down_shift_32[502:480],1'b0,
+                                  down_shift_32[478:456],1'b0, down_shift_32[454:432],1'b0, down_shift_32[430:408],1'b0, down_shift_32[406:384],1'b0,
+                                  down_shift_32[382:360],1'b0, down_shift_32[358:336],1'b0, down_shift_32[334:312],1'b0, down_shift_32[310:288],1'b0,
+                                  down_shift_32[286:264],1'b0, down_shift_32[262:240],1'b0, down_shift_32[238:216],1'b0, down_shift_32[214:192],1'b0,
+                                  down_shift_32[190:168],1'b0, down_shift_32[166:144],1'b0, down_shift_32[142:120],1'b0, down_shift_32[118:96],1'b0,
+                                  down_shift_32[94:72],1'b0, down_shift_32[70:48],1'b0, down_shift_32[46:24],1'b0, down_shift_32[22:0],1'b0} : down_shift_32;
 								  
+assign left_shift_2 = rs_left[1] ? {left_shift_1[1533:1512],2'd0, left_shift_1[1509:1488],2'd0, left_shift_1[1485:1464],2'd0, left_shift_1[1461:1440],2'd0,
+                                  left_shift_1[1437:1416],2'd0, left_shift_1[1413:1392],2'd0, left_shift_1[1389:1368],2'd0, left_shift_1[1365:1344],2'd0,
+                                  left_shift_1[1341:1320],2'd0, left_shift_1[1317:1296],2'd0, left_shift_1[1293:1272],2'd0, left_shift_1[1269:1248],2'd0,
+                                  left_shift_1[1245:1224],2'd0, left_shift_1[1221:1200],2'd0, left_shift_1[1197:1176],2'd0, left_shift_1[1173:1152],2'd0,
+                                  left_shift_1[1149:1128],2'd0, left_shift_1[1125:1104],2'd0, left_shift_1[1101:1080],2'd0, left_shift_1[1077:1056],2'd0,
+                                  left_shift_1[1053:1032],2'd0, left_shift_1[1029:1008],2'd0, left_shift_1[1005:984],2'd0, left_shift_1[981:960],2'd0,
+                                  left_shift_1[957:936],2'd0, left_shift_1[933:912],2'd0, left_shift_1[909:888],2'd0, left_shift_1[885:864],2'd0,
+                                  left_shift_1[861:840],2'd0, left_shift_1[837:816],2'd0, left_shift_1[813:792],2'd0, left_shift_1[789:768],2'd0,
+                                  left_shift_1[765:744],2'd0, left_shift_1[741:720],2'd0, left_shift_1[717:696],2'd0, left_shift_1[693:672],2'd0,
+                                  left_shift_1[669:648],2'd0, left_shift_1[645:624],2'd0, left_shift_1[621:600],2'd0, left_shift_1[597:576],2'd0,
+                                  left_shift_1[573:552],2'd0, left_shift_1[549:528],2'd0, left_shift_1[525:504],2'd0, left_shift_1[501:480],2'd0,
+                                  left_shift_1[477:456],2'd0, left_shift_1[453:432],2'd0, left_shift_1[429:408],2'd0, left_shift_1[405:384],2'd0,
+                                  left_shift_1[381:360],2'd0, left_shift_1[357:336],2'd0, left_shift_1[333:312],2'd0, left_shift_1[309:288],2'd0,
+                                  left_shift_1[285:264],2'd0, left_shift_1[261:240],2'd0, left_shift_1[237:216],2'd0, left_shift_1[213:192],2'd0,
+                                  left_shift_1[189:168],2'd0, left_shift_1[165:144],2'd0, left_shift_1[141:120],2'd0, left_shift_1[117:96],2'd0,
+                                  left_shift_1[93:72],2'd0, left_shift_1[69:48],2'd0, left_shift_1[45:24],2'd0, left_shift_1[21:0],2'd0} : left_shift_1;
+
+assign left_shift_4 = rs_left[2] ? {left_shift_2[1531:1512],4'd0, left_shift_2[1507:1488],4'd0, left_shift_2[1483:1464],4'd0, left_shift_2[1459:1440],4'd0,
+                                  left_shift_2[1435:1416],4'd0, left_shift_2[1411:1392],4'd0, left_shift_2[1387:1368],4'd0, left_shift_2[1363:1344],4'd0,
+                                  left_shift_2[1339:1320],4'd0, left_shift_2[1315:1296],4'd0, left_shift_2[1291:1272],4'd0, left_shift_2[1267:1248],4'd0,
+                                  left_shift_2[1243:1224],4'd0, left_shift_2[1219:1200],4'd0, left_shift_2[1195:1176],4'd0, left_shift_2[1171:1152],4'd0,
+                                  left_shift_2[1147:1128],4'd0, left_shift_2[1123:1104],4'd0, left_shift_2[1099:1080],4'd0, left_shift_2[1075:1056],4'd0,
+                                  left_shift_2[1051:1032],4'd0, left_shift_2[1027:1008],4'd0, left_shift_2[1003:984],4'd0, left_shift_2[979:960],4'd0,
+                                  left_shift_2[955:936],4'd0, left_shift_2[931:912],4'd0, left_shift_2[907:888],4'd0, left_shift_2[883:864],4'd0,
+                                  left_shift_2[859:840],4'd0, left_shift_2[835:816],4'd0, left_shift_2[811:792],4'd0, left_shift_2[787:768],4'd0,
+                                  left_shift_2[763:744],4'd0, left_shift_2[739:720],4'd0, left_shift_2[715:696],4'd0, left_shift_2[691:672],4'd0,
+                                  left_shift_2[667:648],4'd0, left_shift_2[643:624],4'd0, left_shift_2[619:600],4'd0, left_shift_2[595:576],4'd0,
+                                  left_shift_2[571:552],4'd0, left_shift_2[547:528],4'd0, left_shift_2[523:504],4'd0, left_shift_2[499:480],4'd0,
+                                  left_shift_2[475:456],4'd0, left_shift_2[451:432],4'd0, left_shift_2[427:408],4'd0, left_shift_2[403:384],4'd0,
+                                  left_shift_2[379:360],4'd0, left_shift_2[355:336],4'd0, left_shift_2[331:312],4'd0, left_shift_2[307:288],4'd0,
+                                  left_shift_2[283:264],4'd0, left_shift_2[259:240],4'd0, left_shift_2[235:216],4'd0, left_shift_2[211:192],4'd0,
+                                  left_shift_2[187:168],4'd0, left_shift_2[163:144],4'd0, left_shift_2[139:120],4'd0, left_shift_2[115:96],4'd0,
+                                  left_shift_2[91:72],4'd0, left_shift_2[67:48],4'd0, left_shift_2[43:24],4'd0, left_shift_2[19:0],4'd0} : left_shift_2;
+
+assign left_shift_8 = rs_left[3] ? {left_shift_4[1527:1512],8'd0, left_shift_4[1503:1488],8'd0, left_shift_4[1479:1464],8'd0, left_shift_4[1455:1440],8'd0,
+                                  left_shift_4[1431:1416],8'd0, left_shift_4[1407:1392],8'd0, left_shift_4[1383:1368],8'd0, left_shift_4[1359:1344],8'd0,
+                                  left_shift_4[1335:1320],8'd0, left_shift_4[1311:1296],8'd0, left_shift_4[1287:1272],8'd0, left_shift_4[1263:1248],8'd0,
+                                  left_shift_4[1239:1224],8'd0, left_shift_4[1215:1200],8'd0, left_shift_4[1191:1176],8'd0, left_shift_4[1167:1152],8'd0,
+                                  left_shift_4[1143:1128],8'd0, left_shift_4[1119:1104],8'd0, left_shift_4[1095:1080],8'd0, left_shift_4[1071:1056],8'd0,
+                                  left_shift_4[1047:1032],8'd0, left_shift_4[1023:1008],8'd0, left_shift_4[999:984],8'd0, left_shift_4[975:960],8'd0,
+                                  left_shift_4[951:936],8'd0, left_shift_4[927:912],8'd0, left_shift_4[903:888],8'd0, left_shift_4[879:864],8'd0,
+                                  left_shift_4[855:840],8'd0, left_shift_4[831:816],8'd0, left_shift_4[807:792],8'd0, left_shift_4[783:768],8'd0,
+                                  left_shift_4[759:744],8'd0, left_shift_4[735:720],8'd0, left_shift_4[711:696],8'd0, left_shift_4[687:672],8'd0,
+                                  left_shift_4[663:648],8'd0, left_shift_4[639:624],8'd0, left_shift_4[615:600],8'd0, left_shift_4[591:576],8'd0,
+                                  left_shift_4[567:552],8'd0, left_shift_4[543:528],8'd0, left_shift_4[519:504],8'd0, left_shift_4[495:480],8'd0,
+                                  left_shift_4[471:456],8'd0, left_shift_4[447:432],8'd0, left_shift_4[423:408],8'd0, left_shift_4[399:384],8'd0,
+                                  left_shift_4[375:360],8'd0, left_shift_4[351:336],8'd0, left_shift_4[327:312],8'd0, left_shift_4[303:288],8'd0,
+                                  left_shift_4[279:264],8'd0, left_shift_4[255:240],8'd0, left_shift_4[231:216],8'd0, left_shift_4[207:192],8'd0,
+                                  left_shift_4[183:168],8'd0, left_shift_4[159:144],8'd0, left_shift_4[135:120],8'd0, left_shift_4[111:96],8'd0,
+                                  left_shift_4[87:72],8'd0, left_shift_4[63:48],8'd0, left_shift_4[39:24],8'd0, left_shift_4[15:0],8'd0} : left_shift_4;
+
+assign left_shift_16 = rs_left[4] ? {left_shift_8[1519:1512],16'd0, left_shift_8[1495:1488],16'd0, left_shift_8[1471:1464],16'd0, left_shift_8[1447:1440],16'd0,
+                                  left_shift_8[1423:1416],16'd0, left_shift_8[1399:1392],16'd0, left_shift_8[1375:1368],16'd0, left_shift_8[1351:1344],16'd0,
+                                  left_shift_8[1327:1320],16'd0, left_shift_8[1303:1296],16'd0, left_shift_8[1279:1272],16'd0, left_shift_8[1255:1248],16'd0,
+                                  left_shift_8[1231:1224],16'd0, left_shift_8[1207:1200],16'd0, left_shift_8[1183:1176],16'd0, left_shift_8[1159:1152],16'd0,
+                                  left_shift_8[1135:1128],16'd0, left_shift_8[1111:1104],16'd0, left_shift_8[1087:1080],16'd0, left_shift_8[1063:1056],16'd0,
+                                  left_shift_8[1039:1032],16'd0, left_shift_8[1015:1008],16'd0, left_shift_8[991:984],16'd0, left_shift_8[967:960],16'd0,
+                                  left_shift_8[943:936],16'd0, left_shift_8[919:912],16'd0, left_shift_8[895:888],16'd0, left_shift_8[871:864],16'd0,
+                                  left_shift_8[847:840],16'd0, left_shift_8[823:816],16'd0, left_shift_8[799:792],16'd0, left_shift_8[775:768],16'd0,
+                                  left_shift_8[751:744],16'd0, left_shift_8[727:720],16'd0, left_shift_8[703:696],16'd0, left_shift_8[679:672],16'd0,
+                                  left_shift_8[655:648],16'd0, left_shift_8[631:624],16'd0, left_shift_8[607:600],16'd0, left_shift_8[583:576],16'd0,
+                                  left_shift_8[559:552],16'd0, left_shift_8[535:528],16'd0, left_shift_8[511:504],16'd0, left_shift_8[487:480],16'd0,
+                                  left_shift_8[463:456],16'd0, left_shift_8[439:432],16'd0, left_shift_8[415:408],16'd0, left_shift_8[391:384],16'd0,
+                                  left_shift_8[367:360],16'd0, left_shift_8[343:336],16'd0, left_shift_8[319:312],16'd0, left_shift_8[295:288],16'd0,
+                                  left_shift_8[271:264],16'd0, left_shift_8[247:240],16'd0, left_shift_8[223:216],16'd0, left_shift_8[199:192],16'd0,
+                                  left_shift_8[175:168],16'd0, left_shift_8[151:144],16'd0, left_shift_8[127:120],16'd0, left_shift_8[103:96],16'd0,
+                                  left_shift_8[79:72],16'd0, left_shift_8[55:48],16'd0, left_shift_8[31:24],16'd0, left_shift_8[7:0],16'd0} : left_shift_8;
+
 assign SCALE = {2{2{bmr[768]},2{bmr[769]},2{bmr[770]},2{bmr[771]},2{bmr[772]},2{bmr[773]},2{bmr[774]},2{bmr[775]},2{bmr[776]},2{bmr[777]},2{bmr[778]},2{bmr[779]}},
 				2{2{bmr[792]},2{bmr[793]},2{bmr[794]},2{bmr[795]},2{bmr[796]},2{bmr[797]},2{bmr[798]},2{bmr[799]},2{bmr[800]},2{bmr[801]},2{bmr[802]},2{bmr[803]}},
 				2{2{bmr[816]},2{bmr[817]},2{bmr[818]},2{bmr[819]},2{bmr[820]},2{bmr[821]},2{bmr[822]},2{bmr[823]},2{bmr[824]},2{bmr[825]},2{bmr[826]},2{bmr[827]}},
