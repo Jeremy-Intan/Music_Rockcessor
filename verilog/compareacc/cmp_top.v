@@ -27,7 +27,7 @@ assign res = result;
 
 //module instantiation
 
-bmpreg bmpreg(.clk(clk), .wren(wren), .data(bitmap), .nextcol(nextcol), .nextrowbot(nextrowbot), .nextrowtop(nextrowtop), .columnout(columnout), .toprowout(toprowout), .botrowout(botrowout), .alustart(alustart), .rowbotready(rowbotready), .rowtopready(rowtopready), .colready(colready), .finalcolumn(finalcolumn));
+bmpreg bitmapreg(.clk(clk), .wren(wren), .bmpin(bitmap), .nextcol(nextcol), .nextrowbot(nextrowbot), .nextrowtop(nextrowtop), .columnout(columnout), .toprowout(toprowout), .botrowout(botrowout), .alustart(alustart), .rowbotready(rowbotready), .rowtopready(rowtopready), .colready(colready), .finalcolumn(finalcolumn));
 
 cmpalu alu(.clk(clk), .start(alustart), .bitcolumn(columnout), .bitrowbot(botrowout), .bitrowtop(toprowout), .nextrowtopready(rowtopready), .nextrowbotready(rowbotready), .nextcolumnready(colready), .lastcolumn(finalcolumn), .result(result), .done(done), .nextcolumn(nextcol), .nextrowtop(nextrowtop), .nextrowbot(nextrowbot));
 

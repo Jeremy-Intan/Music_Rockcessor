@@ -22,6 +22,10 @@ reg ready;
 reg nextcolready;
 reg nextrowtopready;
 reg nextrowbotready;
+
+//the column and rows being sent to the ALU are held in registers,
+//updating based on a signal sent from the ALU that it has finished
+// analysing the present column/row
 reg [63:0] currcolumn;
 reg [23:0] currrowtop;
 reg [23:0] currrowbot;
@@ -39,18 +43,19 @@ assign botrowout = currrowbot;
 //is this the last column?
 always @(posedge clk) begin
         case (colcount)
-            6'd24 : lastcolumn <= 1'b1;
+            6'd0 : lastcolumn <= 1'b1;
             default : lastcolumn <= 1'b0;
         endcase
       
 end
 
 //increments column counter, and selects the next column slice to send to ALU
+//will not send another column if it is the last column
 always @(posedge clk, posedge nextcol) begin
     case ({nextcol, lastcolumn})
         2'b10 :begin
               currcolumn = bitcolumns [colcount];
-              colcount = colcount + 1;
+              colcount = colcount - 1;
               nextcolready = 1'b1;
               end
         default :begin
@@ -63,7 +68,7 @@ end
 //increments top row counter, and selects the next row slice to send to ALU
 always @(posedge clk, posedge nextrowtop) begin
     case (nextrowtop)
-        2'b10 :begin
+        1'b1 :begin
               currrowtop = bitrows [toprowcount];
               toprowcount = toprowcount - 1;
               nextrowtopready = 1'b1;
@@ -78,7 +83,7 @@ end
 //increments bot row counter, and selects the next row slice to send to ALU
 always @(posedge clk, posedge nextrowbot) begin
     case (nextrowbot)
-        2'b10 :begin
+        1'b1 :begin
               currrowbot = bitrows [botrowcount];
               botrowcount = botrowcount + 1;
               nextrowbotready = 1'b1;
@@ -95,7 +100,7 @@ always @(posedge clk)  begin
     case (wren)
         1'b1:   begin
 				data <= bmpin;
-                colcount <= 6'b0;
+                colcount <= 6'b111111;
                 ready <= 1'b1; 
                 botrowcount <= 7'b0;
                 toprowcount <= 7'h3f;
@@ -108,7 +113,7 @@ always @(posedge clk)  begin
     
 end
 
-//temp solution, data not stored in reg, so must be accurate in CPU
+//assigns the rows and columns of the bitmap to a series of busses
 generate
 					genvar rowindex;
 					genvar colindex;

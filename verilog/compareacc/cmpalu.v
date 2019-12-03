@@ -240,6 +240,7 @@ always @(posedge clk)  begin
                 topboundarystored <= 1'b0;
                 botboundarystored <= 1'b0;
                 res <= 16'h0;
+				calcdone<= 4'b0;
                 end
         default : finished <= 1'b0;
     endcase
