@@ -1,0 +1,16 @@
+pnz (pnz flag for br and brr inst)
+br (true when br or brr)
+save_addr (true when brr)
+ldst (true when LDB, STB, LD, ST)
+false_nop (flushed instruction)
+
+single inst
+add
+sub
+mv
+true_nop
+halt
+ld
+st
+ldb
+stb
