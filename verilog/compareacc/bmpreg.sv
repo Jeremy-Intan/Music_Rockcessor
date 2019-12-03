@@ -4,8 +4,8 @@ module bmpreg(input clk, input wren, input [1535:0] data, input nextcol, input n
 
 
 //double check ordering
-wire [23:0] bitrows [63:0];
-wire [63:0] bitcolumns[23:0];
+reg [63:0] [23:0] bitrows;
+reg [23:0] [63:0] bitcolumns;
 
 reg [5:0] colcount;
 reg [5:0] botrowcount;
@@ -89,34 +89,20 @@ end
 always @(posedge clk)  begin
     case (wren)
         1'b1:   begin
-				
+                bitrows <= data;
+				bitcolumns <= data;
                 colcount <= 6'b0;
                 ready <= 1'b1; 
                 botrowcount <= 7'b0;
                 toprowcount <= 7'h3f;
                 end
         default: begin
-                //bitrows <= bitrows;
-				//bitcolumns <= bitcolumns;
+                bitrows <= bitrows;
+		bitcolumns <= bitcolumns;
                 ready <= 1'b0;
                 end
 	endcase
     
 end
-
-//temp solution, data not stored in reg, so must be accurate in CPU
-generate
-					genvar rowindex;
-					genvar colindex;
-					genvar colrow;
-						for (rowindex = 0; rowindex < 64; rowindex = rowindex + 1) begin
-							assign bitrows [rowindex] = data [(((rowindex + 1) * 24) - 1) : (rowindex * 24)];
-						end 
-						
-						for (colindex = 0; colindex < 24; colindex = colindex + 1) begin
-							assign bitcolumns [colindex] = {data[colindex], data[colindex + 24], data[colindex + 48], data[colindex + 72], data[colindex + 96], data[colindex + 120], data[colindex + 144], data[colindex + 168], data[colindex + 192], data[colindex + 216], data[colindex + 240], data[colindex + 264], data[colindex + 288], data[colindex + 312], data[colindex + 336], data[colindex + 360], data[colindex + 384], data[colindex + 408], data[colindex + 432], data[colindex + 456], data[colindex + 480], data[colindex + 504], data[colindex + 528], data[colindex + 552], data[colindex + 576], data[colindex + 600], data[colindex + 624], data[colindex + 648], data[colindex + 672], data[colindex + 696], data[colindex + 720], data[colindex + 744], data[colindex + 768], data[colindex + 792], data[colindex + 816], data[colindex + 840], data[colindex + 864], data[colindex + 888], data[colindex + 912], data[colindex + 936], data[colindex + 960], data[colindex + 984], data[colindex + 1008], data[colindex + 1032], data[colindex + 1056], data[colindex + 1080], data[colindex + 1104], data[colindex + 1128], data[colindex + 1152], data[colindex + 1176], data[colindex + 1200], data[colindex + 1224], data[colindex + 1248], data[colindex + 1272], data[colindex + 1296], data[colindex + 1320], data[colindex + 1344], data[colindex + 1368], data[colindex + 1392], data[colindex + 1416], data[colindex + 1440], data[colindex + 1464], data[colindex + 1488], data[colindex + 1512]};
-						end
-endgenerate
-
 
 endmodule

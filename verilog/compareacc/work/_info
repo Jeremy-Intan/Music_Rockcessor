@@ -8,27 +8,51 @@ z2
 !i10f 100
 cModel Technology
 dC:/Users/ECE_STUDENT/Desktop/ECE554/mP1
-vcmpacc
-Z0 !s110 1574808778
+vbmpreg
+DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z0 !s110 1575398087
 !i10b 1
-!s100 dHiTUm^<QC4X=AcaQcifa0
-ISL^5fQW1gQ5_8`Xz^YmC93
+!s100 O[jGXND;U@O[V`2j_6I9@2
+I82b?KclQj3`9RcoIf9Yj12
 Z1 VDg1SIo80bB@j0V0VzS_@n1
+!s105 bmpreg_sv_unit
+S1
 Z2 dC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc
-w1574808638
-8C:\Users\ECE_STUDENT\verilog\Music_Rockcessor\verilog\compareacc\cmp_top.v
-FC:\Users\ECE_STUDENT\verilog\Music_Rockcessor\verilog\compareacc\cmp_top.v
+w1575397035
+8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv
+FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv
 L0 1
 Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1574808778.000000
-!s107 C:\Users\ECE_STUDENT\verilog\Music_Rockcessor\verilog\compareacc\cmp_top.v|
-!s90 -reportprogress|300|-work|work|-stats=none|C:\Users\ECE_STUDENT\verilog\Music_Rockcessor\verilog\compareacc\cmp_top.v|
+Z4 !s108 1575398087.000000
+!s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv|
 !i113 1
-Z5 o-work work
-Z6 tCvgOpt 0
+o-work work -sv
+Z5 tCvgOpt 0
+vcmpacc
+R0
+!i10b 1
+!s100 dHiTUm^<QC4X=AcaQcifa0
+IQl3TRY=nCaj4Z<E=bYVBm3
+R1
+R2
+w1574808638
+8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v
+FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v|
+!i113 1
+Z6 o-work work
+R5
 vcmpalu
 R0
 !i10b 1
@@ -48,5 +72,5 @@ R4
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v|
 !i113 1
-R5
 R6
+R5
