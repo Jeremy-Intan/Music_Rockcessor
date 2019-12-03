@@ -1,8 +1,7 @@
 module ALU (pc,rs1,rs2,sx_address,value,bmr,add,sub,br,ldst,shift,scale,pnz,alu_output,alu_bmo);
 input wire [15:0] pc; //Not sure on size !!!!!!!!!!
 input wire [15:0] rs1, rs2; //input wires for registers
-input wire [8:0] sx_address;
-input wire [5:0] value; //used for loads and stores
+input wire [16:0] val;
 input wire [1535:0] bmr; //used for shift and scale
 input wire add, sub, br, ldst, shift, scale;
 output wire [2:0] pnz; //generated off add and sub
@@ -16,15 +15,15 @@ wire [15:0] ADD, SUB, BR, LDST; // BR, BRR use same output, LD and ST use same o
 
 assign ADD = rs1 + rs2; //reg + reg
 assign SUB = rs1 - rs2; //reg - reg
-assign BR = pc + {{7{sx_address[8]}},sx_address}; //pc + sign extended value
-assign LDST = rs1 + {10'b0,value}; //reg + value
+assign BR = pc + val; //pc + sign extended value
+assign LDST = rs1 + val; //reg + value
 
 assign pnz_check = add ? ADD : (sub ? SUB : 16'b0); //Need to know signal !!!!!!!!!!!
 assign pnz[2] = ~pnz_check[15]; //is it positive
 assign pnz[1] = pnz_check[15]; //is it negative
-assign pnz[0] = pnz_check == 16'b0 ? 1'b1 : 1'b0; //is it zero
+assign pnz[0] = pnz_check == 16'd0 ? 1'b1 : 1'b0; //is it zero
 
-assign alu_output = add ? ADD : (sub ? SUB : (br ? BR : (ldst ? LDST : 16'b0))); //need signals !!!!!!!!!!!!
+assign alu_output = add ? ADD : (sub ? SUB : (br ? BR : (ldst ? LDST : 16'd0))); //need signals !!!!!!!!!!!!
 
 assign rs_down = rs1[]; //unknown size and location in reg !!!!!!!!!!!!!!!
 assign rs_left = rs1[]; //unknown size and location in reg !!!!!!!!!!!!!!!
