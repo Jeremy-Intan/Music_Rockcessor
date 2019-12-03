@@ -1,11 +1,16 @@
-module bmpreg(input clk, input wren, input [1535:0] data, input nextcol, input nextrowbot, input nextrowtop, output [63:0] columnout, output [23:0] botrowout, output [23:0] toprowout, output alustart, output rowtopready, output rowbotready, output colready, output finalcolumn);
+module bmpreg(input clk, input wren, input [1535:0] bmpin, input nextcol, input nextrowbot, input nextrowtop, output [63:0] columnout, output [23:0] botrowout, output [23:0] toprowout, output alustart, output rowtopready, output rowbotready, output colready, output finalcolumn);
 
 //bmpreg takes in a 24x64 bitmap and stores it in a register. It then sends it slice by slice to the ALU
 
 
-//double check ordering
+//bitmap is stored in register
+//bitrows and bitcolumns are buses from the bitmap register
+//assigned slice by slice
+reg  [1535:0] data;
 wire [23:0] bitrows [63:0];
 wire [63:0] bitcolumns[23:0];
+
+
 
 reg [5:0] colcount;
 reg [5:0] botrowcount;
@@ -89,15 +94,14 @@ end
 always @(posedge clk)  begin
     case (wren)
         1'b1:   begin
-				
+				data <= bmpin;
                 colcount <= 6'b0;
                 ready <= 1'b1; 
                 botrowcount <= 7'b0;
                 toprowcount <= 7'h3f;
                 end
         default: begin
-                //bitrows <= bitrows;
-				//bitcolumns <= bitcolumns;
+				data <= data;
                 ready <= 1'b0;
                 end
 	endcase

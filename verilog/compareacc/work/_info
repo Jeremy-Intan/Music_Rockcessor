@@ -10,7 +10,7 @@ cModel Technology
 dC:/Users/ECE_STUDENT/Desktop/ECE554/mP1
 vbmpreg
 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z0 !s110 1575398087
+Z0 !s110 1575405624
 !i10b 1
 !s100 O[jGXND;U@O[V`2j_6I9@2
 I82b?KclQj3`9RcoIf9Yj12
@@ -26,7 +26,7 @@ Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1575398087.000000
+Z4 !s108 1575405624.000000
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.sv|
 !i113 1
