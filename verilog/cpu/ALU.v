@@ -1,7 +1,7 @@
 module ALU (pc,rs1,rs2,sx_address,value,bmr,add,sub,br,ldst,shift,scale,pnz,alu_output,alu_bmo);
-input wire [15:0] pc; //Not sure on size !!!!!!!!!!
-input wire [15:0] rs1, rs2; //input wires for registers
-input wire [16:0] val;
+input wire [15:0] pc;
+input wire [15:0] rs1, rs2; //input data for registers
+input wire [16:0] val; //literal, any size (determined in decode)
 input wire [1535:0] bmr; //used for shift and scale
 input wire add, sub, br, ldst, shift, scale;
 output wire [2:0] pnz; //generated off add and sub
@@ -12,7 +12,6 @@ wire [15:0] pnz_check;
 wire rs_down, rs_left, rs_scale; //unknown sizes !!!!!!!!!!!!
 reg [1535:0] down_shift_1, down_shift_2, down_shift_4, down_shift_8, down_shift_16, down_shift_32, left_shift_1, left_shift_2, left_shift_4, left_shift_8, left_shift_16, scale;
 wire [15:0] ADD, SUB, BR, LDST; // BR, BRR use same output, LD and ST use same output
-
 
 assign ADD = rs1 + rs2; //reg + reg
 assign SUB = rs1 - rs2; //reg - reg

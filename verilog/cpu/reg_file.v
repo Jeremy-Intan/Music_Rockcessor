@@ -51,7 +51,7 @@ module reg_file (
     reg b_reg_1[b-1:0];
     reg b_reg_2[b-1:0];
 
-    assign @ (*)
+    always @ (*)
         case rd_addr_1
             4'h0 : r_data_1 = n_reg_0;
             4'h1 : r_data_1 = n_reg_1;
@@ -71,7 +71,7 @@ module reg_file (
             default : r_data_1 = n_reg_15;
         endcase
 
-    assign @ (*)
+    always @ (*)
         case rd_addr_2
             4'h0 : r_data_2 = n_reg_0;
             4'h1 : r_data_2 = n_reg_1;
@@ -91,7 +91,7 @@ module reg_file (
             default : r_data_2 = n_reg_15;
         endcase
 
-    assign @ (*)
+    always @ (*)
         case rbm_addr
             2'h1 : rbm_data = b_reg_1;
             2'h2 : rbm_data = b_reg_2;
