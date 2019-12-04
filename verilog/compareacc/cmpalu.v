@@ -3,10 +3,11 @@ module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitro
 //Takes in slices of a 64x24 bitmap and determines how far it should be shifted left and down, and whether or not it should be scaled by 2x
 
 //output signals
-reg finished;
 reg rowbotchecked;
 reg rowtopchecked;
 reg colchecked;
+
+reg finished;
 assign done = finished;
 
 //send the next row/column when current one has been checked
@@ -224,8 +225,7 @@ always @(posedge clk)  begin
     endcase
 
     //reset alu on start
-    case (start)
-        1'b1 : begin
+    if (start == 1'b1) begin
                 emptycolumns <= 5'b0;
                 emptyrows <= 6'b0;
                 emptyrowsupper <= 6'b0;
@@ -239,8 +239,6 @@ always @(posedge clk)  begin
                 res <= 16'h0000;
 				calcdone<= 4'b0;
                 end
-        default : finished <= 1'b0;
-    endcase
 end
 
 endmodule
