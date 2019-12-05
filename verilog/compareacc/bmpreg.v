@@ -58,7 +58,7 @@ always @(posedge clk, posedge nextcol) begin
               nextcolready = 1'b1;
               end
         default :begin
-				currcolumn = bitcolumns [colcount]
+				currcolumn = bitcolumns [colcount];
                 colcount = colcount;
                 nextcolready = 1'b0;
                 end

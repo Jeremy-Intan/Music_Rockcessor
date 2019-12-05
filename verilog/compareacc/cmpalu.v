@@ -188,6 +188,7 @@ always @(posedge clk) begin
         default : 	begin
 					calcdone[1] <= calcdone[1];
 					res[11] <= res[11];
+					end
     endcase
 end
 
