@@ -1,4 +1,4 @@
-mdule exe_stage();
+mdule exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, save_addr, ret, pnz_in, ld, st, ldb, stb, branch_addr, branch_taken, alu_16_data, bd_data);
 
 input wire [15:0] pc;
 input wire [15:0] rs1_data;
@@ -10,7 +10,7 @@ input wire sub;
 input wire br;
 input wire save_addr;
 input wire ret;
-input wire pnz_in;i
+input wire pnz_in;
 input wire ld;
 input wire st;
 input wire ldb;
@@ -21,18 +21,18 @@ output reg branch_taken;
 output reg [15:0] alu_16_data;
 output reg [1535:0] bd_data;
 //probably not needed here as well
-input wire [3:0] rd_addr
-input wire [1:0] bd_addr;
+//input wire [3:0] rd_addr
+//input wire [1:0] bd_addr;
 //forwarding, not needed here maybe?
-input wire [3:0] rs1_addr;
-input wire [3:0] rs2_addr;
-input wire [1:0] bs_addr;
-output reg [3:0] rs1_addr_out;
-output reg [3:0] rs2_addr_out;
-output reg [1:0] bs_addr_out;
+//input wire [3:0] rs1_addr;
+//input wire [3:0] rs2_addr;
+//input wire [1:0] bs_addr;
+//output reg [3:0] rs1_addr_out;
+//output reg [3:0] rs2_addr_out;
+//output reg [1:0] bs_addr_out;
 
 reg [2:0] pnz_reg;
-reg [15:0] ras_top;
+wire [15:0] ras_top;
 
 wire [2:0] pnz_out;
 wire [15:0] alu_output;

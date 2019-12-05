@@ -16,12 +16,23 @@ wire aluout;
 wire aluout_m;
 
 
+
 inst_stage inst_stage  (.inst(inst), .clk(clk), .rst_n(rst), .instout(instout));
-isnt_dec_pipe idreg     (.instout(instout), .decin(instout_d));
+mem_interface inst_mem(write_addr, read_addr, wr_enable, wr_data, rd_data, clk, rst_n);
+
+//IF/ID pipes
+
 dec_stage dec_stage        (.decin(instout_d), .decout(decout));
-dec_alu_pipe dareg      (.decout(decout), .aluin(decout_a));
+
+//ID/EXE pipes
+
 exe_stage alu_stage           (.aluin(decout_a), .aluout(aluout));
-alu_mem_pipe amreg      (.alout(aluout), .memin(aluout_m));
+
+mem_interface n_mem(write_addr, read_addr, wr_enable, wr_data, rd_data, clk, rst_n);
+mem_interface #(1536) b_mem(write_addr, read_addr, wr_enable, wr_data, rd_data, clk, rst_n);
+
+//EXE/WB stage
+
 wb_stage mem_stage        (.memin(aluout_m));
 
 end
