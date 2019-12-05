@@ -1,4 +1,4 @@
-mdule exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, save_addr, ret, pnz_in, ld, st, ldb, stb, branch_addr, branch_taken, alu_16_data, bd_data);
+mdule exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, ret, pnz_in, branch_addr, branch_taken, alu_16_data, bd_data);
 
 input wire [15:0] pc;
 input wire [15:0] rs1_data;
@@ -7,18 +7,21 @@ input wire [1535:0] bs_data;
 input wire [15:0] lit;
 input wire add;
 input wire sub;
+input wire mv;
+input wire bsh;
+input wire bsl;
 input wire br;
 input wire save_addr;
 input wire ret;
 input wire pnz_in;
-input wire ld;
-input wire st;
-input wire ldb;
-input wire stb;
+//input wire ld;
+//input wire st;
+//input wire ldb;
+//input wire stb; //just wire this correctly zulul
 output reg [15:0] branch_addr;
 output reg branch_taken;
 //for mem address (both bitmap and normal) and register
-output reg [15:0] alu_16_data;
+output reg [15:0] rd_data;
 output reg [1535:0] bd_data;
 //probably not needed here as well
 //input wire [3:0] rd_addr
@@ -36,6 +39,7 @@ wire [15:0] ras_top;
 
 wire [2:0] pnz_out;
 wire [15:0] alu_output;
+wire [
 
 
 // * pc stuff here *
@@ -54,6 +58,12 @@ ras ras (.push(save_addr), .new_data(pc + 1), .pop(ret), .top_of_stack(ras_top),
 
 // * end pc stuff *
 
+// * OUTPUT STUFF HERE *
+
+assign rd_data = mv ? lit : alu_output;
+assign bd_data = alu_bmo;
+
+// * OUTPUT STUFF END *
 
 //the ALU
 ALU alu(.pc(pc),
@@ -61,14 +71,14 @@ ALU alu(.pc(pc),
         .rs2(rs2_data),
         .val(lit),
         .bmr(bs_data),
-        .add(),
-        .sub(),
-        .br(),
-        .ldst(),
-        .shift(),
-        .scale(),
+        .add(add),
+        .sub(sub),
+        .br(br),
+        .ldst(ldst),
+        .shift(bsh),
+        .scale(bsl),
         .pnz(pnz_out),
         .alu_output(alu_output),
-        .alu_bmo());
+        .alu_bmo(alu_bmo));
 
 endmodule
