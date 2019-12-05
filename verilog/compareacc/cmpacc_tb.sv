@@ -31,8 +31,8 @@ initial begin
 	bitmap = 
 	{
 	24'h000000, 
-	24'h000000, 
-	24'h000000, 
+	24'h0000ff, 
+	24'h0000ff, 
 	24'h3fffff, 
 	24'h3fffff, 
 	24'h000000, 

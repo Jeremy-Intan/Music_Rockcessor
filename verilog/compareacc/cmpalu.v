@@ -65,10 +65,16 @@ always @(posedge clk) begin
         {1'b0,24'h00} : begin
                         emptyrowsupper <= emptyrowsupper + 1;
                         rowtopchecked <= 1'b1;  
+						topboundaryfound <= topboundaryfound;
                         end
 
         //don't cares if we shouldn't check row
-        {1'b1, 24'h??} : emptyrowsupper <= emptyrowsupper;
+        {1'b1, 24'h??} : begin
+						 emptyrowsupper <= emptyrowsupper;
+						 rowtopchecked <= rowtopchecked;
+						 topboundaryfound <= topboundaryfound;
+						 end
+		
 
         //checkrow, row not empty
         default :   begin
@@ -87,10 +93,15 @@ always @(posedge clk) begin
         {1'b0,24'h00} : begin
                         emptyrowslower <= emptyrowslower + 1;
                         rowbotchecked <= 1'b1;
+						botboundaryfound <= botboundaryfound;
                         end
 
         //don't cares if we shouldn't check row
-        {1'b1, 24'h??} : emptyrowslower <= emptyrowslower;
+        {1'b1, 24'h??} : begin
+						emptyrowslower <= emptyrowslower;
+						rowbotchecked <= rowbotchecked;
+						botboundaryfound <= botboundaryfound;
+						end
 
         //checkrow, row not empty
         default :   begin
@@ -110,7 +121,10 @@ always @(posedge clk) begin
                 emptyrows <= emptyrows + emptyrowsupper;
                 topboundarystored <= 1'b1;
                 end
-        default: emptyrows <= emptyrows;
+        default: begin
+				emptyrows <= emptyrows;
+				topboundarystored <= topboundarystored;
+				end
     endcase
 
     //store number of empty rows bot
@@ -121,7 +135,12 @@ always @(posedge clk) begin
                 calcdone[2] <= 1'b1;
                 botboundarystored <= 1'b1;
                 end 
-        default : emptyrows <= emptyrows;
+        default : 	begin
+					emptyrows <= emptyrows;
+					res [10:5] <= res[10:5];
+					calcdone[2] <= calcdone[2];
+					botboundarystored <= botboundarystored;
+					end
     endcase
 
     case ({topboundarystored, botboundarystored, emptyrows[5]})
@@ -134,7 +153,10 @@ always @(posedge clk) begin
                     res [12] <= 1'b0;
                     calcdone[3] <= 1'b1;
                     end
-        default:    res[12] <= res[12];
+        default:    begin
+					res[12] <= res[12];
+					calcdone[3] <= calcdone[3];
+					end
     endcase
 end
 
@@ -146,7 +168,10 @@ always @(posedge clk) begin
                 res [5:0] <= emptycolumns;
                 calcdone [0] <= 1'b1;
                 end
-        default : emptycolumns <= emptycolumns;
+        default : 	begin
+					emptycolumns <= emptycolumns;
+					calcdone[0] <= calcdone[0];
+					end
     endcase
 
     case ({lastcolumn, emptycolumns[4]})
@@ -160,7 +185,10 @@ always @(posedge clk) begin
                     res [11] <= 1'b0;
                     calcdone [1] <= 1'b1;
                     end
-        default : calcdone[1] <= calcdone[1];
+        default : 	begin
+					calcdone[1] <= calcdone[1];
+					res[11] <= res[11];
+					end
     endcase
 end
 
@@ -172,11 +200,14 @@ always @(posedge clk) begin
         65'h00000 : begin
                     emptycolumns <= emptycolumns + 1;
                     colchecked <= 1'b1;
+					lboundaryfound <= lboundaryfound;
                     end
 
         //don't cares if column has been checked
         65'h1????:  begin
                     emptycolumns <= emptycolumns;
+					colchecked <= colchecked;
+					lboundaryfound <= lboundaryfound;
                     end
 
         //checkcolumn, column not empty
@@ -196,7 +227,10 @@ always @(posedge clk)  begin
                 currcol <= bitcolumn;
                 colchecked <= 1'b0;
                 end
-        default: currcol <= currcol;
+        default: begin
+				currcol <= currcol;
+				colchecked <= colchecked;
+				end
     endcase  
 
     //nexttoprow
@@ -204,9 +238,11 @@ always @(posedge clk)  begin
         1'b1  : begin
                 currrowtop <= bitrowtop;
                 rowtopchecked <= 1'b0;
-				
                 end
-        default: currrowtop <= currrowtop;
+        default: 	begin
+					currrowtop <= currrowtop;
+					rowtopchecked <= rowtopchecked;
+					end
     endcase
 
     //nextbotrow
@@ -215,7 +251,10 @@ always @(posedge clk)  begin
                 currrowbot <= bitrowbot;
                 rowbotchecked <= 1'b0;
                 end
-        default: currrowbot <= currrowbot;
+        default: 	begin
+					currrowbot <= currrowbot;
+					rowbotchecked <= rowbotchecked;
+					end
     endcase  
 
     //once all 4 calcs are done, send finish signal
