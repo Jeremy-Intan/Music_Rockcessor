@@ -48,6 +48,6 @@ assign inst_valid = branch_to_new | rst_cycle;
 assign inst = last_inst;
 
 //inst mem
-mem_interface inst_mem(.write_addr(fetch_pc), .read_addr(read_inst), .wr_enable(1'b0), .wr_data(16'd0), .rd_data(read_inst), .clk(clk), .rst_n(rst_n));
+mem_interface inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
 
 endmodule

@@ -2,7 +2,7 @@
 //wr_enable enables the write, read is always enabled
 //reset is asynch active low
 //all read and writes are assumed to be 1 cycle latency, so no ready bit needed
-module mem_interface(wraddress, rdaddress, wren, data, q, clock, aclr);
+module mem_interface(wraddress, rdaddress, wren, data, q, clock);
 
 parameter width=16; //the bit width
 

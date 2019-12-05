@@ -1,4 +1,5 @@
-mdule exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, ret, pnz_in, branch_addr, branch_taken, alu_16_data, bd_data);
+module exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, ret, pnz_in, branch_addr, branch_taken, rd_data, bd_data);
+
 
 input wire [15:0] pc;
 input wire [15:0] rs1_data;
@@ -39,7 +40,7 @@ wire [15:0] ras_top;
 
 wire [2:0] pnz_out;
 wire [15:0] alu_output;
-wire [
+wire [1535:0] alu_bmo;
 
 
 // * pc stuff here *

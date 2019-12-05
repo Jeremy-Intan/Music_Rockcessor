@@ -1,16 +1,11 @@
 pnz (pnz flag for br and brr inst)
-br (true when br or brr)
-save_addr (true when brr)
+br_combined (true when br or brr)
 ldst (true when LDB, STB, LD, ST)
-false_nop (flushed instruction)
+flushed (flushed instruction)
 
-single inst
-add
-sub
-mv
-true_nop
-halt
-ld
-st
-ldb
-stb
+write_nreg (flag when inst write to normal register)
+write_breg (flag when inst write to bitmap register)
+comp_acc_activate (flag when comp_acc suppose to run)
+match_acc_activate (flag when match_acc suppose to run)
+
+single insts
