@@ -41,8 +41,8 @@ assign botrowout = currrowbot;
 
 //is this the last column?
 always @(posedge clk) begin
-        case (colcount)
-            6'b000000 : lastcolumn <= 1'b1;
+        case ({colcount, wren})
+            7'b0000000 : lastcolumn <= 1'b1;
             default : lastcolumn <= 1'b0;
         endcase
       
@@ -51,13 +51,14 @@ end
 //increments column counter, and selects the next column slice to send to ALU
 //will not send another column if it is the last column
 always @(posedge clk, posedge nextcol) begin
-    case ({nextcol, lastcolumn})
-        2'b10 :begin
+    case ({nextcol, lastcolumn, wren})
+        3'b100 :begin
               currcolumn = bitcolumns [colcount];
               colcount = colcount - 1;
               nextcolready = 1'b1;
               end
         default :begin
+				currcolumn = bitcolumns [colcount]
                 colcount = colcount;
                 nextcolready = 1'b0;
                 end
@@ -66,13 +67,14 @@ end
 
 //increments top row counter, and selects the next row slice to send to ALU
 always @(posedge clk, posedge nextrowtop) begin
-    case (nextrowtop)
-        1'b1 :begin
+    case ({nextrowtop, wren})
+        2'b10 :begin
               currrowtop = bitrows [toprowcount];
               toprowcount = toprowcount - 1;
               nextrowtopready = 1'b1;
               end
         default :begin
+				currrowtop = bitrows [toprowcount];
                 toprowcount = toprowcount;
                 nextrowtopready = 1'b0;
                 end
@@ -81,13 +83,14 @@ end
 
 //increments bot row counter, and selects the next row slice to send to ALU
 always @(posedge clk, posedge nextrowbot) begin
-    case (nextrowbot)
-        1'b1 :begin
+    case ({nextrowbot, wren})
+        2'b10 :begin
               currrowbot = bitrows [botrowcount];
               botrowcount = botrowcount + 1;
               nextrowbotready = 1'b1;
               end
         default :begin
+				currrowbot = bitrows [botrowcount];
                 botrowcount = botrowcount;
                 nextrowbotready = 1'b0;
                 end
@@ -99,8 +102,8 @@ always @(posedge clk)  begin
     case (wren)
         1'b1:   begin
 				data <= bmpin;
+				ready <= 1'b1; 
                 colcount <= 6'b010111;
-                ready <= 1'b1; 
                 botrowcount <= 7'b0;
                 toprowcount <= 7'h3f;
                 end
