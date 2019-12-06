@@ -3,9 +3,11 @@ br_combined (true when br or brr)
 ldst (true when LDB, STB, LD, ST)
 flushed (flushed instruction)
 
-write_nreg (flag when inst write to normal register)
-write_breg (flag when inst write to bitmap register)
 comp_acc_activate (flag when comp_acc suppose to run)
 match_acc_activate (flag when match_acc suppose to run)
+
+rs1_used (flag when rs1 is used as an operand)
+rs2_used (flag when rs2 is used as an operand)
+bs_used (flag when bs is used as an operand)
 
 single insts

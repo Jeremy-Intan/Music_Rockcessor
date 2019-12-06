@@ -16,7 +16,7 @@ wire [15:0] ADD, SUB, BR, LDST; // BR, BRR use same output, LD and ST use same o
 assign ADD = rs1 + rs2; //reg + reg
 assign SUB = rs1 - rs2; //reg - reg
 assign BR = pc + val; //pc + sign extended value
-assign LDST = rs1 + val; //reg + value
+assign LDST = rs2 + val; //reg + value
 
 assign pnz_check = add ? ADD : (sub ? SUB : 16'b0); //Need to know signal !!!!!!!!!!!
 assign pnz[2] = ~pnz_check[15]; //is it positive

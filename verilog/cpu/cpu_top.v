@@ -59,6 +59,13 @@ reg idexe_br_combined;
 reg [2:0] idexe_pnz;
 reg idexe_ldst; 
 
+reg idexe_comp_acc_activate;
+reg idexe_match_acc_activate;
+
+reg idexe_rs1_used;
+reg idexe_rs2_used;
+reg idexe_bs_used;
+
 reg idexe_ldb;
 reg idexe_stb;
 reg idexe_ses;
@@ -88,6 +95,9 @@ reg exe_bs_data;
 wire exe_rd_data;
 wire exe_bd_data;
 
+wire exe_write_nreg;
+wire exe_write_breg;
+
 //exe stage
 exe_stage Exe_stage(.pc(idexe_pc),
                     .rs1_data(exe_rs1_data),
@@ -114,12 +124,14 @@ exe_stage Exe_stage(.pc(idexe_pc),
 // for both exe and wb
 // * MEMORY STUFF START *
 
-mem_interface normalmem (.wraddress(exe_rd), .rdaddress, .wren, .data, .q, .clock);
-mem_interface bitmapmem (.wraddress(), .rdaddress, .wren, .data, .q, .clock);
+mem_interface normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs1_data), .q(exewb_nmem_read_data), .clock(clk));
+mem_interface bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
 
 // * MEMORY STUFF END *
 
 // * EXEWB PIPES START
+wire exewb_nmem_read_data; //written directly from memory and not a pipe
+wire exewb_bmem_read_data; //written directly from memory and not a pipe
 
 // * EXEWB PIPES END
 
