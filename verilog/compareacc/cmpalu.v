@@ -83,10 +83,8 @@ always @(posedge clk) begin
                     rowtopchecked <= 1'b1;
                     end
     endcase
-end
 
 //finds empty rows on bot
-always @(posedge clk) begin
     casez ({rowbotchecked, currrowbot})
         //check each row only once
         //checkrow, rowempty
@@ -110,10 +108,8 @@ always @(posedge clk) begin
                     rowbotchecked <= 1'b1;
                     end
     endcase
-end
 
 //row store logic
-always @(posedge clk) begin
     
     //store number of empty rows top
     case ({topboundaryfound, topboundarystored})
@@ -158,18 +154,18 @@ always @(posedge clk) begin
 					calcdone[3] <= calcdone[3];
 					end
     endcase
-end
 
 //Column check logic
-always @(posedge clk) begin
+
     case ({lboundaryfound, lboundarystored})
     //store lshift in result once first boundary has been found
         2'b10 :  begin
                 res [5:0] <= emptycolumns;
                 calcdone [0] <= 1'b1;
+				lboundarystored <= 1'b1;
                 end
         default : 	begin
-					emptycolumns <= emptycolumns;
+					res[5:0] <= res[5:0];
 					calcdone[0] <= calcdone[0];
 					end
     endcase
@@ -187,12 +183,12 @@ always @(posedge clk) begin
                     end
         default : 	begin
 					calcdone[1] <= calcdone[1];
-					res[11] <= res[11];
+					//res[11] <= res[11];
 					end
     endcase
-end
 
-always @(posedge clk) begin
+
+
 
     casez ({colchecked, currcol})
         //check each column only once
@@ -200,27 +196,27 @@ always @(posedge clk) begin
         65'h00000 : begin
                     emptycolumns <= emptycolumns + 1;
                     colchecked <= 1'b1;
-					lboundaryfound <= lboundaryfound;
+					//lboundaryfound <= lboundaryfound;
                     end
 
         //don't cares if column has been checked
         65'h1????:  begin
                     emptycolumns <= emptycolumns;
-					colchecked <= colchecked;
-					lboundaryfound <= lboundaryfound;
+					//colchecked <= colchecked;
+					//lboundaryfound <= lboundaryfound;
                     end
 
         //checkcolumn, column not empty
         default :   begin
-                    emptycolumns <= emptycolumns;
+                    //emptycolumns <= emptycolumns;
                     colchecked <= 1'b1;
                     lboundaryfound <= 1'b1;
                     end
     endcase
-end
+
 
 //move current row and column into reg banks
-always @(posedge clk)  begin
+
     //next column
     case (nextcolumnready)
         1'b1  : begin
@@ -229,7 +225,7 @@ always @(posedge clk)  begin
                 end
         default: begin
 				currcol <= currcol;
-				colchecked <= colchecked;
+				//colchecked <= colchecked;
 				end
     endcase  
 
@@ -241,7 +237,7 @@ always @(posedge clk)  begin
                 end
         default: 	begin
 					currrowtop <= currrowtop;
-					rowtopchecked <= rowtopchecked;
+					//rowtopchecked <= rowtopchecked;
 					end
     endcase
 
@@ -253,7 +249,7 @@ always @(posedge clk)  begin
                 end
         default: 	begin
 					currrowbot <= currrowbot;
-					rowbotchecked <= rowbotchecked;
+					//rowbotchecked <= rowbotchecked;
 					end
     endcase  
 
@@ -267,6 +263,9 @@ always @(posedge clk)  begin
     if (start == 1'b1) begin
                 emptycolumns <= 5'b0;
                 emptyrows <= 6'b0;
+				//colchecked <= 1'b1;
+				//rowbotchecked <= 1'b1;
+				//rowtopchecked <= 1'b1;
                 emptyrowsupper <= 6'b0;
                 emptyrowslower <= 6'b0;
                 lboundaryfound <= 1'b0;

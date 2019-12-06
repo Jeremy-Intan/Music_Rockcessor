@@ -91,7 +91,7 @@ initial begin
 	24'h3fffff, 
 	24'h3fffff, 
 	24'h3fffff, 
-	24'h000000, 
+	24'h000000,
 	24'h000000};
 	
 	@(negedge clk);

@@ -21,7 +21,6 @@ wire nextrowtop;
 wire finished;
 wire [15:0] res;
 
-assign done = finished;
 assign res = result;
 
 
