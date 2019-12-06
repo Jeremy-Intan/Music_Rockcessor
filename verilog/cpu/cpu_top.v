@@ -1,6 +1,9 @@
 module cpu_top(input clk, input rst_n input [15:0] inst);
 //top level module of the CPU
 
+//BRANCH wires
+reg cpu_branch_pc;
+reg cpu_branch_to_new;
 
 // * INST STAGE START *
 
@@ -10,7 +13,7 @@ wire if_inst;
 wire if_inst_valid;
 
 //inst stage
-inst_stage Inst_stage(.clk(clk), .rst_n(rst_n), .branch_pc( ), .branch_to_new( ), .pc(if_inst), .inst(if_inst), .inst_valid(if_inst_valid));
+inst_stage Inst_stage(.clk(clk), .rst_n(rst_n), .branch_pc(cpu_branch_pc), .branch_to_new(cpu_branch_to_new), .pc(if_inst), .inst(if_inst), .inst_valid(if_inst_valid));
 
 // * INST STAGE END *
 
@@ -22,7 +25,7 @@ reg ifid_flushed;
 always @ (posedge clk) begin
     ifid_pc <= if_pc;
     ifid_inst <= if_inst;
-    ifid_flushed <= ~if_inst_valid;
+    ifid_flushed <= if_inst_invalid;
 end
 
 // * IFID PIPES END *
@@ -46,11 +49,11 @@ reg [3:0] idexe_rs1_addr;
 reg [3:0] idexe_rs2_addr;
 reg [3:0] idexe_rd_addr;
 reg [1:0] idexe_bs_addr;
-reg [1:0] idexe_bd_addr;
+reg [1:0] idexe_bd_addr; 
 
-reg [15:0] idexe_rs1_data;
-reg [15:0] idexe_rs2_data;
-reg [1535:0] idexe_bs_data;
+reg [15:0] idexe_rs1_data; //forward accordingly
+reg [15:0] idexe_rs2_data; //forward accordingly
+reg [1535:0] idexe_bs_data; //forward accordingly
 reg [15:0] idexe_lit;
 
 reg idexe_flushed;
@@ -58,6 +61,9 @@ reg idexe_flushed;
 reg idexe_br_combined;
 reg [2:0] idexe_pnz;
 reg idexe_ldst; 
+
+reg idexe_alu_reg;
+reg idexe_alu_breg;
 
 reg idexe_comp_acc_activate;
 reg idexe_match_acc_activate;
@@ -88,15 +94,17 @@ reg idexe_nop;
 // * EXE STAGE START
 
 //exe stage outputs
-reg exe_rs1_data;
-reg exe_rs2_data;
-reg exe_bs_data;
+reg [15:0] exe_rs1_data;
+reg [15:0] exe_rs2_data;
+reg [1535:0] exe_bs_data;
 
-wire exe_rd_data;
-wire exe_bd_data;
+wire [15:0] exe_rd_data;
+wire [1535:0] exe_bd_data;
 
-wire exe_write_nreg;
-wire exe_write_breg;
+//wiring + forwarding
+assign exe_rs1_data = (idexe_rs1_addr == exewb_rd_addr) &  
+assign exe_rs2_data = 
+assign exe_bs_data = 
 
 //exe stage
 exe_stage Exe_stage(.pc(idexe_pc),
@@ -130,31 +138,51 @@ mem_interface bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren
 // * MEMORY STUFF END *
 
 // * EXEWB PIPES START
-wire exewb_nmem_read_data; //written directly from memory and not a pipe
-wire exewb_bmem_read_data; //written directly from memory and not a pipe
+wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
+wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
 
-reg exewb_alu_reg;
-reg exewb_mem_alu;
-reg exewb_alu_breg;
-reg exewb_mem_breg;
 reg exewb_wr_reg;
-reg exewb_rd_data;
-reg exewb_bd_data;
+reg exewb_mem_reg;
+reg exewb_alu_breg;
+reg exewb_wr_breg;
 
-reg exewb_rd_addr;
-reg exewb_bd_addr;
+reg [15:0] exewb_rd_data;
+reg [1535:0] exewb_bd_data;
+
+reg [3:0] exewb_rd_addr;
+reg [1:0] exewb_bd_addr;
 
 reg flushed;
 
 always @(posedge clk) begin
-    exewb_alu_reg <= 
+    exewb_wr_reg <= idexe_wr_reg;
+    exewb_mem_reg <= idexe_ld;
+    exewb_wr_breg <= idexe_wr_breg;
+    exewb_mem_breg <= idexe_ldb;
+
+    exewb_rd_data <= exe_rd_data;
+    exewb_bd_data <= exe_bd_data;
+
+    exewb_rd_addr <= idexe_rd_addr;
+    exewb_bd_addr <= idexe_bd_addr;    
+end
 
 // * EXEWB PIPES END
 
 // * WB STAGE START *
+reg [3:0] wb_rd_addr;
+reg [15:0] wb_rd_data;
+reg wb_wr_reg;
+reg [1:0] wb_bd_addr;
+reg [1535:0] wb_bd_data;
+reg wb_wr_breg;
 
-wb_stage mem_stage        (.memin(aluout_m));
-
+assign wb_rd_addr = exewb_rd_addr;
+assign wb_rd_data = exewb_mem_reg ? exewb_nmem_read_data : exewb_rd_data;
+assign wb_bd_addr = exewb_bd_addr;
+assign wb_bd_data = exewb_mem_breg ? exewb_bmem_read_data : exewb_bd_data;
+assign wb_wr_reg = exewb_wr_reg;
+assign wb_wr_breg = exewb_wr_breg;
 
 // * WB STAGE END *
 

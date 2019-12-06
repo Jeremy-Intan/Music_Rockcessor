@@ -1,4 +1,4 @@
-module inst_stage(clk, rst_n, branch_pc, branch_to_new, pc, inst, inst_valid);
+module inst_stage(clk, rst_n, branch_pc, branch_to_new, pc, inst, inst_invalid);
 
 input clk;
 input rst_n;
@@ -7,7 +7,7 @@ input wire branch_to_new;
 
 output reg [15:0] pc;
 output reg [15:0] inst;
-output reg inst_valid;
+output reg inst_invalid;
 
 reg [15:0] last_pc;
 reg [15:0] fetch_pc;
@@ -44,7 +44,7 @@ always @ (posedge clk, negedge rst_n) begin
 end
 
 //actual inst
-assign inst_valid = branch_to_new | rst_cycle; 
+assign inst_invalid = branch_to_new | rst_cycle; 
 assign inst = last_inst;
 
 //inst mem
