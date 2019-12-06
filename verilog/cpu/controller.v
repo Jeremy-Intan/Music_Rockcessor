@@ -1,51 +1,75 @@
-
-module controller (OpCode, RegWrite, BitmapWrite, DMemWrite, DMemEn, SignEx, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxReadBM, MuxReadReg1, MuxReadReg2, MuxWriteReg, MuxWriteData, MuxPCIn, MuxALUIn, 
+module controller (OpCode, bmrIn, RegWrite, BitmapWrite, DMemWrite, DMemEn, SignEx, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxReadBM, MuxReadReg1, MuxReadReg2, MuxWriteReg, MuxWriteData, rs1_used, rs2_used, bs_used, 
 					NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB);
 
 
 input [3:0] 	OpCode;
+input [1:0]		bmrIn; 
 
-output 			RegWrite, BitmapWrite, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxReadReg2, MuxWriteReg, MuxWriteData,
+output			RegWrite, BitmapWrite, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxReadReg1, MuxWriteReg, MuxWriteData, rs1_used, rs2_used, bs_used, 
 				NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB;
-output [1:0]	SignEx, MuxReadBM, MuxReadReg1, MuxPCIn;
+output [1:0]	SignEx, MuxReadBM, MuxReadReg2;
 
-assign RegWrite = ((OpCode == 4'b0010)|(OpCode == 4'0011)) ? 1 : 0;
-assign BitmapWrite = ((OpCode == 4'b1011)|(OpCode == 4'1010)|(OpCode == 4'1111)|(OpCode == 4'1101)) ? 1 : 0;
-assign DMemEn = ((OpCode == 4'b1111)|(OpCode == 4'1110)|(OpCode == 4'0111)|(OpCode == 4'0110)) ? 1 : 0;
-assign DMemWrite = ((OpCode == 4'b1110)|(OpCode == 4'0111)) ? 1 : 0;
-assign SignEx = ((OpCode == 4'b0111)|(OpCode == 4'0110)) ? 2'b11 :
-				((OpCode == 4'b1111)|(OpCode == 4'1110)) ? 2'b10 :
-				(OpCode == 4'b1001) ? 2'b01 : 2'b00;
-assign CompAcc = ((OpCode == 4'b1011) | (OpCode == 4'b1010)) ? 1 : 0;
+wire	NOPw, HALTw, SUBw, ADDw, BRRw, BRw, LDw, STw, PLYw, MVw, BSLw, BSHw, RETw, SESw, STBw, LDBw;
 
-assign ALUBR = ((OpCode == 4'b0100) | (OpCode == 4'b0101));
-assign ALULdSt = ((OpCode == 4'b0110) | (OpCode == 4'b0111)| (OpCode == 4'b1111) | (OpCode == 4'b1110));
+assign NOPw  = (OpCode == 4'b0000);
+assign HALTw = (OpCode == 4'b0001);
+assign SUBw  = (OpCode == 4'b0010);
+assign ADDw  = (OpCode == 4'b0011);
+assign BRRw  = (OpCode == 4'b0100);
+assign BRw   = (OpCode == 4'b0101);
+assign LDw   = (OpCode == 4'b0110);
+assign STw   = (OpCode == 4'b0111);
+assign PLYw  = (OpCode == 4'b1000);
+assign MVw   = (OpCode == 4'b1001);
+assign BSLw  = (OpCode == 4'b1010);
+assign BSHw  = (OpCode == 4'b1011);
+assign RETw  = (OpCode == 4'b1100);
+assign SESw  = (OpCode == 4'b1101);
+assign STBw  = (OpCode == 4'b1110);
+assign LDBw  = (OpCode == 4'b1111);
 
-assign MuxReadBM = (OpCode == 4'b1000) ? 2'b00 : ((OpCode == 4'b1010) | (OpCode == 4'b1011)) ? 2'b01 : 2'b11;
-assign MuxReadReg2 = (OpCode == 4'b1000);
-assign MuxReadReg1 = ((OpCode == 4'b1010) | (OpCode == 4'b1011)) ? 2'b00 : ((OpCode == 4'b1110) | (OpCode == 4'b1111)) ? 2'b01 : 2'b10;
-assign MuxWriteReg = ((OpCode == 4'b1110) | (OpCode == 4'b1111)) ? 0 : 1;
-assign MuxWriteData = ((OpCode == 4'b1001);
-assign MuxPCIn =
-assign MuxALUIn =
+assign DMemEn = (LDBw|STBw|STw|LDw) ? 1 : 0;
+assign DMemWrite = (STBw|STw) ? 1 : 0;
+assign SignEx = (STw|LDw) ? 2'b11 :
+				(LDBw|STBw) ? 2'b10 :
+				(MVw) ? 2'b01 : 2'b00;
+assign CompAcc = (BSHw | BSLw | (LDBw && (bmrIn == 2'b01))) ? 1 : 0;
+assign MatchAcc = (LDBw && (bmrIn == 2'b01));
 
+assign rs1_used = (SUBw | ADDw | LDw | STw | PLYw | BSLw | BSHw | STBw | LDBw);
+assign rs2_used = (SUBw | ADDw | STw | PLYw);
+assign bs_used = (PLYw | BSHw | BSLw | STBw);
+assign ALUBR = (BRRw | BRw);
+assign ALULdSt = (LDw | STw | LDBw | STBw);
 
-assign NOP  = (OpCode == 4'b0000);
-assign HALT = (OpCode == 4'b0001);
-assign SUB  = (OpCode == 4'b0010);
-assign ADD  = (OpCode == 4'b0011);
-assign BRR  = (OpCode == 4'b0100);
-assign BR   = (OpCode == 4'b0101);
-assign LD   = (OpCode == 4'b0110);
-assign ST   = (OpCode == 4'b0111);
-assign PLY  = (OpCode == 4'b1000);
-assign MV   = (OpCode == 4'b1001);
-assign BSL  = (OpCode == 4'b1010);
-assign BSH  = (OpCode == 4'b1011);
-assign RET  = (OpCode == 4'b1100);
-assign SES  = (OpCode == 4'b1101);
-assign STB  = (OpCode == 4'b1110);
-assign LDB  = (OpCode == 4'b1111);
+//Register files input
+
+assign RegWrite = (SUBw | ADDw) ? 1 : 0;
+assign BitmapWrite = (BSHw|BSLw|LDBw|SESw) ? 1 : 0;
+assign MuxReadBM = PLYw ? 2'b00 : (BSLw | BSHw) ? 2'b01 : 2'b11;
+assign MuxReadReg2 = PLYw ? 2'b10 :(STBw | LDBw) ? 2'b11 : 2'b01;
+assign MuxReadReg1 = (BSLw | BSHw) ? 0 : 1;
+assign MuxWriteReg = (STBw | LDBw) ? 0 : 1;
+assign MuxWriteData = (MVw);
+
+//instructions
+
+assign NOP  = NOPw;
+assign HALT = HALTw;
+assign SUB  = SUBw;
+assign ADD  = ADDw;
+assign BRR  = BRRw;
+assign BR   = BRw;
+assign LD   = LDw;
+assign ST   = STw;
+assign PLY  = PLYw;
+assign MV   = MVw;
+assign BSL  = BSLw;
+assign BSH  = BSHw;
+assign RET  = RETw;
+assign SES  = SESw;
+assign STB  = STBw;
+assign LDB  = LDBw;
 
 
 endmodule
