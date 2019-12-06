@@ -133,6 +133,22 @@ mem_interface bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren
 wire exewb_nmem_read_data; //written directly from memory and not a pipe
 wire exewb_bmem_read_data; //written directly from memory and not a pipe
 
+reg exewb_alu_reg;
+reg exewb_mem_alu;
+reg exewb_alu_breg;
+reg exewb_mem_breg;
+reg exewb_wr_reg;
+reg exewb_rd_data;
+reg exewb_bd_data;
+
+reg exewb_rd_addr;
+reg exewb_bd_addr;
+
+reg flushed;
+
+always @(posedge clk) begin
+    exewb_alu_reg <= 
+
 // * EXEWB PIPES END
 
 // * WB STAGE START *

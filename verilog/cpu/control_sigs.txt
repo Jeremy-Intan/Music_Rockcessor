@@ -6,6 +6,9 @@ flushed (flushed instruction)
 comp_acc_activate (flag when comp_acc suppose to run)
 match_acc_activate (flag when match_acc suppose to run)
 
+alu_reg (flag when alu output is written to a normal reg)
+alu_breg (flag when alu output is written to a bitmap reg)
+
 rs1_used (flag when rs1 is used as an operand)
 rs2_used (flag when rs2 is used as an operand)
 bs_used (flag when bs is used as an operand)
