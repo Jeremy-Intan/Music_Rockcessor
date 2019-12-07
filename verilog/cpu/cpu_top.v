@@ -41,16 +41,34 @@ end
 
 //decode stage output
 //TODO: add more necessary wires
+wire [2:0] id_pnz;
 wire [3:0] id_rs1_addr;
 wire [3:0] id_rs2_addr;
 wire [1:0] id_bd_addr;
 wire [15:0] id_rs1_data;
 wire [15:0] id_rs2_data;
 wire [1535:0] id_bd_data;
+wire id_nop;
+wire id_halt;
+wire id_sub;
+wire id_add;
+wire id_brr;
+wire id_br;
+wire id_ld;
+wire id_st;
+wire id_ply;
+wire id_mv;
+wire id_bsl;
+wire id_bsh;
+wire id_ret;
+wire id_ses;
+wire id_stb;
+wire id_ldb;
 
 //decode stage
-dec_stage dec_stage        (.decin(instout_d), .decout(decout));
-
+dec_stage Dec_stage(.inst(ifid_inst), write_reg_addr, write_reg_data, write_reg_en, write_bm_addr, write_bm_data, write_bm_en, .clk(clk),
+					PNZ, rd_data_1, rd_data_2, rbm_data, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, rs1_used, rs2_used, bs_used,
+					NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB);
 
 // * DECODE STAGE END *
 

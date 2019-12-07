@@ -1,20 +1,25 @@
-module dec_stage (inst, clk,
-					PNZ, rd_data_1, rd_data_2, rbm_data, wbm_data, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, rs1_used, rs2_used, bs_used,
+module dec_stage (inst, write_reg_addr, write_reg_data, write_reg_en, write_bm_addr, write_bm_data, write_bm_en, clk,
+					PNZ, rd_data_1, rd_data_2, rbm_data, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, rs1_used, rs2_used, bs_used,
 					NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB);
 
-input [15:0] inst;
-input clk;
+input wire [15:0] inst;
+input wire [3:0] write_reg_addr;
+input wire [15:0] write_reg_data;
+input wire write_reg_en;
+input wire [1:0] write_bm_addr;
+input wire [1535:0] write_bm_data;
+input wire [1:0] write_bm_en;
+input wire clk;
 
 output rs1, rs2, rd, pc, reg_write, mem_write, bm_write, se16,
 		NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB);
 output [2:0] PNZ;
 output [15:0] rd_data_1, rd_data_2;
-output [1535:0] rbm_data, wbm_data;
+output [1535:0] rbm_data;
 
 wire [15:0] se4_16, se6_16, se8_16, se9_16;
-wire [1:0] SignExOut, BMAddr, writeBMAddr,
-wire [3:0] regAddr1, regAddr2, writeRegAddr
-wire writeRegEn, writeBMEn
+wire [1:0] SignExOut, BMAddr;
+wire [3:0] regAddr1, regAddr2;
 
 assign PNZ = inst[11:9];
 
@@ -23,8 +28,8 @@ controlcontroller (.OpCode(inst[15:12]), .bmrIn(inst[11:10]), .RegWrite(RegWrite
 					.NOP(NOP), .HALT(HALT), .SUB(SUB), .ADD(ADD), .BRR(BRR), .BR(BR), .LD(LD), .ST(ST), .PLY(PLY), .MV(MV), .BSL(BSL), .BSH(BSH), .RET(RET), .SES(SES), .STB(STB), .LDB(LDB));
 					
 					
-reg_file reg_file (.rd_addr_1(regAddr1),.rd_data_1(rd_data_1),.rd_addr_2(regAddr2),.rd_data_2(rd_data_2),.wr_addr(writeRegAddr),.wr_data(wr_data),.wr(writeRegEn),
-					.rbm_addr(BMAddr),.rbm_data(rbm_data),.wbm_addr(writeBMAddr),.wbm_data(wbm_data),.wbm(writeBMEn),.clk(clk));
+reg_file reg_file (.rd_addr_1(regAddr1),.rd_data_1(rd_data_1),.rd_addr_2(regAddr2),.rd_data_2(rd_data_2),.wr_addr(write_reg_addr),.wr_data(wr_reg_data),.wr(wr_reg_en),
+					.rbm_addr(BMAddr),.rbm_data(rbm_data),.wbm_addr(wr_bm_addr),.wbm_data(wr_bm_data),.wbm(wr_bm_en),.clk(clk));
 
 
 //sign extend
