@@ -41,6 +41,7 @@ end
 
 //decode stage output
 //TODO: add more necessary wires
+// TODO addr not given yet by decoder
 wire [2:0] id_pnz;
 wire [3:0] id_rs1_addr;
 wire [3:0] id_rs2_addr;
@@ -48,6 +49,15 @@ wire [1:0] id_bd_addr;
 wire [15:0] id_rs1_data;
 wire [15:0] id_rs2_data;
 wire [1535:0] id_bd_data;
+wire id_dmem_write;
+wire id_dmem_en;
+wire id_match_acc_en;
+wire id_comp_acc_en;
+wire id_br_combined;
+wire id_ldst;
+wire id_rs1_used;
+wire id_rs2_used;
+wire bs_used;
 wire id_nop;
 wire id_halt;
 wire id_sub;
@@ -64,6 +74,11 @@ wire id_ret;
 wire id_ses;
 wire id_stb;
 wire id_ldb;
+
+//not in decode yet TODO
+wire id_lit;
+wire id_wr_reg;
+wire id_wr_breg;
 
 //decode stage
 dec_stage Dec_stage(.inst(ifid_inst), write_reg_addr, write_reg_data, write_reg_en, write_bm_addr, write_bm_data, write_bm_en, .clk(clk),
@@ -149,6 +164,54 @@ always @ (posedge clk) begin
         if ((id_bs_addr == wb_bd_addr) & wb_wr_reg) idexe_bs_data <= wb_bd_data;
         else idexe_bs_data <= id_bs_data;
     end
+
+    if (~idexe_stall) begin        
+        idexe_pc <= ifid_pc;
+
+        //SIGNAL NOT GIVEN YET
+        idexe_rs1_addr;
+        idexe_rs2_addr;
+        idexe_rd_addr;
+        idexe_bs_addr;
+        idexe_bd_addr; 
+
+        idexe_lit;//signal not yet given
+
+
+        idexe_br_combined <= id_br_combined;
+        idexe_pnz <= id_pnz;
+        idexe_ldst <= id_ldst;
+
+        idexe_wr_reg;//signal not yet given
+        idexe_wr_breg;//signal not yet given
+
+        idexe_comp_acc_activate <= id_comp_acc_en;
+        idexe_match_acc_activate <= id_match_acc_en;
+
+        idexe_rs1_used <= id_rs1_used;
+        idexe_rs2_used <= id_rs2_used;
+        idexe_bs_used <= id_bs_used;
+
+        idexe_ldb <= id_ldb;
+        idexe_stb <= id_stb;
+        idexe_ses <= id_ses;
+        idexe_ret <= id_ret;
+        idexe_bsh <= id_bsh;
+        idexe_bsl <= id_bsl;
+        idexe_mv <= id_mv;
+        idexe_ply <= id_ply;
+        idexe_st <= id_st;
+        idexe_ld <= id_ld;
+        idexe_br <= id_br;
+        idexe_brr <= id_brr;
+        idexe_add <= id_add;
+        idexe_sub <= id_sub;
+        idexe_halt <= id_halt;
+        idexe_nop <= id_nop;
+    end
+
+    //TODO
+    idexe_flushed <= ;
 end
 // * IDEXE PIPES END *
 
@@ -221,16 +284,21 @@ reg exewb_flushed;
 assign exewb_stall
 
 always @(posedge clk) begin
-    exewb_wr_reg <= idexe_wr_reg;
-    exewb_mem_reg <= idexe_ld;
-    exewb_wr_breg <= idexe_wr_breg;
-    exewb_mem_breg <= idexe_ldb;
+    if(~exewb_stall) begin
+        exewb_wr_reg <= idexe_wr_reg;
+        exewb_mem_reg <= idexe_ld;
+        exewb_wr_breg <= idexe_wr_breg;
+        exewb_mem_breg <= idexe_ldb;
 
-    exewb_rd_data <= exe_rd_data;
-    exewb_bd_data <= exe_bd_data;
+        exewb_rd_data <= exe_rd_data;
+        exewb_bd_data <= exe_bd_data;
 
-    exewb_rd_addr <= idexe_rd_addr;
-    exewb_bd_addr <= idexe_bd_addr;    
+        exewb_rd_addr <= idexe_rd_addr;
+        exewb_bd_addr <= idexe_bd_addr;
+    end
+
+    //TODO
+    exewb_flushed <= 
 end
 
 // * EXEWB PIPES END
@@ -247,8 +315,8 @@ assign wb_rd_addr = exewb_rd_addr;
 assign wb_rd_data = exewb_mem_reg ? exewb_nmem_read_data : exewb_rd_data;
 assign wb_bd_addr = exewb_bd_addr;
 assign wb_bd_data = exewb_mem_breg ? exewb_bmem_read_data : exewb_bd_data;
-assign wb_wr_reg = exewb_wr_reg;
-assign wb_wr_breg = exewb_wr_breg;
+assign wb_wr_reg = exewb_wr_reg & ~exewb_flushed;
+assign wb_wr_breg = exewb_wr_breg & ~exewb_flushed;
 
 // * WB STAGE END *
 
