@@ -48,7 +48,7 @@ assign RegWrite = (SUBw | ADDw) ? 1 : 0;
 assign BitmapWrite = (BSHw|BSLw|LDBw|SESw) ? 1 : 0;
 assign MuxReadBM = PLYw ? 2'b00 : (BSLw | BSHw) ? 2'b01 : 2'b11;
 assign MuxReadReg2 = PLYw ? 2'b10 :(STBw | LDBw) ? 2'b11 : 2'b01;
-assign MuxReadReg1 = (BSLw | BSHw) ? 0 : 1;
+assign MuxReadReg1 = (STBw | LDBw) ? 2'b11 : (PLYw) ? 2'b10 : 2'b00;
 assign MuxWriteReg = (STBw | LDBw) ? 0 : 1;
 assign MuxWriteData = (MVw);
 
