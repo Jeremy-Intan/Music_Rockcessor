@@ -1,7 +1,8 @@
-module inst_stage(clk, rst_n, branch_pc, branch_to_new, pc, inst, inst_invalid);
+module inst_stage(clk, rst_n, stall, branch_pc, branch_to_new, pc, inst, inst_invalid);
 
-input clk;
-input rst_n;
+input wire clk;
+input wire rst_n;
+input wire stall;
 input wire [15:0] branch_pc;
 input wire branch_to_new;
 
@@ -19,9 +20,12 @@ reg last_pc_branched;
 
 reg rst_cycle;
 
+
 //prefetching (sort of) 
 assign fetch_pc = branch_to_new ? branch_pc : ( 
-		rst_cycle ? 16'd0 : last_pc + 1);
+		rst_cycle ? 16'd0 : (
+            stall ? last_pc : 
+            last_pc + 1));
 //actual pc
 assign pc = last_pc;
 
@@ -33,19 +37,20 @@ end
 //store the last pc that was fetched (the "prefetch")
 always @(posedge clk) last_pc <= fetch_pc;
 
+//I'm pretty sure this part is wrong
 //store the last inst that was fetched (the "prefetch")
-always @ (posedge clk, negedge rst_n) begin
-    if (~rst) begin
-        last_inst <= 16'd0;
-    end
-    else begin
-        last_inst <= read_inst;
-    end
-end
+//always @ (posedge clk, negedge rst_n) begin
+//    if (~rst) begin
+//        last_inst <= 16'd0;
+//    end
+//    else begin
+//        last_inst <= read_inst;
+//    end
+//end
 
 //actual inst
 assign inst_invalid = branch_to_new | rst_cycle; 
-assign inst = last_inst;
+assign inst = read_inst;
 
 //inst mem
 mem_interface inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));

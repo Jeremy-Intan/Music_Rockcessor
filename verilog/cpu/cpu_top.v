@@ -1,9 +1,20 @@
-module cpu_top(input clk, input rst_n input [15:0] inst);
+module cpu_top(clk, rst_n, buttons_pressed);
 //top level module of the CPU
+//butons_pressed are active high here, convert it in the higher level
+input wire clk;
+input wire rst_n;
+input wire [3:0] buttons_pressed;
 
 //B R A N C H B O I S
 reg cpu_branch_pc;
 reg cpu_branch_to_new;
+
+//INTERUPPTS
+reg cpu_int;
+
+always @ (posedge clk) begin
+    cpu_int <= exe_int_state;
+end
 
 // * INST STAGE START *
 
@@ -12,8 +23,13 @@ wire if_pc;
 wire if_inst;
 wire if_inst_valid;
 
+reg if_stall;
+
+
+assign if_stall = 
+
 //inst stage
-inst_stage Inst_stage(.clk(clk), .rst_n(rst_n), .branch_pc(cpu_branch_pc), .branch_to_new(cpu_branch_to_new), .pc(if_inst), .inst(if_inst), .inst_valid(if_inst_valid));
+inst_stage Inst_stage(.clk(clk), .rst_n(rst_n), .stall(if_stall), .branch_pc(cpu_branch_pc), .branch_to_new(cpu_branch_to_new), .buttons_int(buttons_pressed),.pc(if_pc), .inst(if_inst), .inst_valid(if_inst_valid));
 
 // * INST STAGE END *
 
@@ -22,6 +38,7 @@ reg ifid_stall;
 
 reg [15:0] ifid_pc;
 reg [15:0] ifid_inst;
+reg [3:0] ifid_int;
 reg ifid_flushed;
 
 //TODO
@@ -74,6 +91,8 @@ wire id_ret;
 wire id_ses;
 wire id_stb;
 wire id_ldb;
+
+reg id_flushed;
 
 //not in decode yet TODO
 wire id_lit;
@@ -135,6 +154,8 @@ reg idexe_add;
 reg idexe_sub;
 reg idexe_halt;
 reg idexe_nop;
+
+reg [3:0] idexe_int;
 
 //TODO: stall & flushed logic
 assign idexe_stall = 
@@ -211,16 +232,29 @@ always @ (posedge clk) begin
     end
 
     //TODO
-    idexe_flushed <= ;
+    
+    else if (~idexe_stall) idexe_flushed <= ;
 end
 // * IDEXE PIPES END *
 
 // * EXE STAGE START
+reg exe_save_addr;
+reg exe_ret;
+reg exe_write_nreg;
+reg exe_write_breg;
+
+assign exe_save_addr = idexe_brr & ~idexe_flushed;
+assign exe_ret = idexe_ret & ~idexe_flushed;
+assign exe_write_nreg = idexe_st & ~idexe_flushed;
+assign exe_write_breg = idexe_stb & ~idexe_flushed;
 
 //exe stage outputs
 reg [15:0] exe_rs1_data;
 reg [15:0] exe_rs2_data;
 reg [1535:0] exe_bs_data;
+wire [15:0] exe_noint_branch_pc;
+wire exe_noint_branch_taken;
+wire exe_int_state;
 
 wire [15:0] exe_rd_data;
 wire [1535:0] exe_bd_data;
@@ -231,6 +265,13 @@ assign exe_rs2_data = (idexe_rs2_addr == exewb_rd_addr) & exewb_wr_reg ? wb_rd_d
 assign exe_bs_data = (idexe_bs_addr == exewb_bd_addr) & exewb_wr_breg ? wb_bd_data : idexe_bs_data;
 
 //exe stage
+assign cpu_branch_pc = buttons_pressed[3] & ~cpu_int ? 16'h0f80 : (
+                       buttons_pressed[2] & ~cpu_int ? 16'h0fa0 : (
+                       buttons_pressed[1] & ~cpu_int ? 16'h0fc0 : (
+                       buttons_pressed[0] & ~cpu_int ? 16'h0fe0 : 
+                       exe_noint_branch_pc )));
+assign cpu_branch_to_new =  ((|buttons_pressed) & ~cpu_int) | exe_noint_branch_pc;
+
 exe_stage Exe_stage(.pc(idexe_pc),
                     .rs1_data(exe_rs1_data),
                     .rs2_data(exe_rs2_data),
@@ -243,14 +284,15 @@ exe_stage Exe_stage(.pc(idexe_pc),
                     .bsh(idexe_bsh),
                     .bsl(idexe_bsl),
                     .save_addr(idexe_brr),
+                    .int((|buttons_pressed) & ~cpu_int),
                     .ret(idexe_ret),
+                    .int_state(cpu_int),
                     .pnz_in(idexe_pnz),
-                    .branch_addr(),
-                    .branch_taken(),
+                    .branch_addr(exe_noint_branch_pc),
+                    .branch_taken(exe_noint_branch_taken),
                     .rd_data(exe_rd_data),
-                    .bd_data(exe_bd_data);
-
-
+                    .bd_data(exe_bd_data)
+                    .int_state_out(exe_int_state));
 // * EXE STAGE END *
 
 // for both exe and wb
