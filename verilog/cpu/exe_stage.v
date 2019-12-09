@@ -1,11 +1,13 @@
-module exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, ret, pnz_in, branch_addr, branch_taken, rd_data, bd_data);
+module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, ldst, add, sub, br, mv, bsh, bsl, save_addr, int_in, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
 
-
+input wire clk;
+input wire rst_n;
 input wire [15:0] pc;
 input wire [15:0] rs1_data;
-input wire [15:0] rs2_data
+input wire [15:0] rs2_data;
 input wire [1535:0] bs_data;
 input wire [15:0] lit;
+input wire [15:0] ldst;
 input wire add;
 input wire sub;
 input wire mv;
@@ -13,8 +15,10 @@ input wire bsh;
 input wire bsl;
 input wire br;
 input wire save_addr;
+input wire int_in;
 input wire ret;
-input wire pnz_in;
+input wire int_state;
+input wire [2:0] pnz_in;
 //input wire ld;
 //input wire st;
 //input wire ldb;
@@ -24,6 +28,7 @@ output reg branch_taken;
 //for mem address (both bitmap and normal) and register
 output reg [15:0] rd_data;
 output reg [1535:0] bd_data;
+output reg int_state_out;
 //probably not needed here as well
 //input wire [3:0] rd_addr
 //input wire [1:0] bd_addr;
@@ -45,17 +50,29 @@ wire [1535:0] alu_bmo;
 
 // * pc stuff here *
 
-//pnz flag
-always @(posedge clk) begin
-    if (add & sub) 
-        pnz_reg <= pnz_new;
-    else
-        pnz_reg <= pnz_reg;
+// A bit of interrupt stuff
+reg [15:0] int_pc_reg;
+
+//int reg
+always @ (posedge clk) begin
+    if (int_in) int_pc_reg <= pc;
 end
 
-assign branch_addr = ret ? ras_top : alu_output;
-assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;   
-ras ras (.push(save_addr), .new_data(pc + 1), .pop(ret), .top_of_stack(ras_top), .err());
+assign int_state_out = (~int_state & int_in) | (int_state & ~ret);
+
+//pnz flag
+always @(posedge clk) begin
+    if (add | sub) 
+        pnz_reg <= pnz_out;
+end
+
+assign branch_addr = ret & int_state ? int_pc_reg : (
+                     ret & ~int_state ? ras_top : alu_output);
+assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;  
+
+reg [15:0] next_pc;
+assign next_pc = pc + 1; 
+ras ras (.clk(clk), .rst_n(rst_n), .push(save_addr & branch_taken & ~int_in), .new_data(next_pc), .pop(ret & ~int_in), .top_of_stack(ras_top), .err());
 
 // * end pc stuff *
 
