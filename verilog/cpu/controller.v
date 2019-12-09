@@ -5,9 +5,9 @@ module controller (OpCode, bmrIn, RegWrite, BitmapWrite, DMemWrite, DMemEn, Sign
 input [3:0] 	OpCode;
 input [1:0]		bmrIn; 
 
-output			RegWrite, BitmapWrite, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxReadReg1, MuxWriteReg, MuxWriteData, rs1_used, rs2_used, bs_used, 
+output			RegWrite, BitmapWrite, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, MuxWriteReg, MuxWriteData, rs1_used, rs2_used, bs_used, 
 				NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB;
-output [1:0]	SignEx, MuxReadBM, MuxReadReg2;
+output [1:0]	SignEx, MuxReadReg1, MuxReadBM, MuxReadReg2;
 
 wire	NOPw, HALTw, SUBw, ADDw, BRRw, BRw, LDw, STw, PLYw, MVw, BSLw, BSHw, RETw, SESw, STBw, LDBw;
 
@@ -34,7 +34,7 @@ assign SignEx = (STw|LDw) ? 2'b11 :
 				(LDBw|STBw) ? 2'b10 :
 				(MVw) ? 2'b01 : 2'b00;
 assign CompAcc = (BSHw | BSLw | (LDBw && (bmrIn == 2'b01))) ? 1 : 0;
-assign MatchAcc = (LDBw && (bmrIn == 2'b01));
+assign MatchAcc = (LDBw && (bmrIn == 2'b10));
 
 assign rs1_used = (SUBw | ADDw | LDw | STw | PLYw | BSLw | BSHw | STBw | LDBw);
 assign rs2_used = (SUBw | ADDw | STw | PLYw);
@@ -44,11 +44,11 @@ assign ALULdSt = (LDw | STw | LDBw | STBw);
 
 //Register files input
 
-assign RegWrite = (SUBw | ADDw) ? 1 : 0;
+assign RegWrite = (SUBw|ADDw|MVw|LDw) ? 1 : 0;
 assign BitmapWrite = (BSHw|BSLw|LDBw|SESw) ? 1 : 0;
 assign MuxReadBM = PLYw ? 2'b00 : (BSLw | BSHw) ? 2'b01 : 2'b11;
-assign MuxReadReg2 = PLYw ? 2'b10 :(STBw | LDBw) ? 2'b11 : 2'b01;
-assign MuxReadReg1 = (STBw | LDBw) ? 2'b11 : (PLYw) ? 2'b10 : 2'b00;
+assign MuxReadReg2 = PLYw ? 2'b11 :(STw) ? 2'b10 : 2'b00;
+assign MuxReadReg1 = (STBw | LDBw) ? 2'b11 : (BSHw | BSLw | STw | LDw | ADDw | SUBw) ? 2'b10 : 2'b00;
 assign MuxWriteReg = (STBw | LDBw) ? 0 : 1;
 assign MuxWriteData = (MVw);
 

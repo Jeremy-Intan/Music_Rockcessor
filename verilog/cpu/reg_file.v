@@ -26,7 +26,7 @@ module reg_file (
     input wire [1:0] rbm_addr;
     output reg [1535:0] rbm_data;
     input wire [1:0] wbm_addr;
-    output reg [1535:0] wbm_data;
+    input wire [1535:0] wbm_data;
     input wire wbm;
     input wire clk;
 

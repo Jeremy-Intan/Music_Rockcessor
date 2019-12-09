@@ -291,6 +291,7 @@ exe_stage Exe_stage(.clk(clk),
                     .rs1_data(exe_rs1_data),
                     .rs2_data(exe_rs2_data),
                     .bs_data(exe_bs_data),
+                    .ldst(idexe_ldst),
                     .lit(idexe_lit),
                     .add(idexe_add),
                     .sub(idexe_sub),
@@ -314,7 +315,7 @@ exe_stage Exe_stage(.clk(clk),
 // * MEMORY STUFF START *
 wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
 wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
-mem_interface normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs1_data), .q(exewb_nmem_read_data), .clock(clk));
+mem_interface normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
 mem_interface #(1536) bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
 
 // * MEMORY STUFF END *

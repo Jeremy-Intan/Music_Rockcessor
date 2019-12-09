@@ -22,8 +22,8 @@ reg rst_cycle;
 
 
 //prefetching (sort of) 
-assign fetch_pc = branch_to_new ? branch_pc : ( 
-		rst_cycle ? 16'd0 : (
+assign fetch_pc = rst_cycle ? 16'd0 : (
+            branch_to_new ? branch_pc : ( 
             stall ? last_pc : 
             last_pc + 1));
 //actual pc
@@ -53,6 +53,6 @@ assign inst_invalid = branch_to_new | rst_cycle;
 assign inst = read_inst;
 
 //inst mem
-mem_interface inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), .wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
+modelsim_I_mem inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), .wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
 
 endmodule

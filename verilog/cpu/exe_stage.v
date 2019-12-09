@@ -1,4 +1,4 @@
-module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, int_in, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
+module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, ldst, add, sub, br, mv, bsh, bsl, save_addr, int_in, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
 
 input wire clk;
 input wire rst_n;
@@ -7,6 +7,7 @@ input wire [15:0] rs1_data;
 input wire [15:0] rs2_data;
 input wire [1535:0] bs_data;
 input wire [15:0] lit;
+input wire [15:0] ldst;
 input wire add;
 input wire sub;
 input wire mv;

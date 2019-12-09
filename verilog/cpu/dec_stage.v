@@ -23,7 +23,7 @@ wire [15:0] se4_16, se6_16, se8_16, se9_16;
 wire [1:0] SignExOut;
 
 wire [1:0] MuxReadBM;
-wire MuxReadReg1;
+wire [1:0] MuxReadReg1;
 wire [1:0] MuxReadReg2;
 wire MuxWriteReg;
 wire MuxWriteData;
@@ -34,10 +34,10 @@ controller control (.OpCode(inst[15:12]), .bmrIn(inst[11:10]), .RegWrite(reg_wri
 					.ALULdSt(ALULdSt), .MuxReadBM(MuxReadBM), .MuxReadReg1(MuxReadReg1), .MuxReadReg2(MuxReadReg2), .MuxWriteReg(MuxWriteReg), .MuxWriteData(MuxWriteData), .rs1_used(rs1_used), .rs2_used(rs2_used), .bs_used(bs_used), 
 					.NOP(NOP), .HALT(HALT), .SUB(SUB), .ADD(ADD), .BRR(BRR), .BR(BR), .LD(LD), .ST(ST), .PLY(PLY), .MV(MV), .BSL(BSL), .BSH(BSH), .RET(RET), .SES(SES), .STB(STB), .LDB(LDB));
 
-assign regAddr1 = (MuxReadReg1) ? inst[9:6] : inst[7:4];
-assign regAddr2 = (MuxReadReg2 == 2'b11) ? inst[11:8] : (MuxReadReg2 == 2'b10) ? inst[5:2] : inst[3:0];
-assign regAddrDest = (MuxWriteReg) ? inst[11:8] : inst[9:6];
-assign BMAddr = (MuxReadBM == 2'b00) ? inst[1:0] : (MuxReadBM == 2'b01) ? inst[8:7] : inst[11:10];
+assign regAddr1 = (MuxReadReg1 == 2'b11) ? inst[9:6] : (MuxReadReg1 == 2'b10) ? inst[7:4] : inst[11:8];
+assign regAddr2 = (MuxReadReg2 == 2'b11) ? inst[7:4] : (MuxReadReg2 == 2'b10) ? inst[11:8] : inst[3:0];
+assign regAddrDest = inst[11:8];
+assign BMAddr = (MuxReadBM == 2'b00) ? inst[3:2] : (MuxReadBM == 2'b01) ? inst[9:8] : inst[11:10];
 assign write_bm_addr_out = inst[11:10];
 					
 reg_file reg_file (.rd_addr_1(regAddr1),.rd_data_1(rd_data_1),.rd_addr_2(regAddr2),.rd_data_2(rd_data_2),.wr_addr(write_reg_addr),.wr_data(write_reg_data),.wr(write_reg_en),
