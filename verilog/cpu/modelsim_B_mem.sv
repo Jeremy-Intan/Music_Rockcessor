@@ -6,8 +6,8 @@ input wire [15:0] wraddress;
 input wire [15:0] rdaddress;
 reg [15:0] rdaddress_reg;
 input wire wren;
-input wire [1536:0] data;
-output reg [1536:0] q;
+input wire [1535:0] data;
+output reg [1535:0] q;
 
 initial begin
     $readmemb("bitmap.mem", ram);

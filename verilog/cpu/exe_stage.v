@@ -7,7 +7,7 @@ input wire [15:0] rs1_data;
 input wire [15:0] rs2_data;
 input wire [1535:0] bs_data;
 input wire [15:0] lit;
-input wire [15:0] ldst;
+input wire ldst;
 input wire add;
 input wire sub;
 input wire mv;

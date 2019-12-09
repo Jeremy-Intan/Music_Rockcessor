@@ -283,7 +283,7 @@ assign cpu_branch_pc = buttons_pressed[3] & ~cpu_int ? 16'h0f80 : (
                        buttons_pressed[1] & ~cpu_int ? 16'h0fc0 : (
                        buttons_pressed[0] & ~cpu_int ? 16'h0fe0 : 
                        exe_noint_branch_pc )));
-assign cpu_branch_to_new =  exe_int | exe_noint_branch_taken;
+assign cpu_branch_to_new =  exe_int | (exe_noint_branch_taken & ~idexe_flushed);
 
 exe_stage Exe_stage(.clk(clk),
                     .rst_n(rst_n),
@@ -315,8 +315,8 @@ exe_stage Exe_stage(.clk(clk),
 // * MEMORY STUFF START *
 wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
 wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
-mem_interface normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
-mem_interface #(1536) bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
+modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
+modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
 
 // * MEMORY STUFF END *
 
