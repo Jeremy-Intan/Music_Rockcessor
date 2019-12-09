@@ -12,7 +12,7 @@ output reg inst_invalid;
 
 reg [15:0] last_pc;
 reg [15:0] fetch_pc;
-reg [15:0] read_inst;
+wire [15:0] read_inst;
 
 reg [15:0] last_inst;
 reg [15:0] pre_fetch;
@@ -30,7 +30,7 @@ assign fetch_pc = branch_to_new ? branch_pc : (
 assign pc = last_pc;
 
 always @(posedge clk, negedge rst_n) begin
-    if(~rst) rst_cycle = 1;
+    if(~rst_n) rst_cycle = 1;
     else rst_cycle = 0;
 end
 
@@ -53,6 +53,6 @@ assign inst_invalid = branch_to_new | rst_cycle;
 assign inst = read_inst;
 
 //inst mem
-mem_interface inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
+mem_interface inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), .wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
 
 endmodule

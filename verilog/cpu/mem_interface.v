@@ -10,8 +10,7 @@ input wire [15:0] wraddress;
 input wire [15:0] rdaddress;
 input wire wren;
 input wire [width-1:0] data;
-input clock;
-input aclr;
+input wire clock;
 output reg [width-1:0] q;
 
 endmodule

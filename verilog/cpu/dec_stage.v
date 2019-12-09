@@ -8,7 +8,7 @@ input wire [15:0] write_reg_data;
 input wire write_reg_en;
 input wire [1:0] write_bm_addr;
 input wire [1535:0] write_bm_data;
-input wire [1:0] write_bm_en;
+input wire write_bm_en;
 input wire clk;
 
 output wire reg_write, bm_write, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, rs1_used, rs2_used, bs_used,
@@ -22,9 +22,15 @@ output wire [1535:0] rbm_data;
 wire [15:0] se4_16, se6_16, se8_16, se9_16;
 wire [1:0] SignExOut;
 
+wire [1:0] MuxReadBM;
+wire MuxReadReg1;
+wire [1:0] MuxReadReg2;
+wire MuxWriteReg;
+wire MuxWriteData;
+
 assign PNZ = inst[11:9];
 
-controlcontroller (.OpCode(inst[15:12]), .bmrIn(inst[11:10]), .RegWrite(reg_write), .BitmapWrite(bm_write), .DMemWrite(DMemWrite), .DMemEn(DMemEn), .SignEx(SignExOut), .MatchAcc(MatchAcc), .CompAcc(CompAcc), .ALUBR(ALUBR), 
+controller control (.OpCode(inst[15:12]), .bmrIn(inst[11:10]), .RegWrite(reg_write), .BitmapWrite(bm_write), .DMemWrite(DMemWrite), .DMemEn(DMemEn), .SignEx(SignExOut), .MatchAcc(MatchAcc), .CompAcc(CompAcc), .ALUBR(ALUBR), 
 					.ALULdSt(ALULdSt), .MuxReadBM(MuxReadBM), .MuxReadReg1(MuxReadReg1), .MuxReadReg2(MuxReadReg2), .MuxWriteReg(MuxWriteReg), .MuxWriteData(MuxWriteData), .rs1_used(rs1_used), .rs2_used(rs2_used), .bs_used(bs_used), 
 					.NOP(NOP), .HALT(HALT), .SUB(SUB), .ADD(ADD), .BRR(BRR), .BR(BR), .LD(LD), .ST(ST), .PLY(PLY), .MV(MV), .BSL(BSL), .BSH(BSH), .RET(RET), .SES(SES), .STB(STB), .LDB(LDB));
 

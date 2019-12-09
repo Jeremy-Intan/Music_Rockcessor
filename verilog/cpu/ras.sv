@@ -1,10 +1,11 @@
 //pop has priority over push
 
-module ras(push, new_data, pop, top_of_stack, err);
+module ras(clk, rst_n, push, new_data, pop, top_of_stack, err);
 
 enum {EMPTY, ADDR_0, ADDR_1, ADDR_2, ADDR_3, ADDR_4, ADDR_5, ADDR_6, ADDR_7} state_t;
 
-
+input wire clk;
+input wire rst_n;
 input wire push;
 input wire [15:0] new_data;
 input wire pop;
@@ -30,8 +31,8 @@ reg [15:0] addr_6_reg_new;
 reg [15:0] addr_7_reg;
 reg [15:0] addr_7_reg_new;
 
-always @(posedge clk, negedge rst) begin
-    if (rst == 0) 
+always @(posedge clk, negedge rst_n) begin
+    if (rst_n == 0) 
         state <= EMPTY;
     else
         state <= new_state;

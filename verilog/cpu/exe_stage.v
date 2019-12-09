@@ -1,9 +1,10 @@
-module exe_stage(pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, int, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
+module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, int, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
 
-
+input wire clk;
+input wire rst_n;
 input wire [15:0] pc;
 input wire [15:0] rs1_data;
-input wire [15:0] rs2_data
+input wire [15:0] rs2_data;
 input wire [1535:0] bs_data;
 input wire [15:0] lit;
 input wire add;
@@ -16,7 +17,7 @@ input wire save_addr;
 input wire int;
 input wire ret;
 input wire int_state;
-input wire pnz_in;
+input wire [2:0] pnz_in;
 //input wire ld;
 //input wire st;
 //input wire ldb;
@@ -61,15 +62,16 @@ assign int_state_out = (~int_state & int) | (int_state & ~ret);
 //pnz flag
 always @(posedge clk) begin
     if (add & sub) 
-        pnz_reg <= pnz_new;
-    else
-        pnz_reg <= pnz_reg;
+        pnz_reg <= pnz_out;
 end
 
 assign branch_addr = ret & int_state ? int_pc_reg : (
                      ret & ~int_state ? ras_top : alu_output);
-assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;   
-ras ras (.push(save_addr), .new_data(pc + 1), .pop(ret), .top_of_stack(ras_top), .err());
+assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;  
+
+reg [15:0] next_pc;
+assign next_pc = pc + 1; 
+ras ras (.clk(clk), .rst_n(rst_n), .push(save_addr), .new_data(next_pc), .pop(ret), .top_of_stack(ras_top), .err());
 
 // * end pc stuff *
 
