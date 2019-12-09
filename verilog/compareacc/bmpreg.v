@@ -42,7 +42,7 @@ assign botrowout = currrowbot;
 //is this the last column?
 always @(posedge clk) begin
         case (colcount)
-            6'b0000000 : lastcolumn <= 1'b1;
+            6'b0 : lastcolumn <= 1'b1;
             default : lastcolumn <= 1'b0;
         endcase
       
@@ -52,7 +52,7 @@ always @(posedge clk) begin
     case ({nextcol, lastcolumn})
         2'b10 :begin
               currcolumn = bitcolumns [colcount];
-              colcount = colcount - 1;
+              colcount = colcount - 1'b1;
               nextcolready = 1'b1;
               end
         default :begin
@@ -66,7 +66,7 @@ always @(posedge clk) begin
     case (nextrowtop)
         1'b1 :begin
               currrowtop = bitrows [toprowcount];
-              toprowcount = toprowcount - 1;
+              toprowcount = toprowcount - 1'b1;
               nextrowtopready = 1'b1;
               end
         default :begin
@@ -80,7 +80,7 @@ always @(posedge clk) begin
     case (nextrowbot)
         1'b1 :begin
               currrowbot = bitrows [botrowcount];
-              botrowcount = botrowcount + 1;
+              botrowcount = botrowcount + 1'b1;
               nextrowbotready = 1'b1;
               end
         default :begin
@@ -93,11 +93,11 @@ always @(posedge clk) begin
 //writes default values when a bitmap is passed in
     case (wren)
         1'b1:   begin
-				data <= bmpin;
-				ready <= 1'b1; 
-                colcount <= 6'b010111;
-                botrowcount <= 7'b0;
-                toprowcount <= 7'h3f;
+				data = bmpin;
+                colcount = 6'b010111;
+                botrowcount = 6'b0;
+                toprowcount = 6'h3f;
+				ready = 1'b1; 
                 end
         default: begin
 				data <= data;

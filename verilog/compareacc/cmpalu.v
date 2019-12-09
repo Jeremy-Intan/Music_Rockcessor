@@ -1,4 +1,4 @@
-module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitrowtop, input [23:0] bitrowbot, input nextrowtopready, input nextrowbotready, input nextcolumnready, input lastcolumn, output [15:0] result, output done, output nextcolumn, output nextrowtop, output nextrowbot);
+module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitrowtop, input [23:0] bitrowbot, input nextrowtopready, input nextrowbotready, input nextcolumnready, input lastcolumn, output [12:0] result, output done, output nextcolumn, output nextrowtop, output nextrowbot);
 
 //Takes in slices of a 64x24 bitmap and determines how far it should be shifted left and down, and whether or not it should be scaled by 2x
 
@@ -19,7 +19,7 @@ assign nextcolumn = colchecked;
 //[10:5] = dshift
 //[11] = scale 2x horizontal
 //[12] = scale 2x vertical
-reg [15:0] res;
+reg [12:0] res;
 assign result = res;
 
 //input
@@ -42,6 +42,7 @@ reg lboundaryfound;
 reg topboundaryfound;
 reg botboundaryfound;
 
+
 //1 indicates that the boundary has been stored in the result
 reg lboundarystored;
 reg topboundarystored;
@@ -63,7 +64,7 @@ always @(posedge clk) begin
         //check each row only once
         //checkrow, rowempty
         {1'b0,24'h00} : begin
-                        emptyrowsupper <= emptyrowsupper + 1;
+                        emptyrowsupper <= emptyrowsupper + 1'b1;
                         rowtopchecked <= 1'b1;  
 						topboundaryfound <= topboundaryfound;
                         end
@@ -89,7 +90,7 @@ always @(posedge clk) begin
         //check each row only once
         //checkrow, rowempty
         {1'b0,24'h00} : begin
-                        emptyrowslower <= emptyrowslower + 1;
+                        emptyrowslower <= emptyrowslower + 1'b1;
                         rowbotchecked <= 1'b1;
 						botboundaryfound <= botboundaryfound;
                         end
@@ -118,7 +119,7 @@ always @(posedge clk) begin
                 topboundarystored <= 1'b1;
                 end
         default: begin
-				emptyrows <= emptyrows;
+				//emptyrows <= emptyrows;
 				topboundarystored <= topboundarystored;
 				end
     endcase
@@ -132,8 +133,8 @@ always @(posedge clk) begin
                 botboundarystored <= 1'b1;
                 end 
         default : 	begin
-					emptyrows <= emptyrows;
-					res [10:5] <= res[10:5];
+					//emptyrows <= emptyrows;
+					//res [10:5] <= res[10:5];
 					calcdone[2] <= calcdone[2];
 					botboundarystored <= botboundarystored;
 					end
@@ -160,16 +161,16 @@ always @(posedge clk) begin
     case ({lboundaryfound, lboundarystored})
     //store lshift in result once first boundary has been found
         2'b10 :  begin
-                res [5:0] <= emptycolumns;
+                res [4:0] <= emptycolumns;
                 calcdone [0] <= 1'b1;
 				lboundarystored <= 1'b1;
                 end
         default : 	begin
-					res[5:0] <= res[5:0];
+					//res[4:0] <= res[4:0];
 					calcdone[0] <= calcdone[0];
 					end
     endcase
-
+/*
     case ({lastcolumn, emptycolumns[4]})
         //last column, 12 or greater empty columns
         //presently checks for 16 or greater, update later
@@ -186,34 +187,54 @@ always @(posedge clk) begin
 					//res[11] <= res[11];
 					end
     endcase
+*/	
+	if (lastcolumn == 1'b1 && emptycolumns > 11) begin
+		res [11] <= 1'b1;
+        calcdone [1] <= 1'b1;
+        end
+	else if (lastcolumn == 1'b1 && emptycolumns  < 12) begin
+		res [11] <= 1'b0;
+        calcdone [1] <= 1'b1;
+        end
+	else begin
+		calcdone[1] <= calcdone[1];
+	end
 
-
-
-
+/*
     casez ({colchecked, currcol})
         //check each column only once
         //checkcolumn, column empty
         65'h00000 : begin
-                    emptycolumns <= emptycolumns + 1;
+                    emptycolumns <= emptycolumns + 1'b1;
                     colchecked <= 1'b1;
-					//lboundaryfound <= lboundaryfound;
+					lboundaryfound <= lboundaryfound;
                     end
 
         //don't cares if column has been checked
         65'h1????:  begin
                     emptycolumns <= emptycolumns;
-					//colchecked <= colchecked;
-					//lboundaryfound <= lboundaryfound;
+					colchecked <= colchecked;
+					lboundaryfound <= lboundaryfound;
                     end
 
         //checkcolumn, column not empty
         default :   begin
-                    //emptycolumns <= emptycolumns;
+                    emptycolumns <= emptycolumns;
                     colchecked <= 1'b1;
                     lboundaryfound <= 1'b1;
                     end
     endcase
-
+*/
+	if (colchecked == 1'b0 && currcol == 64'b0) begin
+		emptycolumns <= emptycolumns + 1'b1;
+		colchecked <= 1'b1;
+	end
+	else if (colchecked == 1'b0 && currcol != 64'b0) begin
+		emptycolumns <= emptycolumns;
+		colchecked <= 1'b1;
+		lboundaryfound <= 1'b1;
+	end
+	
 
 //move current row and column into reg banks
 
@@ -263,7 +284,7 @@ always @(posedge clk) begin
     if (start == 1'b1) begin
                 emptycolumns <= 5'b0;
                 emptyrows <= 6'b0;
-				//colchecked <= 1'b1;
+				colchecked <= 1'b1;
 				//rowbotchecked <= 1'b1;
 				//rowtopchecked <= 1'b1;
                 emptyrowsupper <= 6'b0;
@@ -274,7 +295,7 @@ always @(posedge clk) begin
                 botboundaryfound <= 1'b0;
                 topboundarystored <= 1'b0;
                 botboundarystored <= 1'b0;
-                res <= 16'h0000;
+                res <= 13'h0000;
 				calcdone<= 4'b0;
                 end
 end

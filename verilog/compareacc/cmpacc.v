@@ -1,4 +1,4 @@
-module cmpacc(input clk, input wren, input [1535:0] bitmap, output [15:0] result, output done);
+module cmpacc(input clk, input wren, input [1535:0] bitmap, output [12:0] result, output done);
 
 
 //bmp reg to alu
@@ -19,10 +19,9 @@ wire nextrowtop;
 
 //output
 wire finished;
-wire [15:0] res;
+wire [12:0] res;
 
 assign res = result;
-
 
 //module instantiation
 

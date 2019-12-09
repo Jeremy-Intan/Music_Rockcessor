@@ -1,17 +1,9 @@
-C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v {2 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
+C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module bmpreg
-** Warning: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v(45): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
 
 Top level modules:
 	bmpreg
-
-} {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmp_top.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module cmpacc
-
-Top level modules:
-	cmpacc
 
 } {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -26,5 +18,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	cmpacc_tb
+
+} {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cmpacc
+
+Top level modules:
+	cmpacc
 
 } {} {}}

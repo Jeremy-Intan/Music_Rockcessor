@@ -1550,9 +1550,6 @@ result[9] << cmpalu:alu.result
 result[10] << cmpalu:alu.result
 result[11] << cmpalu:alu.result
 result[12] << cmpalu:alu.result
-result[13] << cmpalu:alu.result
-result[14] << cmpalu:alu.result
-result[15] << cmpalu:alu.result
 done << cmpalu:alu.done
 
 
@@ -5027,9 +5024,6 @@ clk => res[9].CLK
 clk => res[10].CLK
 clk => res[11].CLK
 clk => res[12].CLK
-clk => res[13].CLK
-clk => res[14].CLK
-clk => res[15].CLK
 clk => topboundarystored.CLK
 clk => emptyrows[0].CLK
 clk => emptyrows[1].CLK
@@ -5047,6 +5041,12 @@ clk => emptyrowslower[4].CLK
 clk => emptyrowslower[5].CLK
 clk => topboundaryfound.CLK
 clk => rowtopchecked.CLK
+clk => emptyrowsupper[0].CLK
+clk => emptyrowsupper[1].CLK
+clk => emptyrowsupper[2].CLK
+clk => emptyrowsupper[3].CLK
+clk => emptyrowsupper[4].CLK
+clk => emptyrowsupper[5].CLK
 start => emptycolumns.OUTPUTSELECT
 start => emptycolumns.OUTPUTSELECT
 start => emptycolumns.OUTPUTSELECT
@@ -5058,6 +5058,13 @@ start => emptyrows.OUTPUTSELECT
 start => emptyrows.OUTPUTSELECT
 start => emptyrows.OUTPUTSELECT
 start => emptyrows.OUTPUTSELECT
+start => colchecked.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
+start => emptyrowsupper.OUTPUTSELECT
 start => emptyrowslower.OUTPUTSELECT
 start => emptyrowslower.OUTPUTSELECT
 start => emptyrowslower.OUTPUTSELECT
@@ -5087,9 +5094,6 @@ start => calcdone.OUTPUTSELECT
 start => calcdone.OUTPUTSELECT
 start => calcdone.OUTPUTSELECT
 start => calcdone.OUTPUTSELECT
-start => res[13].ENA
-start => res[14].ENA
-start => res[15].ENA
 bitcolumn[0] => currcol[0].DATAIN
 bitcolumn[1] => currcol[1].DATAIN
 bitcolumn[2] => currcol[2].DATAIN
@@ -5205,8 +5209,8 @@ bitrowbot[23] => currrowbot[23].DATAIN
 nextrowtopready => Decoder1.IN0
 nextrowbotready => Decoder2.IN0
 nextcolumnready => Decoder0.IN0
-lastcolumn => Equal7.IN2
-lastcolumn => Equal8.IN2
+lastcolumn => always0.IN1
+lastcolumn => always0.IN1
 result[0] <= res[0].DB_MAX_OUTPUT_PORT_TYPE
 result[1] <= res[1].DB_MAX_OUTPUT_PORT_TYPE
 result[2] <= res[2].DB_MAX_OUTPUT_PORT_TYPE
@@ -5220,9 +5224,6 @@ result[9] <= res[9].DB_MAX_OUTPUT_PORT_TYPE
 result[10] <= res[10].DB_MAX_OUTPUT_PORT_TYPE
 result[11] <= res[11].DB_MAX_OUTPUT_PORT_TYPE
 result[12] <= res[12].DB_MAX_OUTPUT_PORT_TYPE
-result[13] <= res[13].DB_MAX_OUTPUT_PORT_TYPE
-result[14] <= res[14].DB_MAX_OUTPUT_PORT_TYPE
-result[15] <= res[15].DB_MAX_OUTPUT_PORT_TYPE
 done <= finished.DB_MAX_OUTPUT_PORT_TYPE
 nextcolumn <= colchecked.DB_MAX_OUTPUT_PORT_TYPE
 nextrowtop <= rowtopchecked.DB_MAX_OUTPUT_PORT_TYPE
