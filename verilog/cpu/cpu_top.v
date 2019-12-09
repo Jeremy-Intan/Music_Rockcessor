@@ -6,16 +6,16 @@ input wire rst_n;
 input wire [3:0] buttons_pressed;
 
 //B R A N C H B O I S
-reg [15:0] cpu_branch_pc;
-reg cpu_branch_to_new;
+wire [15:0] cpu_branch_pc;
+wire cpu_branch_to_new;
 
 //WB SIGNALS
-reg [3:0] wb_rd_addr;
-reg [15:0] wb_rd_data;
-reg wb_wr_reg;
-reg [1:0] wb_bd_addr;
-reg [1535:0] wb_bd_data;
-reg wb_wr_breg;
+wire [3:0] wb_rd_addr;
+wire [15:0] wb_rd_data;
+wire wb_wr_reg;
+wire [1:0] wb_bd_addr;
+wire [1535:0] wb_bd_data;
+wire wb_wr_breg;
 
 //INTERUPPTS
 reg cpu_int;
@@ -26,12 +26,12 @@ always @ (posedge clk) begin
 end
 
 //Stall stuff
-reg if_stall;
-reg ifid_stall;
-reg [15:0] idexe_stall;
-reg exe_stall;
-reg exe_flush_cmd;
-reg exewb_stall;
+wire if_stall;
+wire ifid_stall;
+wire [15:0] idexe_stall;
+wire exe_stall;
+wire exe_flush_cmd;
+wire exewb_stall;
 
 // * INST STAGE START *
 
@@ -57,7 +57,11 @@ reg ifid_flushed;
 assign ifid_stall = idexe_stall; 
 
 always @ (posedge clk, negedge rst_n) begin
-    if (~ifid_stall) begin
+	 if (~rst_n) begin
+	     ifid_pc <= 16'd0;
+        ifid_inst <= 16'd0;
+    end
+    else if (~ifid_stall) begin
         ifid_pc <= if_pc;
         ifid_inst <= if_inst;
     end
@@ -91,7 +95,7 @@ wire id_br_combined;
 wire id_ldst;
 wire id_rs1_used;
 wire id_rs2_used;
-wire bs_used;
+wire id_bs_used;
 wire id_nop;
 wire id_halt;
 wire id_sub;
@@ -111,7 +115,7 @@ wire id_ldb;
 
 //decode stage
 dec_stage Dec_stage(.inst(ifid_inst), .write_reg_addr(wb_rd_addr), .write_reg_data(wb_rd_data), .write_reg_en(wb_wr_reg), .write_bm_addr(wb_bd_addr), .write_bm_data(wb_bd_data), .write_bm_en(wb_wr_breg), .clk(clk),
-					.PNZ(id_pnz), .se16(id_lit), .regAddr1(id_rs1_addr), .regAddr2(id_rs2_addr), .regAddrDest(id_rd_addr), .rd_data_1(id_rs1_data), .rd_data_2(id_rs2_data), .rbm_data(id_bs_data), .reg_write(id_wr_reg), .BMAddr(id_bs_addr), .bm_write(id_wr_breg), .write_bm_addr_out(id_bd_addr), .DMemWrite(), .DMemEn(), .MatchAcc(id_match_acc_en), .CompAcc(id_comp_acc_en), .ALUBR(id_br_combined), .ALULdSt(id_ldst), .rs1_used(id_rs1_used), .rs2_used(id_rs2_uysed), .bs_used(id_bs_used),
+					.PNZ(id_pnz), .se16(id_lit), .regAddr1(id_rs1_addr), .regAddr2(id_rs2_addr), .regAddrDest(id_rd_addr), .rd_data_1(id_rs1_data), .rd_data_2(id_rs2_data), .rbm_data(id_bs_data), .reg_write(id_wr_reg), .BMAddr(id_bs_addr), .bm_write(id_wr_breg), .write_bm_addr_out(id_bd_addr), .DMemWrite(), .DMemEn(), .MatchAcc(id_match_acc_en), .CompAcc(id_comp_acc_en), .ALUBR(id_br_combined), .ALULdSt(id_ldst), .rs1_used(id_rs1_used), .rs2_used(id_rs2_used), .bs_used(id_bs_used),
 					.NOP(id_nop), .HALT(id_halt), .SUB(id_sub), .ADD(id_add), .BRR(id_brr), .BR(id_br), .LD(id_ld), .ST(id_st), .PLY(id_ply), .MV(id_mv), .BSL(id_bsl), .BSH(id_bsh), .RET(id_ret), .SES(id_ses), .STB(id_stb), .LDB(id_ldb));
 
 // * DECODE STAGE END *
@@ -166,7 +170,10 @@ reg idexe_nop;
 assign idexe_stall = exe_stall;
 
 always @ (posedge clk, negedge rst_n) begin
-    if (idexe_stall) begin
+    if (~rst_n) begin
+	     idexe_rs1_data = 16'd0;
+	 end
+    else if (idexe_stall) begin
         if ((idexe_rs1_addr == wb_rd_addr) & wb_wr_reg) idexe_rs1_data <= wb_rd_data;
     end
     else begin   
@@ -174,7 +181,10 @@ always @ (posedge clk, negedge rst_n) begin
         else idexe_rs1_data <= id_rs1_data;
     end
 
-    if (idexe_stall) begin
+	 if (~rst_n) begin
+	     idexe_rs2_data = 16'd0;
+	 end
+    else if (idexe_stall) begin
         if ((idexe_rs2_addr == wb_rd_addr) & wb_wr_reg) idexe_rs2_data <= wb_rd_data;
     end
     else begin   
@@ -182,7 +192,10 @@ always @ (posedge clk, negedge rst_n) begin
         else idexe_rs2_data <= id_rs2_data;
     end
 
-    if (idexe_stall) begin
+	 if (~rst_n) begin
+	     idexe_bs_data = 1536'd0;
+	 end
+    else if (idexe_stall) begin
         if ((idexe_bs_addr == wb_bd_addr) & wb_wr_reg) idexe_bs_data <= wb_bd_data;
     end
     else begin   
@@ -190,10 +203,51 @@ always @ (posedge clk, negedge rst_n) begin
         else idexe_bs_data <= id_bs_data;
     end
 
-    if (~idexe_stall) begin        
+	 if (~rst_n) begin
+	     idexe_pc <= 0;
+
+        idexe_rs1_addr <= 0;
+        idexe_rs2_addr <= 0;
+        idexe_rd_addr <= 0;
+        idexe_bs_addr <= 0;
+        idexe_bd_addr <= 0;
+
+        idexe_lit <= 0;
+
+        idexe_br_combined <= 0;
+        idexe_pnz <= 0;
+        idexe_ldst <= 0;
+
+        idexe_wr_reg <= 0;
+        idexe_wr_breg <= 0;
+
+        idexe_comp_acc_activate <= 0;
+        idexe_match_acc_activate <= 0;
+
+        idexe_rs1_used <= 0;
+        idexe_rs2_used <= 0;
+        idexe_bs_used <= 0;
+
+        idexe_ldb <= 0;
+        idexe_stb <= 0;
+        idexe_ses <= 0;
+        idexe_ret <= 0;
+        idexe_bsh <= 0;
+        idexe_bsl <= 0;
+        idexe_mv <= 0;
+        idexe_ply <= 0;
+        idexe_st <= 0;
+        idexe_ld <= 0;
+        idexe_br <= 0;
+        idexe_brr <= 0;
+        idexe_add <= 0;
+        idexe_sub <= 0;
+        idexe_halt <= 0;
+        idexe_nop <= 0;
+    end
+    else if (~idexe_stall) begin        
         idexe_pc <= ifid_pc;
 
-        //SIGNAL NOT GIVEN YET
         idexe_rs1_addr <= id_rs1_addr;
         idexe_rs2_addr <= id_rs2_addr;
         idexe_rd_addr <= id_rd_addr;
@@ -241,12 +295,12 @@ end
 // * IDEXE PIPES END *
 
 // * EXE STAGE START
-reg exe_br_combined;
-reg exe_save_addr;
-reg exe_ret;
-reg exe_write_nreg;
-reg exe_write_breg;
-reg exe_int;
+wire exe_br_combined;
+wire exe_save_addr;
+wire exe_ret;
+wire exe_write_nreg;
+wire exe_write_breg;
+wire exe_int;
 
 assign exe_int = ((|buttons_pressed) & ~cpu_int);
 
@@ -263,9 +317,9 @@ assign exe_write_nreg = idexe_st & ~idexe_flushed & ~exe_int;
 assign exe_write_breg = idexe_stb & ~idexe_flushed & ~exe_int;
 
 //exe stage outputs
-reg [15:0] exe_rs1_data;
-reg [15:0] exe_rs2_data;
-reg [1535:0] exe_bs_data;
+wire [15:0] exe_rs1_data;
+wire [15:0] exe_rs2_data;
+wire [1535:0] exe_bs_data;
 wire [15:0] exe_noint_branch_pc;
 wire exe_noint_branch_taken;
 
@@ -341,8 +395,20 @@ reg exewb_flushed;
 //I don't think last stage stall
 assign exewb_stall = 1'b0;
 
-always @(posedge clk) begin
-    if(~exewb_stall) begin
+always @(posedge clk, negedge rst_n) begin
+    if(~rst_n) begin
+        exewb_wr_reg <= 0;
+        exewb_mem_reg <= 0;
+        exewb_wr_breg <= 0;
+        exewb_mem_breg <= 0;
+
+        exewb_rd_data <= 0;
+        exewb_bd_data <= 0;
+
+        exewb_rd_addr <= 0;
+        exewb_bd_addr <= 0;
+    end
+    else if(~exewb_stall) begin
         exewb_wr_reg <= idexe_wr_reg;
         exewb_mem_reg <= idexe_ld;
         exewb_wr_breg <= idexe_wr_breg;

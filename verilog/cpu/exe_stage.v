@@ -23,12 +23,12 @@ input wire [2:0] pnz_in;
 //input wire st;
 //input wire ldb;
 //input wire stb; //just wire this correctly zulul
-output reg [15:0] branch_addr;
-output reg branch_taken;
+output wire [15:0] branch_addr;
+output wire branch_taken;
 //for mem address (both bitmap and normal) and register
-output reg [15:0] rd_data;
-output reg [1535:0] bd_data;
-output reg int_state_out;
+output wire [15:0] rd_data;
+output wire [1535:0] bd_data;
+output wire int_state_out;
 //probably not needed here as well
 //input wire [3:0] rd_addr
 //input wire [1:0] bd_addr;
@@ -70,7 +70,7 @@ assign branch_addr = ret & int_state ? int_pc_reg : (
                      ret & ~int_state ? ras_top : alu_output);
 assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;  
 
-reg [15:0] next_pc;
+wire [15:0] next_pc;
 assign next_pc = pc + 1; 
 ras ras (.clk(clk), .rst_n(rst_n), .push(save_addr & branch_taken & ~int_in), .new_data(next_pc), .pop(ret & ~int_in), .top_of_stack(ras_top), .err());
 
