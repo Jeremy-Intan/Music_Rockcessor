@@ -12,7 +12,7 @@ wire [15:0] pnz_check;
 wire [5:0] rs_down;
 wire [4:0] rs_left;
 wire rs_scale;
-reg [1535:0] down_shift_1, down_shift_2, down_shift_4, down_shift_8, down_shift_16, down_shift_32, left_shift_1, left_shift_2, left_shift_4, left_shift_8, left_shift_16, SCALE;
+wire [1535:0] down_shift_1, down_shift_2, down_shift_4, down_shift_8, down_shift_16, down_shift_32, left_shift_1, left_shift_2, left_shift_4, left_shift_8, left_shift_16, SCALE;
 wire [15:0] ADD, SUB, BR, LDST; // BR, BRR use same output, LD and ST use same output
 
 assign ADD = rs1 + rs2; //reg + reg

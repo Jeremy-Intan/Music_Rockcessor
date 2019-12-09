@@ -6,12 +6,12 @@ input wire stall;
 input wire [15:0] branch_pc;
 input wire branch_to_new;
 
-output reg [15:0] pc;
-output reg [15:0] inst;
-output reg inst_invalid;
+output wire [15:0] pc;
+output wire [15:0] inst;
+output wire inst_invalid;
 
 reg [15:0] last_pc;
-reg [15:0] fetch_pc;
+wire [15:0] fetch_pc;
 wire [15:0] read_inst;
 
 reg [15:0] last_inst;
