@@ -241,10 +241,14 @@ end
 // * IDEXE PIPES END *
 
 // * EXE STAGE START
+reg exe_br_combined;
 reg exe_save_addr;
 reg exe_ret;
 reg exe_write_nreg;
 reg exe_write_breg;
+reg exe_int;
+
+assign exe_int = ((|buttons_pressed) & ~cpu_int);
 
 //Flushing and stalling
 //flush for every branch
@@ -252,10 +256,11 @@ assign exe_flush_cmd = cpu_branch_to_new;
 //for now no stalling, but needed for later
 assign exe_stall = 1'b0;
 
-assign exe_save_addr = idexe_brr & ~idexe_flushed;
-assign exe_ret = idexe_ret & ~idexe_flushed;
-assign exe_write_nreg = idexe_st & ~idexe_flushed;
-assign exe_write_breg = idexe_stb & ~idexe_flushed;
+assign exe_br_combined = idexe_br_combined & ~idexe_flushed & ~exe_int;
+assign exe_save_addr = idexe_brr & ~idexe_flushed & ~exe_int;
+assign exe_ret = idexe_ret & ~idexe_flushed & ~exe_int;
+assign exe_write_nreg = idexe_st & ~idexe_flushed & ~exe_int;
+assign exe_write_breg = idexe_stb & ~idexe_flushed & ~exe_int;
 
 //exe stage outputs
 reg [15:0] exe_rs1_data;
@@ -278,7 +283,7 @@ assign cpu_branch_pc = buttons_pressed[3] & ~cpu_int ? 16'h0f80 : (
                        buttons_pressed[1] & ~cpu_int ? 16'h0fc0 : (
                        buttons_pressed[0] & ~cpu_int ? 16'h0fe0 : 
                        exe_noint_branch_pc )));
-assign cpu_branch_to_new =  ((|buttons_pressed) & ~cpu_int) | exe_noint_branch_taken;
+assign cpu_branch_to_new =  exe_int | exe_noint_branch_taken;
 
 exe_stage Exe_stage(.clk(clk),
                     .rst_n(rst_n),
@@ -289,13 +294,13 @@ exe_stage Exe_stage(.clk(clk),
                     .lit(idexe_lit),
                     .add(idexe_add),
                     .sub(idexe_sub),
-                    .br(idexe_br_combined),
+                    .br(exe_br_combined),
                     .mv(idexe_mv),
                     .bsh(idexe_bsh),
                     .bsl(idexe_bsl),
-                    .save_addr(idexe_brr),
-                    .int((|buttons_pressed) & ~cpu_int),
-                    .ret(idexe_ret),
+                    .save_addr(exe_save_addr),
+                    .int_in(exe_int),
+                    .ret(exe_ret),
                     .int_state(cpu_int),
                     .pnz_in(idexe_pnz),
                     .branch_addr(exe_noint_branch_pc),

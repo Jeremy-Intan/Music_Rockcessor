@@ -1,4 +1,4 @@
-module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, int, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
+module exe_stage(clk, rst_n, pc, rs1_data, rs2_data, bs_data, lit, add, sub, br, mv, bsh, bsl, save_addr, int_in, ret, int_state, pnz_in, branch_addr, branch_taken, rd_data, bd_data, int_state_out);
 
 input wire clk;
 input wire rst_n;
@@ -14,7 +14,7 @@ input wire bsh;
 input wire bsl;
 input wire br;
 input wire save_addr;
-input wire int;
+input wire int_in;
 input wire ret;
 input wire int_state;
 input wire [2:0] pnz_in;
@@ -54,14 +54,14 @@ reg [15:0] int_pc_reg;
 
 //int reg
 always @ (posedge clk) begin
-    if (int) int_pc_reg <= pc;
+    if (int_in) int_pc_reg <= pc;
 end
 
-assign int_state_out = (~int_state & int) | (int_state & ~ret);
+assign int_state_out = (~int_state & int_in) | (int_state & ~ret);
 
 //pnz flag
 always @(posedge clk) begin
-    if (add & sub) 
+    if (add | sub) 
         pnz_reg <= pnz_out;
 end
 
@@ -71,7 +71,7 @@ assign branch_taken = (br & ((pnz_in & pnz_reg) != 0)) | ret;
 
 reg [15:0] next_pc;
 assign next_pc = pc + 1; 
-ras ras (.clk(clk), .rst_n(rst_n), .push(save_addr), .new_data(next_pc), .pop(ret), .top_of_stack(ras_top), .err());
+ras ras (.clk(clk), .rst_n(rst_n), .push(save_addr & branch_taken & ~int_in), .new_data(next_pc), .pop(ret & ~int_in), .top_of_stack(ras_top), .err());
 
 // * end pc stuff *
 
