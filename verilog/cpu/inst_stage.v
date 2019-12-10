@@ -53,6 +53,16 @@ assign inst_invalid = branch_to_new | rst_cycle;
 assign inst = read_inst;
 
 //inst mem
-modelsim_I_mem inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), .wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
+//modelsim_I_mem inst_mem(.wraddress(16'd0), .rdaddress(fetch_pc), .wren(1'b0), .data(16'd0), .q(read_inst), .clock(clk));
 
+
+I_mem I_mem (
+	.address(fetch_pc),
+	.clock(clk),
+	.data(16'd0),
+	.wren(1'b0),
+	.q(read_inst)
+	);
+	
+	
 endmodule

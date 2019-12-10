@@ -369,9 +369,29 @@ exe_stage Exe_stage(.clk(clk),
 // * MEMORY STUFF START *
 wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
 wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
-modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
-modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
+//modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
 
+//modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
+
+
+bitmap_mem bitmap_mem (
+	.address(exe_rd_data[2:0]),
+	.clock(clk),
+	.data(exe_bs_data),
+	.wren(exe_write_breg),
+	.q(exewb_bmem_read_data)
+	);
+	
+D_mem D_mem (
+	.address(exe_rd_data[9:0]),
+	.clock(clk),
+	.data(exe_rs2_data),
+	.wren(exe_write_nreg),
+	.q(exewb_nmem_read_data)
+	);
+	
+	
+	
 // * MEMORY STUFF END *
 
 // * EXEWB PIPES START
