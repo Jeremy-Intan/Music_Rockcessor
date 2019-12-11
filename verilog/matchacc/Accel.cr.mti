@@ -5,18 +5,18 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	AccelTB
 
-} {} {}} C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module lengthMux
-
-Top level modules:
-	lengthMux
-
 } {} {}} C:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module noteMux
 
 Top level modules:
 	noteMux
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module lengthMux
+
+Top level modules:
+	lengthMux
 
 } {} {}}

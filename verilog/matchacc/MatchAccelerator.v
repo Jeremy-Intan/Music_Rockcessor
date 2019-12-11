@@ -1,7 +1,7 @@
-module MatchAccelerator(clk,bmr, noteReg, lengthReg, start, finish);
+module MatchAccelerator(rst,clk,bmr, noteReg, lengthReg, start, finish);
 
 input [1535:0] bmr;
-input clk, start, finish;
+input clk, start, finish, rst;
 output reg [15:0] noteReg, lengthReg;
 
 wire [255:0] bmNCMP,tmNCMP,noteXor;
@@ -17,7 +17,8 @@ reg StateL, nextStateL;
 wire [15:0] lengthFreq;
 reg lengthDone;
 reg [7:0] lengthSumHold;
-reg lengthCountHold,countL;
+reg lengthCountHold;
+reg [1:0] countL;
 wire [7:0] lengthAdd;
 
 noteMux noteMux(.tinymap(tmNCMP),.sel(countN));
@@ -33,7 +34,7 @@ assign bmNCMP = {bmr[1525:1522],bmr[1501:1498],bmr[1477:1474],bmr[1453:1450],bmr
 
 assign noteXor = bmNCMP ^ tmNCMP;
 
-assign noteFreq = (noteCountHold == 3'b000) ? 16'h000A : (noteCountHold == 3'b001) ? 16'h000B : (noteCountHold == 3'b010) ? 16'h000C : (noteCountHold == 3'b011) ? 16'h000D : (noteCountHold == 3'b100) ? 16'h000E : (noteCountHold == 3'b101) ? 16'h000F : 16'h0000;
+assign noteFreq = (noteCountHold == 3'b000) ? 16'h000A : (noteCountHold == 3'b001) ? 16'h000B : (noteCountHold == 3'b010) ? 16'h000C : (noteCountHold == 3'b011) ? 16'h000D : (noteCountHold == 3'b100) ? 16'h000E : (noteCountHold == 3'b101) ? 16'h000F : 16'h0001;
 
 assign noteAdd = noteXor[255]+noteXor[254]+noteXor[253]+noteXor[252]+noteXor[251]+noteXor[250]+noteXor[249]+noteXor[248]+noteXor[247]+noteXor[246]+noteXor[245]+noteXor[244]+noteXor[243]+noteXor[242]+noteXor[241]+noteXor[240]+
 				 noteXor[239]+noteXor[238]+noteXor[237]+noteXor[236]+noteXor[235]+noteXor[234]+noteXor[233]+noteXor[232]+noteXor[231]+noteXor[230]+noteXor[229]+noteXor[228]+noteXor[227]+noteXor[226]+noteXor[225]+noteXor[224]+
@@ -54,6 +55,9 @@ assign noteAdd = noteXor[255]+noteXor[254]+noteXor[253]+noteXor[252]+noteXor[251
 				 
 always @(posedge clk) begin
 	StateN <= nextStateN;
+	if(rst == 0) begin
+		StateN <= 1'b0;
+	end
 end
 
 always @(posedge clk) begin
@@ -94,16 +98,15 @@ always @(posedge clk) begin
 	end
 end
 
-lengthMux lengthMux(.tinymap(tmLCMP),.sel(countL));
+lengthMux lengthMux(.tinymap(tmLCMP),.sel(countL[0]));
 
-assign bmLCMP = {bmr[1525:1522],bmr[1501:1498],bmr[1477:1474],bmr[1453:1450],bmr[1429:1426],bmr[1405:1402],bmr[1381:1378],bmr[1357:1354],
-							bmr[1333:1330],bmr[1309:1306],bmr[1285:1282],bmr[1261:1258],bmr[1237:1234],bmr[1213:1210],bmr[1189:1186],bmr[1165:1162],
-							bmr[1141:1138],bmr[1117:1114],bmr[1093:1090],bmr[1069:1066],bmr[1045:1042],bmr[1021:1018],bmr[997:994],bmr[973:970],
-							bmr[949:946],bmr[925:922],bmr[901:898],bmr[877:874],bmr[853:850],bmr[829:826],bmr[805:802],bmr[781:778],
-							bmr[757:754],bmr[743:740],bmr[709:706],bmr[685:682],bmr[661:658],bmr[637:634],bmr[613:610],bmr[589:586],
-							bmr[565:562],bmr[541:538],bmr[517:514],bmr[493:490],bmr[469:466],bmr[445:442],bmr[421:418],bmr[397:394],
-							bmr[373:370],bmr[349:346],bmr[325:322],bmr[301:298],bmr[277:274],bmr[253:250],bmr[229:226],bmr[205:202],
-							bmr[181:178],bmr[157:154],bmr[133:130],bmr[109:106],bmr[85:82],bmr[61:58],bmr[37:34],bmr[13:10]};
+assign bmLCMP = (noteCountHold == 3'b000) ? {bmr[379:364],bmr[355:340],bmr[331:316],bmr[307:292],bmr[283:268],bmr[259:244],bmr[235:220],bmr[211:196],bmr[187:172],bmr[163:148],bmr[139:124],bmr[115:100],bmr[91:76],bmr[67:52],bmr[43:28],bmr[19:4]} :
+				(noteCountHold == 3'b001) ? {bmr[571:556],bmr[547:532],bmr[523:508],bmr[499:484],bmr[475:460],bmr[451:436],bmr[427:412],bmr[403:388],bmr[379:364],bmr[355:340],bmr[331:316],bmr[307:292],bmr[283:268],bmr[259:244],bmr[235:220],bmr[211:196]} :
+				(noteCountHold == 3'b010) ? {bmr[763:748],bmr[739:724],bmr[715:700],bmr[691:676],bmr[667:652],bmr[643:628],bmr[619:604],bmr[595:580],bmr[571:556],bmr[547:532],bmr[523:508],bmr[499:484],bmr[475:460],bmr[451:436],bmr[427:412],bmr[403:388]} :
+				(noteCountHold == 3'b011) ? {bmr[955:940],bmr[931:916],bmr[907:892],bmr[883:868],bmr[859:844],bmr[835:820],bmr[811:796],bmr[787:772],bmr[763:748],bmr[739:724],bmr[715:700],bmr[691:676],bmr[667:652],bmr[643:628],bmr[619:604],bmr[595:580]} :
+				(noteCountHold == 3'b100) ? {bmr[1147:1132],bmr[1123:1108],bmr[1099:1084],bmr[1075:1060],bmr[1051:1036],bmr[1027:1012],bmr[1003:988],bmr[979:964],bmr[955:940],bmr[931:916],bmr[907:892],bmr[883:868],bmr[859:844],bmr[835:820],bmr[811:796],bmr[787:772]} :
+				(noteCountHold == 3'b101) ? {bmr[1339:1324],bmr[1315:1300],bmr[1291:1276],bmr[1267:1252],bmr[1243:1228],bmr[1219:1204],bmr[1195:1180],bmr[1171:1156],bmr[1147:1132],bmr[1123:1108],bmr[1099:1084],bmr[1075:1060],bmr[1051:1036],bmr[1027:1012],bmr[1003:988],bmr[979:964]} :
+											{bmr[1531:1516],bmr[1507:1492],bmr[1483:1468],bmr[1459:1444],bmr[1435:1420],bmr[1411:1396],bmr[1387:1372],bmr[1363:1348],bmr[1339:1324],bmr[1315:1300],bmr[1291:1276],bmr[1267:1252],bmr[1243:1228],bmr[1219:1204],bmr[1195:1180],bmr[1171:1156]};
 
 assign lengthXor = bmLCMP ^ tmLCMP;
 
@@ -128,6 +131,9 @@ assign lengthAdd = lengthXor[255]+lengthXor[254]+lengthXor[253]+lengthXor[252]+l
 				 
 always @(posedge clk) begin
 	StateL <= nextStateL;
+	if(rst == 0) begin
+		StateL <= 0'b0;
+	end
 end
 
 always @(posedge clk) begin
@@ -146,7 +152,7 @@ lengthSumHold <= lengthSumHold;
 			nextStateL <= 1'b0;
 			lengthDone <= 1'b0;
 		end
-		1'b1 : if(countL >= 1) begin
+		1'b1 : if(countL >= 2) begin
 			nextStateL <= 1'b0;
 			lengthDone <= 1'b1;
 		end else begin
