@@ -1,0 +1,120 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/intelFPGA_lite/18.1
+vAccelTB
+Z0 !s110 1576092210
+!i10b 1
+!s100 gM[[2LWaSTWNh7AXG2lhi1
+IPD]da3W:0fc2kCK:H:n3z1
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dC:/Users/ECE_STUDENT/Documents/ACCEL
+w1576092077
+8C:/Users/ECE_STUDENT/Documents/ACCEL/AccelTB.v
+FC:/Users/ECE_STUDENT/Documents/ACCEL/AccelTB.v
+L0 1
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1576092210.000000
+!s107 C:/Users/ECE_STUDENT/Documents/ACCEL/AccelTB.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Documents/ACCEL/AccelTB.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+n@accel@t@b
+vCompareAccelerator
+!s110 1576016961
+!i10b 1
+!s100 Z?F=T5MIN726L88UEUY021
+IM_:_SQJ=LJ^a;1zf0dAFY3
+R1
+R2
+w1576016954
+8C:/Users/ECE_STUDENT/Documents/ACCEL/CompareAccelerator.v
+FC:/Users/ECE_STUDENT/Documents/ACCEL/CompareAccelerator.v
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1576016961.000000
+!s107 C:/Users/ECE_STUDENT/Documents/ACCEL/CompareAccelerator.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Documents/ACCEL/CompareAccelerator.v|
+!i113 1
+R5
+R6
+n@compare@accelerator
+vlengthMux
+R0
+!i10b 1
+!s100 e00=W6h]TD:Q@3f<;ZVV?3
+IhRZc0VFPW3JWI@==EjU032
+R1
+R2
+w1576020130
+8C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v
+FC:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Documents/ACCEL/lengthMux.v|
+!i113 1
+R5
+R6
+nlength@mux
+vMatchAccelerator
+R0
+!i10b 1
+!s100 @78]DmYl8K3m3neQOK4lk2
+IleL43ameb<GeI9[nmRjGF3
+R1
+R2
+w1576092200
+8C:/Users/ECE_STUDENT/Documents/ACCEL/MatchAccelerator.v
+FC:/Users/ECE_STUDENT/Documents/ACCEL/MatchAccelerator.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ECE_STUDENT/Documents/ACCEL/MatchAccelerator.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Documents/ACCEL/MatchAccelerator.v|
+!i113 1
+R5
+R6
+n@match@accelerator
+vnoteMux
+R0
+!i10b 1
+!s100 @Kg:DZTOegm5@fT?hX`XN2
+IB;9l@>PJ<5XH2OW8:Y][^1
+R1
+R2
+w1576020248
+8C:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v
+FC:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Documents/ACCEL/noteMux.v|
+!i113 1
+R5
+R6
+nnote@mux
