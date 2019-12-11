@@ -2,8 +2,9 @@ module cpu_tb ();
 
 reg clk, rst_n;
 reg [3:0] buttons;
+wire test;
 
-cpu_top iDUT(.clk(clk), .rst_n(rst_n), .buttons_pressed(buttons));
+cpu_top iDUT(.clk(clk), .rst_n(rst_n), .buttons_pressed(buttons),.test(test));
 
 initial begin
 clk = 0;

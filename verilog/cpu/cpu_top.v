@@ -22,8 +22,9 @@ wire wb_wr_breg;
 reg cpu_int;
 wire exe_int_state;
 
-always @ (posedge clk) begin
-    cpu_int <= exe_int_state;
+always @ (posedge clk, rst_n) begin
+    if(~rst_n) cpu_int <= 0;
+    else cpu_int <= exe_int_state;
 end
 
 //Stall stuff
@@ -67,7 +68,7 @@ always @ (posedge clk, negedge rst_n) begin
         ifid_inst <= if_inst;
     end
     if (~rst_n) ifid_flushed <= 1'b1;
-    else if (~ifid_stall) ifid_flushed <= if_inst_invalid;
+    else if (~ifid_stall) ifid_flushed <= if_inst_invalid | exe_flush_cmd;
 end
 
 // * IFID PIPES END *
@@ -291,7 +292,7 @@ always @ (posedge clk, negedge rst_n) begin
 
     if (~rst_n) idexe_flushed <= 1'b1;
     else if ((|buttons_pressed) & ~cpu_int) idexe_flushed <= 1'b1;
-    else if (~idexe_stall) idexe_flushed <= ifid_flushed;
+    else if (~idexe_stall) idexe_flushed <= ifid_flushed | exe_flush_cmd;
 end
 // * IDEXE PIPES END *
 
@@ -370,11 +371,12 @@ exe_stage Exe_stage(.clk(clk),
 // * MEMORY STUFF START *
 wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
 wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
-//modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
 
-//modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
+modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
 
+modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
 
+/*
 bitmap_mem bitmap_mem (
 	.address(exe_rd_data[2:0]),
 	.clock(clk),
@@ -390,7 +392,7 @@ D_mem D_mem (
 	.wren(exe_write_nreg),
 	.q(exewb_nmem_read_data)
 	);
-	
+*/	
 	
 	
 // * MEMORY STUFF END *

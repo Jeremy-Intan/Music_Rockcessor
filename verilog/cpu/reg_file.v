@@ -15,7 +15,6 @@ module reg_file (
 	 
 	 );
 output [15:0] test;
-	 assign test = n_reg_12;
     parameter n = 16;
     parameter b = 1536;
 
@@ -53,6 +52,8 @@ output [15:0] test;
     reg [b-1:0] b_reg_0;
     reg [b-1:0] b_reg_1;
     reg [b-1:0] b_reg_2;
+
+    assign test = n_reg_12; //TESTING!!!
 
     always @ (*)
         case (rd_addr_1)
