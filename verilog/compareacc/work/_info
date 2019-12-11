@@ -9,71 +9,92 @@ z2
 cModel Technology
 dC:/Users/ECE_STUDENT/Desktop/ECE554/mP1
 vbmpreg
-Z0 !s110 1575919663
+Z0 !s110 1576104277
 !i10b 1
 !s100 M^cC0N<0U85cORnDGIL[G2
 IV9O0`QAAD6=>fDUU]k:NU3
 Z1 VDg1SIo80bB@j0V0VzS_@n1
 Z2 dC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc
-w1575918775
+Z3 w1576020582
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v
 L0 1
-Z3 OV;L;10.5b;63
+Z4 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1575919663.000000
+Z5 !s108 1576104277.000000
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v|
 !i113 1
-Z5 o-work work
-Z6 tCvgOpt 0
+Z6 o-work work
+Z7 tCvgOpt 0
 vcmpacc
 R0
 !i10b 1
-!s100 c?]bHLC1N6k_Y:B2d<T=n2
-ImGhBb_oUQQB68^Mj5SzV02
+!s100 T;FjODIOfLC0dmoNLIDZV1
+Ici_Mmn`MJlm09]<E@FgTk1
 R1
 R2
-w1575915487
+w1576104250
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v
 L0 1
-R3
+R4
 r1
 !s85 0
 31
-R4
+R5
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v|
 !i113 1
-R5
 R6
+R7
+vcmpacc_demo
+R0
+!i10b 1
+!s100 GARbX][c8M[oT:KSk6Tic1
+I0hEcPIZo]NKO05gKRZDnm2
+R1
+R2
+w1576103930
+8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v
+FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v
+L0 6
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v|
+!i113 1
+R6
+R7
 vcmpacc_tb
 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
 R0
 !i10b 1
-!s100 Y^cO0oKkzH7G[RV<MR9Ga2
-I2=RA5RAleQ]T8V:L>no4g3
+!s100 dElZ^iD@RaZ=a1_BIdS`=1
+I3LcJJEB^o7>H=LGONC=gg0
 R1
 !s105 cmpacc_tb_sv_unit
 S1
 R2
-w1575919556
+w1576103533
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv
-L0 1
-R3
+L0 2
+R4
 r1
 !s85 0
 31
-R4
+R5
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv|
 !i113 1
 o-work work -sv
-R6
+R7
 vcmpalu
 R0
 !i10b 1
@@ -81,17 +102,17 @@ R0
 IR1_I>GHm]RVDooU5QXV0M2
 R1
 R2
-w1575919428
+R3
 8C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v
 FC:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v
 L0 1
-R3
+R4
 r1
 !s85 0
 31
-R4
+!s108 1576104276.000000
 !s107 C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v|
 !i113 1
-R5
 R6
+R7

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for cmpacc
-Mon Dec 09 13:28:47 2019
+Wed Dec 11 15:14:30 2019
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -14,12 +14,15 @@ Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
   6. Analysis & Synthesis Resource Usage Summary
   7. Analysis & Synthesis Resource Utilization by Entity
   8. Registers Removed During Synthesis
-  9. General Register Statistics
- 10. Multiplexer Restructuring Statistics (Restructuring Performed)
- 11. Post-Synthesis Netlist Statistics for Top Partition
- 12. Elapsed Time Per Partition
- 13. Analysis & Synthesis Messages
- 14. Analysis & Synthesis Suppressed Messages
+  9. Removed Registers Triggering Further Register Optimizations
+ 10. General Register Statistics
+ 11. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 12. Port Connectivity Checks: "cmpalu:alu"
+ 13. Port Connectivity Checks: "bmpreg:bitmapreg"
+ 14. Post-Synthesis Netlist Statistics for Top Partition
+ 15. Elapsed Time Per Partition
+ 16. Analysis & Synthesis Messages
+ 17. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -45,14 +48,14 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Mon Dec 09 13:28:47 2019       ;
+; Analysis & Synthesis Status     ; Successful - Wed Dec 11 15:14:30 2019       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; cmpacc                                      ;
-; Top-level Entity Name           ; cmpacc                                      ;
+; Top-level Entity Name           ; cmpacc_demo                                 ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 1829                                        ;
-; Total pins                      ; 1,552                                       ;
+; Total registers                 ; 45                                          ;
+; Total pins                      ; 22                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 0                                           ;
 ; Total DSP Blocks                ; 0                                           ;
@@ -71,7 +74,7 @@ refer to the applicable agreement for further details.
 ; Option                                                                          ; Setting            ; Default Value      ;
 +---------------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                          ; 5CGXFC7C7F23C8     ;                    ;
-; Top-level entity name                                                           ; cmpacc             ; cmpacc             ;
+; Top-level entity name                                                           ; cmpacc_demo        ; cmpacc             ;
 ; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
 ; Use smart compilation                                                           ; Off                ; Off                ;
 ; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
@@ -165,23 +168,19 @@ refer to the applicable agreement for further details.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
-;     Processor 3            ;   0.0%      ;
-;     Processor 4            ;   0.0%      ;
-;     Processor 5            ;   0.0%      ;
-;     Processor 6            ;   0.0%      ;
+;     Processors 2-6         ;   0.0%      ;
 +----------------------------+-------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                            ;
-+----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                              ; Library ;
-+----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
-; cmpacc.v                         ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v ;         ;
-; cmpalu.v                         ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v ;         ;
-; bmpreg.v                         ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v ;         ;
-+----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                 ;
++----------------------------------+-----------------+------------------------+--------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                                   ; Library ;
++----------------------------------+-----------------+------------------------+--------------------------------------------------------------------------------+---------+
+; cmpacc_demo.v                    ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v ;         ;
+; cmpalu.v                         ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v      ;         ;
+; bmpreg.v                         ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v      ;         ;
++----------------------------------+-----------------+------------------------+--------------------------------------------------------------------------------+---------+
 
 
 +---------------------------------------------------------+
@@ -189,51 +188,231 @@ refer to the applicable agreement for further details.
 +---------------------------------------------+-----------+
 ; Resource                                    ; Usage     ;
 +---------------------------------------------+-----------+
-; Estimate of Logic utilization (ALMs needed) ; 1821      ;
+; Estimate of Logic utilization (ALMs needed) ; 24        ;
 ;                                             ;           ;
-; Combinational ALUT usage for logic          ; 1607      ;
+; Combinational ALUT usage for logic          ; 40        ;
 ;     -- 7 input functions                    ; 0         ;
-;     -- 6 input functions                    ; 1484      ;
-;     -- 5 input functions                    ; 79        ;
-;     -- 4 input functions                    ; 9         ;
-;     -- <=3 input functions                  ; 35        ;
+;     -- 6 input functions                    ; 7         ;
+;     -- 5 input functions                    ; 2         ;
+;     -- 4 input functions                    ; 7         ;
+;     -- <=3 input functions                  ; 24        ;
 ;                                             ;           ;
-; Dedicated logic registers                   ; 1829      ;
+; Dedicated logic registers                   ; 45        ;
 ;                                             ;           ;
-; I/O pins                                    ; 1552      ;
+; I/O pins                                    ; 22        ;
 ;                                             ;           ;
 ; Total DSP Blocks                            ; 0         ;
 ;                                             ;           ;
 ; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 1829      ;
-; Total fan-out                               ; 16400     ;
-; Average fan-out                             ; 2.51      ;
+; Maximum fan-out                             ; 45        ;
+; Total fan-out                               ; 293       ;
+; Average fan-out                             ; 2.27      ;
 +---------------------------------------------+-----------+
 
 
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                         ;
-+----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------+-------------+--------------+
-; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name      ; Entity Name ; Library Name ;
-+----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------+-------------+--------------+
-; |cmpacc                    ; 1607 (1)            ; 1829 (0)                  ; 0                 ; 0          ; 1552 ; 0            ; |cmpacc                  ; cmpacc      ; work         ;
-;    |bmpreg:bitmapreg|      ; 1543 (1543)         ; 1670 (1670)               ; 0                 ; 0          ; 0    ; 0            ; |cmpacc|bmpreg:bitmapreg ; bmpreg      ; work         ;
-;    |cmpalu:alu|            ; 63 (63)             ; 159 (159)                 ; 0                 ; 0          ; 0    ; 0            ; |cmpacc|cmpalu:alu       ; cmpalu      ; work         ;
-+----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------+-------------+--------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                              ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------+-------------+--------------+
+; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name           ; Entity Name ; Library Name ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------+-------------+--------------+
+; |cmpacc_demo               ; 40 (1)              ; 45 (0)                    ; 0                 ; 0          ; 22   ; 0            ; |cmpacc_demo                  ; cmpacc_demo ; work         ;
+;    |bmpreg:bitmapreg|      ; 29 (29)             ; 28 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |cmpacc_demo|bmpreg:bitmapreg ; bmpreg      ; work         ;
+;    |cmpalu:alu|            ; 10 (10)             ; 17 (17)                   ; 0                 ; 0          ; 0    ; 0            ; |cmpacc_demo|cmpalu:alu       ; cmpalu      ; work         ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------+-------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-+--------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                   ;
-+---------------------------------------+----------------------------------------------+
-; Register name                         ; Reason for Removal                           ;
-+---------------------------------------+----------------------------------------------+
-; cmpalu:alu|calcdone[0]                ; Merged with cmpalu:alu|lboundarystored       ;
-; cmpalu:alu|calcdone[2]                ; Merged with cmpalu:alu|botboundarystored     ;
-; cmpalu:alu|rowtopchecked              ; Merged with cmpalu:alu|rowbotchecked         ;
-; bmpreg:bitmapreg|nextrowtopready      ; Merged with bmpreg:bitmapreg|nextrowbotready ;
-; Total Number of Removed Registers = 4 ;                                              ;
-+---------------------------------------+----------------------------------------------+
++----------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                           ;
++-----------------------------------------------+----------------------------------------------+
+; Register name                                 ; Reason for Removal                           ;
++-----------------------------------------------+----------------------------------------------+
+; bmpreg:bitmapreg|data[0..63]                  ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[64..69]                 ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[70..87]                 ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[88..93]                 ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[94..111]                ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[112..117]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[118..135]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[136..141]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[142..159]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[160..165]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[166..183]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[184..189]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[190..207]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[208..213]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[214..231]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[232..237]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[238..255]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[256..261]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[262..279]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[280..285]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[286..303]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[304..309]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[310..327]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[328..333]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[334..351]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[352..357]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[358..375]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[376..381]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[382..399]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[400..405]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[406..423]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[424..429]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[430..447]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[448..453]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[454..471]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[472..477]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[478..495]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[496..501]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[502..519]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[520..525]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[526..543]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[544..549]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[550..567]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[568..573]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[574..591]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[592..597]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[598..615]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[616..621]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[622..639]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[640..645]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[646..663]               ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[664..669]               ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[670..1443]              ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[1444..1461]             ; Stuck at VCC due to stuck port data_in       ;
+; bmpreg:bitmapreg|data[1462..1535]             ; Stuck at GND due to stuck port data_in       ;
+; cmpalu:alu|calcdone[0]                        ; Merged with cmpalu:alu|lboundarystored       ;
+; cmpalu:alu|calcdone[2]                        ; Merged with cmpalu:alu|botboundarystored     ;
+; cmpalu:alu|rowtopchecked                      ; Merged with cmpalu:alu|rowbotchecked         ;
+; cmpalu:alu|currrowbot[1..3,22,23]             ; Merged with cmpalu:alu|currrowbot[0]         ;
+; cmpalu:alu|currrowbot[17..21]                 ; Merged with cmpalu:alu|currrowbot[16]        ;
+; cmpalu:alu|currrowbot[4..9,11..15]            ; Merged with cmpalu:alu|currrowbot[10]        ;
+; cmpalu:alu|currrowtop[1..3,22,23]             ; Merged with cmpalu:alu|currrowtop[0]         ;
+; cmpalu:alu|currrowtop[17..21]                 ; Merged with cmpalu:alu|currrowtop[16]        ;
+; cmpalu:alu|currrowtop[4..9,11..15]            ; Merged with cmpalu:alu|currrowtop[10]        ;
+; bmpreg:bitmapreg|nextrowtopready              ; Merged with bmpreg:bitmapreg|nextrowbotready ;
+; bmpreg:bitmapreg|currrowbot[1..3,22,23]       ; Merged with bmpreg:bitmapreg|currrowbot[0]   ;
+; bmpreg:bitmapreg|currrowbot[17..21]           ; Merged with bmpreg:bitmapreg|currrowbot[16]  ;
+; bmpreg:bitmapreg|currrowbot[4..9,11..15]      ; Merged with bmpreg:bitmapreg|currrowbot[10]  ;
+; bmpreg:bitmapreg|currrowtop[1..3,22,23]       ; Merged with bmpreg:bitmapreg|currrowtop[0]   ;
+; bmpreg:bitmapreg|currrowtop[17..21]           ; Merged with bmpreg:bitmapreg|currrowtop[16]  ;
+; bmpreg:bitmapreg|currrowtop[4..9,11..15]      ; Merged with bmpreg:bitmapreg|currrowtop[10]  ;
+; bmpreg:bitmapreg|currrowbot[0]                ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|currrowtop[0]                ; Stuck at GND due to stuck port data_in       ;
+; cmpalu:alu|currrowbot[0]                      ; Stuck at GND due to stuck port data_in       ;
+; cmpalu:alu|currrowtop[0]                      ; Stuck at GND due to stuck port data_in       ;
+; cmpalu:alu|emptycolumns[2..4]                 ; Lost fanout                                  ;
+; cmpalu:alu|emptyrows[5]                       ; Lost fanout                                  ;
+; cmpalu:alu|emptycolumns[0,1]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[0]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[0]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[1]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[1]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[2]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[2]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[3]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[3]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[4]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[4]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowsupper[5]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrowslower[5]                  ; Lost fanout                                  ;
+; cmpalu:alu|emptyrows[0..4]                    ; Lost fanout                                  ;
+; bmpreg:bitmapreg|currcolumn[0..2,4..35,62,63] ; Stuck at GND due to stuck port data_in       ;
+; cmpalu:alu|currcol[0..2,4..35,62,63]          ; Stuck at GND due to stuck port data_in       ;
+; bmpreg:bitmapreg|currcolumn[37..61]           ; Merged with bmpreg:bitmapreg|currcolumn[36]  ;
+; cmpalu:alu|currcol[37..61]                    ; Merged with cmpalu:alu|currcol[36]           ;
+; Total Number of Removed Registers = 1775      ;                                              ;
++-----------------------------------------------+----------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                                    ;
++-----------------------------+---------------------------+--------------------------------------------------------------------------------------+
+; Register name               ; Reason for Removal        ; Registers Removed due to This Register                                               ;
++-----------------------------+---------------------------+--------------------------------------------------------------------------------------+
+; cmpalu:alu|emptyrows[5]     ; Lost Fanouts              ; cmpalu:alu|emptyrowsupper[0], cmpalu:alu|emptyrowslower[0],                          ;
+;                             ;                           ; cmpalu:alu|emptyrowsupper[1], cmpalu:alu|emptyrowslower[1],                          ;
+;                             ;                           ; cmpalu:alu|emptyrowsupper[2], cmpalu:alu|emptyrowslower[2],                          ;
+;                             ;                           ; cmpalu:alu|emptyrowsupper[3], cmpalu:alu|emptyrowslower[3],                          ;
+;                             ;                           ; cmpalu:alu|emptyrowsupper[4], cmpalu:alu|emptyrowslower[4],                          ;
+;                             ;                           ; cmpalu:alu|emptyrowsupper[5], cmpalu:alu|emptyrows[0]                                ;
+; bmpreg:bitmapreg|data[0]    ; Stuck at GND              ; bmpreg:bitmapreg|currrowbot[0], bmpreg:bitmapreg|currrowtop[0],                      ;
+;                             ; due to stuck port data_in ; cmpalu:alu|currrowbot[0], cmpalu:alu|currrowtop[0], bmpreg:bitmapreg|currcolumn[63], ;
+;                             ;                           ; cmpalu:alu|currcol[63]                                                               ;
+; bmpreg:bitmapreg|data[24]   ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[62], cmpalu:alu|currcol[62]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[672]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[35], cmpalu:alu|currcol[35]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[696]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[34], cmpalu:alu|currcol[34]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[720]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[33], cmpalu:alu|currcol[33]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[744]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[32], cmpalu:alu|currcol[32]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[768]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[31], cmpalu:alu|currcol[31]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[792]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[30], cmpalu:alu|currcol[30]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[816]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[29], cmpalu:alu|currcol[29]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[840]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[28], cmpalu:alu|currcol[28]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[864]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[27], cmpalu:alu|currcol[27]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[888]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[26], cmpalu:alu|currcol[26]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[912]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[25], cmpalu:alu|currcol[25]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[936]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[24], cmpalu:alu|currcol[24]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[960]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[23], cmpalu:alu|currcol[23]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[984]  ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[22], cmpalu:alu|currcol[22]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1008] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[21], cmpalu:alu|currcol[21]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1032] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[20], cmpalu:alu|currcol[20]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1056] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[19], cmpalu:alu|currcol[19]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1104] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[17], cmpalu:alu|currcol[17]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1128] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[16], cmpalu:alu|currcol[16]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1152] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[15], cmpalu:alu|currcol[15]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1176] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[14], cmpalu:alu|currcol[14]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1200] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[13], cmpalu:alu|currcol[13]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1224] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[12], cmpalu:alu|currcol[12]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1248] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[11], cmpalu:alu|currcol[11]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1272] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[10], cmpalu:alu|currcol[10]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1296] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[9], cmpalu:alu|currcol[9]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1320] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[8], cmpalu:alu|currcol[8]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1344] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[7], cmpalu:alu|currcol[7]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1368] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[6], cmpalu:alu|currcol[6]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1392] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[5], cmpalu:alu|currcol[5]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1416] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[4], cmpalu:alu|currcol[4]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1464] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[2], cmpalu:alu|currcol[2]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1488] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[1], cmpalu:alu|currcol[1]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1512] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[0], cmpalu:alu|currcol[0]                                ;
+;                             ; due to stuck port data_in ;                                                                                      ;
+; bmpreg:bitmapreg|data[1080] ; Stuck at GND              ; bmpreg:bitmapreg|currcolumn[18], cmpalu:alu|currcol[18]                              ;
+;                             ; due to stuck port data_in ;                                                                                      ;
++-----------------------------+---------------------------+--------------------------------------------------------------------------------------+
 
 
 +------------------------------------------------------+
@@ -241,35 +420,101 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 1829  ;
-; Number of registers using Synchronous Clear  ; 43    ;
+; Total registers                              ; 45    ;
+; Number of registers using Synchronous Clear  ; 8     ;
 ; Number of registers using Synchronous Load   ; 19    ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 1695  ;
+; Number of registers using Clock Enable       ; 18    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                        ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output              ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------+
-; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|res[0]               ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|res[5]               ;
-; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|emptycolumns[0]      ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|toprowcount[0] ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|emptyrowslower[0]    ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|emptyrows[0]         ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|colcount[0]    ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|colcount[3]    ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|emptyrowsupper[0]    ;
-; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |cmpacc|cmpalu:alu|res[11]              ;
-; 24:1               ; 64 bits   ; 1024 LEs      ; 1024 LEs             ; 0 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|currcolumn[6]  ;
-; 64:1               ; 24 bits   ; 1008 LEs      ; 1008 LEs             ; 0 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|currrowbot[3]  ;
-; 64:1               ; 24 bits   ; 1008 LEs      ; 1008 LEs             ; 0 LEs                  ; Yes        ; |cmpacc|bmpreg:bitmapreg|currrowtop[0]  ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |cmpacc_demo|cmpalu:alu|emptycolumns[2]      ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc_demo|bmpreg:bitmapreg|toprowcount[0] ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc_demo|cmpalu:alu|emptyrowslower[5]    ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc_demo|cmpalu:alu|emptyrows[1]         ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |cmpacc_demo|bmpreg:bitmapreg|colcount[2]    ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |cmpacc_demo|bmpreg:bitmapreg|colcount[5]    ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |cmpacc_demo|cmpalu:alu|emptyrowsupper[3]    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "cmpalu:alu"                                                                           ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                             ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; result ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Port Connectivity Checks: "bmpreg:bitmapreg"        ;
++-------------------+-------+----------+--------------+
+; Port              ; Type  ; Severity ; Details      ;
++-------------------+-------+----------+--------------+
+; bmpin[1461..1444] ; Input ; Info     ; Stuck at VCC ;
+; bmpin[669..664]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[645..640]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[621..616]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[597..592]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[573..568]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[549..544]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[525..520]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[501..496]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[477..472]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[453..448]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[429..424]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[405..400]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[381..376]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[357..352]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[333..328]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[309..304]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[285..280]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[261..256]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[237..232]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[213..208]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[189..184]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[165..160]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[141..136]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[117..112]   ; Input ; Info     ; Stuck at VCC ;
+; bmpin[93..88]     ; Input ; Info     ; Stuck at VCC ;
+; bmpin[69..64]     ; Input ; Info     ; Stuck at VCC ;
+; bmpin[1535..1462] ; Input ; Info     ; Stuck at GND ;
+; bmpin[1443..670]  ; Input ; Info     ; Stuck at GND ;
+; bmpin[663..646]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[639..622]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[615..598]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[591..574]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[567..550]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[543..526]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[519..502]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[495..478]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[471..454]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[447..430]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[423..406]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[399..382]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[375..358]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[351..334]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[327..310]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[303..286]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[279..262]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[255..238]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[231..214]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[207..190]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[183..166]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[159..142]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[135..118]   ; Input ; Info     ; Stuck at GND ;
+; bmpin[111..94]    ; Input ; Info     ; Stuck at GND ;
+; bmpin[87..70]     ; Input ; Info     ; Stuck at GND ;
+; bmpin[63..0]      ; Input ; Info     ; Stuck at GND ;
++-------------------+-------+----------+--------------+
 
 
 +-----------------------------------------------------+
@@ -277,30 +522,28 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 1829                        ;
-;     ENA               ; 1648                        ;
-;     ENA SCLR          ; 35                          ;
+; arriav_ff             ; 45                          ;
+;     ENA               ; 6                           ;
 ;     ENA SLD           ; 12                          ;
 ;     SCLR              ; 8                           ;
 ;     SLD               ; 7                           ;
-;     plain             ; 119                         ;
-; arriav_lcell_comb     ; 1607                        ;
-;     arith             ; 12                          ;
+;     plain             ; 12                          ;
+; arriav_lcell_comb     ; 40                          ;
+;     arith             ; 6                           ;
 ;         1 data inputs ; 5                           ;
 ;         2 data inputs ; 1                           ;
-;         5 data inputs ; 6                           ;
-;     normal            ; 1595                        ;
+;     normal            ; 34                          ;
 ;         0 data inputs ; 1                           ;
-;         1 data inputs ; 7                           ;
-;         2 data inputs ; 11                          ;
-;         3 data inputs ; 10                          ;
-;         4 data inputs ; 9                           ;
-;         5 data inputs ; 73                          ;
-;         6 data inputs ; 1484                        ;
-; boundary_port         ; 1552                        ;
+;         1 data inputs ; 4                           ;
+;         2 data inputs ; 8                           ;
+;         3 data inputs ; 5                           ;
+;         4 data inputs ; 7                           ;
+;         5 data inputs ; 2                           ;
+;         6 data inputs ; 7                           ;
+; boundary_port         ; 22                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 3.00                        ;
-; Average LUT depth     ; 1.92                        ;
+; Max LUT depth         ; 1.50                        ;
+; Average LUT depth     ; 0.96                        ;
 +-----------------------+-----------------------------+
 
 
@@ -309,7 +552,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:01     ;
+; Top            ; 00:00:00     ;
 +----------------+--------------+
 
 
@@ -319,35 +562,62 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-    Info: Processing started: Mon Dec 09 13:28:37 2019
+    Info: Processing started: Wed Dec 11 15:14:22 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cmpacc -c cmpacc
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
-Info (12021): Found 1 design units, including 1 entities, in source file cmpacc.v
-    Info (12023): Found entity 1: cmpacc File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file cmpacc_demo.v
+    Info (12023): Found entity 1: cmpacc_demo File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file cmpalu.v
     Info (12023): Found entity 1: cmpalu File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file cmpacc_tb.sv
     Info (12023): Found entity 1: cmpacc_tb File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file bmpreg.v
     Info (12023): Found entity 1: bmpreg File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v Line: 1
-Info (12127): Elaborating entity "cmpacc" for the top level hierarchy
-Warning (10036): Verilog HDL or VHDL warning at cmpacc.v(22): object "res" assigned a value but never read File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v Line: 22
-Info (12128): Elaborating entity "bmpreg" for hierarchy "bmpreg:bitmapreg" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v Line: 28
-Info (12128): Elaborating entity "cmpalu" for hierarchy "cmpalu:alu" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v Line: 30
+Warning (10236): Verilog HDL Implicit Net warning at cmpacc_demo.v(5): created implicit net for "wren" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 5
+Warning (10236): Verilog HDL Implicit Net warning at cmpacc_demo.v(100): created implicit net for "result" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 100
+Info (12127): Elaborating entity "cmpacc_demo" for the top level hierarchy
+Warning (10036): Verilog HDL or VHDL warning at cmpacc_demo.v(100): object "result" assigned a value but never read File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 100
+Warning (10036): Verilog HDL or VHDL warning at cmpacc_demo.v(6): object "ledout" assigned a value but never read File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 6
+Warning (10230): Verilog HDL assignment warning at cmpacc_demo.v(100): truncated value with size 13 to match size of target (1) File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 100
+Warning (10034): Output port "HEX" at cmpacc_demo.v(1) has no driver File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+Info (12128): Elaborating entity "bmpreg" for hierarchy "bmpreg:bitmapreg" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 105
+Info (12128): Elaborating entity "cmpalu" for hierarchy "cmpalu:alu" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 107
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "HEX[0]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (13410): Pin "HEX[1]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (13410): Pin "HEX[2]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (13410): Pin "HEX[3]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (13410): Pin "HEX[4]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (13410): Pin "HEX[5]" is stuck at GND File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
 Info (286030): Timing-Driven Synthesis is running
+Info (17049): 23 registers lost all their fanouts during netlist optimizations.
 Info (144001): Generated suppressed messages file C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/output_files/cmpacc.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 4820 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 1538 input pins
-    Info (21059): Implemented 14 output pins
-    Info (21061): Implemented 3268 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 2 warnings
-    Info: Peak virtual memory: 4893 megabytes
-    Info: Processing ended: Mon Dec 09 13:28:47 2019
-    Info: Elapsed time: 00:00:10
-    Info: Total CPU time (on all processors): 00:00:19
+Warning (21074): Design contains 13 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "KEY[1]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "KEY[2]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "KEY[3]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[0]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[1]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[2]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[3]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[4]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[5]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[6]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[7]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[8]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+    Warning (15610): No output dependent on input pin "SW[9]" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v Line: 1
+Info (21057): Implemented 70 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 15 input pins
+    Info (21059): Implemented 7 output pins
+    Info (21061): Implemented 48 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 28 warnings
+    Info: Peak virtual memory: 4868 megabytes
+    Info: Processing ended: Wed Dec 11 15:14:30 2019
+    Info: Elapsed time: 00:00:08
+    Info: Total CPU time (on all processors): 00:00:17
 
 
 +------------------------------------------+

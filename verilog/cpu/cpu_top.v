@@ -22,7 +22,7 @@ wire wb_wr_breg;
 reg cpu_int;
 wire exe_int_state;
 
-always @ (posedge clk, rst_n) begin
+always @ (posedge clk, negedge rst_n) begin
     if(~rst_n) cpu_int <= 0;
     else cpu_int <= exe_int_state;
 end
@@ -30,7 +30,7 @@ end
 //Stall stuff
 wire if_stall;
 wire ifid_stall;
-wire [15:0] idexe_stall;
+wire idexe_stall;
 wire exe_stall;
 wire exe_flush_cmd;
 wire exewb_stall;

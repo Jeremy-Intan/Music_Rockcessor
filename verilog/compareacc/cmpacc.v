@@ -17,11 +17,6 @@ wire nextrowbot;
 wire nextrowtop;
 
 
-//output
-wire finished;
-wire [12:0] res;
-
-assign res = result;
 
 //module instantiation
 

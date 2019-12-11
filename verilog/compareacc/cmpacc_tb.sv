@@ -1,3 +1,4 @@
+
 module cmpacc_tb;
 
 
@@ -28,11 +29,13 @@ initial begin
 	@(negedge clk);
 	
 	//should have two empty rows on left and bottom
+	
 	bitmap = 
 	{
-	24'h000000, 
-	24'h000000,  
-	24'h000000,  
+	24'h3fffff, 
+	24'h3fffff,  
+	24'h3fffff,
+	24'h3fffff,
 	24'h000000,  
 	24'h000000,  
 	24'h000000, 
@@ -101,8 +104,8 @@ initial begin
 	wren = 1'b0;
 	
 	@(negedge clk);
-	while (counter < 1000) begin
-		if (result[11] == 1 && result [12] == 1 && result[4:0] == 5'b00010 && result[10:5] == 6'b00010 && done == 1) begin
+	while (counter < 500) begin
+		if (result[11] == 0 && result [12] == 0 && result[4:0] == 5'b00010 && result[10:5] == 6'b00010 && done == 1) begin
 			res_correct = 1;
 			break;
 		end
@@ -117,6 +120,21 @@ initial begin
 	if (res_correct == 0) begin
 		$display("wrong");
 	end
+	
+	@(negedge clk);
+	wren = 1'b1;
+	
+	@(negedge clk);
+	@(negedge clk);
+	wren = 1'b0;
+	
+	@(negedge clk);
+	while (counter <1000) begin
+		counter = counter + 1;
+		@(negedge clk);
+	end
+	
+	
 	$stop;
 end
 

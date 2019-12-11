@@ -1,0 +1,3 @@
+Warning (10273): Verilog HDL warning at cmpalu.v(73): extended using "x" or "z" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v Line: 73
+Warning (10273): Verilog HDL warning at cmpalu.v(99): extended using "x" or "z" File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpalu.v Line: 99
+Warning (10268): Verilog HDL information at bmpreg.v(43): always construct contains both blocking and non-blocking assignments File: C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/bmpreg.v Line: 43

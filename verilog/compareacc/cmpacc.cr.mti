@@ -12,6 +12,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	cmpalu
 
+} {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cmpacc
+
+Top level modules:
+	cmpacc
+
 } {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_tb.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module cmpacc_tb
@@ -19,11 +26,11 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	cmpacc_tb
 
-} {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc.v
+} {} {}} C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/verilog/Music_Rockcessor/verilog/compareacc/cmpacc_demo.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module cmpacc
+-- Compiling module cmpacc_demo
 
 Top level modules:
-	cmpacc
+	cmpacc_demo
 
 } {} {}}
