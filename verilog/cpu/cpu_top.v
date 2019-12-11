@@ -1,5 +1,44 @@
-module cpu_top(clk, rst_n, buttons_pressed, test);
+module cpu_top(clk, rst_n, buttons_pressed, test,
+	//////////// Audio //////////
+   //input 		          		AUD_ADCDAT,
+   //inout 		          		AUD_ADCLRCK,
+   AUD_BCLK,
+   AUD_DACDAT,
+   AUD_DACLRCK,
+   AUD_XCK,
+	
+   //////////// I2C for Audio and Video-In //////////
+   FPGA_I2C_SCLK,
+   FPGA_I2C_SDAT
+);
+inout 		          		AUD_BCLK;
+output		          		AUD_DACDAT;
+inout 		          		AUD_DACLRCK;
+output		          		AUD_XCK;
+	
+output		          		FPGA_I2C_SCLK;
+inout 		          		FPGA_I2C_SDAT;
+
+localparam c_low = 191117;
+localparam d = 170265;
+localparam e_flat = 160710;
+localparam e = 151690;
+localparam f = 143176;
+localparam g = 127551;
+localparam a_flat = 120395;
+localparam a = 113636;
+localparam b_flat = 107259;
+localparam b = 101239;
+localparam c_high = 95555;
+localparam d_flat_high = 90194;
+localparam d_high = 85132;
+localparam e_flat_high = 80352;
+localparam e_high = 75843;
+localparam f_high = 71586;
+
+
 output [15:0] test;
+assign test = exe_note[15:0];
 //top level module of the CPU
 //butons_pressed are active high here, convert it in the higher level
 input wire clk;
@@ -22,7 +61,7 @@ wire wb_wr_breg;
 reg cpu_int;
 wire exe_int_state;
 
-always @ (posedge clk, rst_n) begin
+always @ (posedge clk, negedge rst_n) begin
     if(~rst_n) cpu_int <= 0;
     else cpu_int <= exe_int_state;
 end
@@ -118,7 +157,7 @@ wire id_ldb;
 //decode stage
 dec_stage Dec_stage(.inst(ifid_inst), .write_reg_addr(wb_rd_addr), .write_reg_data(wb_rd_data), .write_reg_en(wb_wr_reg), .write_bm_addr(wb_bd_addr), .write_bm_data(wb_bd_data), .write_bm_en(wb_wr_breg), .clk(clk),
 					.PNZ(id_pnz), .se16(id_lit), .regAddr1(id_rs1_addr), .regAddr2(id_rs2_addr), .regAddrDest(id_rd_addr), .rd_data_1(id_rs1_data), .rd_data_2(id_rs2_data), .rbm_data(id_bs_data), .reg_write(id_wr_reg), .BMAddr(id_bs_addr), .bm_write(id_wr_breg), .write_bm_addr_out(id_bd_addr), .DMemWrite(), .DMemEn(), .MatchAcc(id_match_acc_en), .CompAcc(id_comp_acc_en), .ALUBR(id_br_combined), .ALULdSt(id_ldst), .rs1_used(id_rs1_used), .rs2_used(id_rs2_used), .bs_used(id_bs_used),
-					.NOP(id_nop), .HALT(id_halt), .SUB(id_sub), .ADD(id_add), .BRR(id_brr), .BR(id_br), .LD(id_ld), .ST(id_st), .PLY(id_ply), .MV(id_mv), .BSL(id_bsl), .BSH(id_bsh), .RET(id_ret), .SES(id_ses), .STB(id_stb), .LDB(id_ldb),.test(test));
+					.NOP(id_nop), .HALT(id_halt), .SUB(id_sub), .ADD(id_add), .BRR(id_brr), .BR(id_br), .LD(id_ld), .ST(id_st), .PLY(id_ply), .MV(id_mv), .BSL(id_bsl), .BSH(id_bsh), .RET(id_ret), .SES(id_ses), .STB(id_stb), .LDB(id_ldb),.test());
 
 // * DECODE STAGE END *
 
@@ -333,6 +372,48 @@ assign exe_rs1_data = (idexe_rs1_addr == wb_rd_addr) & wb_wr_reg ? wb_rd_data : 
 assign exe_rs2_data = (idexe_rs2_addr == wb_rd_addr) & wb_wr_reg ? wb_rd_data : idexe_rs2_data; 
 assign exe_bs_data = (idexe_bs_addr == wb_bd_addr) & wb_wr_breg ? wb_bd_data : idexe_bs_data;
 
+//Audio shish
+wire [20:0] exe_note;
+wire [3:0] exe_idf;
+wire [2:0] exe_beats_in;
+
+assign exe_beats_in = idexe_ply & ~idexe_flushed ? exe_rs1_data[2:0] : 3'd0;
+assign exe_idf = exe_rs2_data[3:0];
+assign exe_note = (exe_idf == 4'd0) ? c_low : (
+                  (exe_idf == 4'd1) ? d : (
+                  (exe_idf == 4'd2) ? e_flat : (
+                  (exe_idf == 4'd3) ? e : (
+                  (exe_idf == 4'd4) ? f : (
+                  (exe_idf == 4'd5) ? g : (
+                  (exe_idf == 4'd6) ? a_flat : (
+                  (exe_idf == 4'd7) ? a : (
+                  (exe_idf == 4'd8) ? b_flat : (
+                  (exe_idf == 4'd9) ? b : (
+                  (exe_idf == 4'd10) ? c_high : (
+                  (exe_idf == 4'd11) ? d_flat_high : (
+                  (exe_idf == 4'd12) ? d_high : (
+                  (exe_idf == 4'd13) ? e_flat_high : (
+                  (exe_idf == 4'd14) ? e_high : (
+                                       f_high)))))))))))))));
+						
+audio_module Audio (
+	//////////// Audio //////////
+	.AUD_BCLK(AUD_BCLK),
+	.AUD_DACDAT(AUD_DACDAT),
+	.AUD_DACLRCK(AUD_DACLRCK),
+	.AUD_XCK(AUD_XCK),
+	.CLOCK_50(clk),
+	//////////// I2C for Audio and Video-In //////////
+	.FPGA_I2C_SCLK(FPGA_I2C_SCLK),
+	.FPGA_I2C_SDAT(FPGA_I2C_SDAT),
+
+	.bpm_in(11'd120),
+	.curr_note_beats_in(exe_beats_in),
+	.curr_note_freq_in(exe_note),
+	.reset(rst_n),
+	.state_out()
+);
+
 //exe stage
 assign cpu_branch_pc = buttons_pressed[3] & ~cpu_int ? 16'h0f80 : (
                        buttons_pressed[2] & ~cpu_int ? 16'h0fa0 : (
@@ -371,12 +452,12 @@ exe_stage Exe_stage(.clk(clk),
 // * MEMORY STUFF START *
 wire [15:0] exewb_nmem_read_data; //written directly from memory and not a pipe
 wire [1535:0] exewb_bmem_read_data; //written directly from memory and not a pipe
-
+/*
 modelsim_N_mem normalmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_nreg), .data(exe_rs2_data), .q(exewb_nmem_read_data), .clock(clk));
 
 modelsim_B_mem bitmapmem (.wraddress(exe_rd_data), .rdaddress(exe_rd_data), .wren(exe_write_breg), .data(exe_bs_data), .q(exewb_bmem_read_data), .clock(clk));
+/**/
 
-/*
 bitmap_mem bitmap_mem (
 	.address(exe_rd_data[2:0]),
 	.clock(clk),
@@ -392,7 +473,7 @@ D_mem D_mem (
 	.wren(exe_write_nreg),
 	.q(exewb_nmem_read_data)
 	);
-*/	
+/**/	
 	
 	
 // * MEMORY STUFF END *
