@@ -1,7 +1,8 @@
 module dec_stage (inst, write_reg_addr, write_reg_data, write_reg_en, write_bm_addr, write_bm_data, write_bm_en, clk,
 					PNZ, se16, regAddr1, regAddr2, regAddrDest, rd_data_1, rd_data_2, rbm_data, reg_write, BMAddr, bm_write, write_bm_addr_out, DMemWrite, DMemEn, MatchAcc, CompAcc, ALUBR, ALULdSt, rs1_used, rs2_used, bs_used,
-					NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB);
-
+					NOP, HALT, SUB, ADD, BRR, BR, LD, ST, PLY, MV, BSL, BSH, RET, SES, STB, LDB,test);
+output [15:0] test;
+					
 input wire [15:0] inst;
 input wire [3:0] write_reg_addr;
 input wire [15:0] write_reg_data;
@@ -41,7 +42,7 @@ assign BMAddr = (MuxReadBM == 2'b00) ? inst[3:2] : (MuxReadBM == 2'b01) ? inst[9
 assign write_bm_addr_out = inst[11:10];
 					
 reg_file reg_file (.rd_addr_1(regAddr1),.rd_data_1(rd_data_1),.rd_addr_2(regAddr2),.rd_data_2(rd_data_2),.wr_addr(write_reg_addr),.wr_data(write_reg_data),.wr(write_reg_en),
-					.rbm_addr(BMAddr),.rbm_data(rbm_data),.wbm_addr(write_bm_addr),.wbm_data(write_bm_data),.wbm(write_bm_en),.clk(clk));
+					.rbm_addr(BMAddr),.rbm_data(rbm_data),.wbm_addr(write_bm_addr),.wbm_data(write_bm_data),.wbm(write_bm_en),.clk(clk),.test(test));
 
 
 //sign extend

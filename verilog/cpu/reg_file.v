@@ -11,8 +11,11 @@ module reg_file (
     wbm_addr,
     wbm_data,
     wbm,
-    clk);
-
+    clk, test
+	 
+	 );
+output [15:0] test;
+	 assign test = n_reg_12;
     parameter n = 16;
     parameter b = 1536;
 
