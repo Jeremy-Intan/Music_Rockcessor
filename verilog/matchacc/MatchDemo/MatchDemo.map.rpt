@@ -1,0 +1,434 @@
+Analysis & Synthesis report for MatchDemo
+Wed Dec 11 18:33:40 2019
+Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 11. Port Connectivity Checks: "MatchAccelerator:MatchAccelerator"
+ 12. Post-Synthesis Netlist Statistics for Top Partition
+ 13. Elapsed Time Per Partition
+ 14. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+
+
+
++-------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                  ;
++---------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Wed Dec 11 18:33:40 2019       ;
+; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
+; Revision Name                   ; MatchDemo                                   ;
+; Top-level Entity Name           ; MatchDemo                                   ;
+; Family                          ; Cyclone V                                   ;
+; Logic utilization (in ALMs)     ; N/A                                         ;
+; Total registers                 ; 66                                          ;
+; Total pins                      ; 60                                          ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 0                                           ;
+; Total DSP Blocks                ; 0                                           ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0                                           ;
+; Total DLLs                      ; 0                                           ;
++---------------------------------+---------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
+; Top-level entity name                                                           ; MatchDemo          ; MatchDemo          ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 6           ;
+; Maximum allowed            ; 6           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 6           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
+;     Processor 5            ;   0.0%      ;
+;     Processor 6            ;   0.0%      ;
++----------------------------+-------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                    ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                      ; Library ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------+---------+
+; noteMux.v                        ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/noteMux.v          ;         ;
+; MatchAccelerator.v               ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v ;         ;
+; lengthMux.v                      ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/lengthMux.v        ;         ;
+; MatchDemo.v                      ; yes             ; User Verilog HDL File  ; C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v        ;         ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------+---------+
+
+
++--------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                  ;
++---------------------------------------------+----------------+
+; Resource                                    ; Usage          ;
++---------------------------------------------+----------------+
+; Estimate of Logic utilization (ALMs needed) ; 284            ;
+;                                             ;                ;
+; Combinational ALUT usage for logic          ; 520            ;
+;     -- 7 input functions                    ; 1              ;
+;     -- 6 input functions                    ; 45             ;
+;     -- 5 input functions                    ; 49             ;
+;     -- 4 input functions                    ; 106            ;
+;     -- <=3 input functions                  ; 319            ;
+;                                             ;                ;
+; Dedicated logic registers                   ; 66             ;
+;                                             ;                ;
+; I/O pins                                    ; 60             ;
+;                                             ;                ;
+; Total DSP Blocks                            ; 0              ;
+;                                             ;                ;
+; Maximum fan-out node                        ; CLOCK_50~input ;
+; Maximum fan-out                             ; 66             ;
+; Total fan-out                               ; 2007           ;
+; Average fan-out                             ; 2.84           ;
++---------------------------------------------+----------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                              ;
++----------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------+------------------+--------------+
+; Compilation Hierarchy Node             ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                          ; Entity Name      ; Library Name ;
++----------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------+------------------+--------------+
+; |MatchDemo                             ; 520 (29)            ; 66 (30)                   ; 0                 ; 0          ; 60   ; 0            ; |MatchDemo                                                   ; MatchDemo        ; work         ;
+;    |MatchAccelerator:MatchAccelerator| ; 491 (480)           ; 36 (36)                   ; 0                 ; 0          ; 0    ; 0            ; |MatchDemo|MatchAccelerator:MatchAccelerator                 ; MatchAccelerator ; work         ;
+;       |noteMux:noteMux|                ; 11 (11)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteMux:noteMux ; noteMux          ; work         ;
++----------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------+------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                                                                                                                                                                                                                                                                      ;
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------+
+; Register name                                                                                                                                                                                                                                                                                                                                              ; Reason for Removal                                         ;
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------+
+; bmr[28..43,52..55,64..67,76,91,534,535,544,545,557..570,580..595,605..618,630..641,656..663,700,715,724..727,736..743,748..763,796..811,820..823,832..835,844,859,1110,1111,1120,1121,1133..1146,1181..1194,1206..1217,1232..1239,1276,1291,1300..1303,1312..1315,1324..1339,1348..1363,1372..1387,1396..1411,1420..1435,1444..1459,1468..1483,1492..1507] ; Stuck at GND due to stuck port data_in                     ;
+; MatchAccelerator:MatchAccelerator|lengthReg[1..3]                                                                                                                                                                                                                                                                                                          ; Stuck at GND due to stuck port data_in                     ;
+; MatchAccelerator:MatchAccelerator|lengthReg[0]                                                                                                                                                                                                                                                                                                             ; Merged with MatchAccelerator:MatchAccelerator|lengthReg[4] ;
+; bmr[56..63,77..90,101..115,124..127,136..139,148,149,162,163,172,187,220,235,244,245,258,259,268,283]                                                                                                                                                                                                                                                      ; Merged with bmr[100]                                       ;
+; bmr[129..135,150..161,173..186,196..211,221..234,246,247,256,257]                                                                                                                                                                                                                                                                                          ; Merged with bmr[128]                                       ;
+; bmr[249..255,272..279]                                                                                                                                                                                                                                                                                                                                     ; Merged with bmr[248]                                       ;
+; bmr[270,271,280..282,292..307,317..319,328..330]                                                                                                                                                                                                                                                                                                           ; Merged with bmr[269]                                       ;
+; bmr[321..327,344..351]                                                                                                                                                                                                                                                                                                                                     ; Merged with bmr[320]                                       ;
+; bmr[343,352,353,365..378,413..426,438,439,448,449]                                                                                                                                                                                                                                                                                                         ; Merged with bmr[342]                                       ;
+; bmr[389..403]                                                                                                                                                                                                                                                                                                                                              ; Merged with bmr[388]                                       ;
+; bmr[441..447,464..471]                                                                                                                                                                                                                                                                                                                                     ; Merged with bmr[440]                                       ;
+; bmr[462,463,472..474,484..499,509..511,520..522]                                                                                                                                                                                                                                                                                                           ; Merged with bmr[461]                                       ;
+; bmr[331,340,341,354,355,364,379,412,427,436,437,450,451,460,475,512..519,536..543]                                                                                                                                                                                                                                                                         ; Merged with bmr[316]                                       ;
+; bmr[523,532,533,546,547,556,571,604,619,628,629,642,643,652..655,664..667,676..691,701..714,728..735]                                                                                                                                                                                                                                                      ; Merged with bmr[508]                                       ;
+; bmr[4..9,11..19,772..787,1516..1531]                                                                                                                                                                                                                                                                                                                       ; Merged with bmr[10]                                        ;
+; bmr[1157..1171]                                                                                                                                                                                                                                                                                                                                            ; Merged with bmr[1156]                                      ;
+; bmr[1099,1108,1109,1122,1123,1132,1147,1180,1195,1204,1205,1218,1219,1228..1231,1240..1243,1252..1267,1277..1290,1304..1311]                                                                                                                                                                                                                               ; Merged with bmr[1084]                                      ;
+; bmr[824..831,845..858,868..883,892..907,916..931,940..955,964..979,988..999,1001..1003,1012..1015,1024..1027,1036,1051,1088..1095,1112..1119]                                                                                                                                                                                                              ; Merged with bmr[1000]                                      ;
+; bmr[1017..1023,1037..1050,1060..1075,1085..1087,1096..1098]                                                                                                                                                                                                                                                                                                ; Merged with bmr[1016]                                      ;
+; Total Number of Removed Registers = 1016                                                                                                                                                                                                                                                                                                                   ;                                                            ;
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 66    ;
+; Number of registers using Synchronous Clear  ; 0     ;
+; Number of registers using Synchronous Load   ; 21    ;
+; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 24    ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                          ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------+
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteReg[2]                   ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|countN[0]                    ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteSumHold[0]               ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|countL[0]                    ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|lengthSumHold[2]             ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|bmr[269]                                                       ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|bmr[316]                                                       ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteReg[0]                   ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|bmr[388]                                                       ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|bmr[461]                                                       ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|note[6]                                                        ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |MatchDemo|bmr[1084]                                                      ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |MatchDemo|MatchAccelerator:MatchAccelerator|bmLCMP[224]                  ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |MatchDemo|MatchAccelerator:MatchAccelerator|bmLCMP[36]                   ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |MatchDemo|MatchAccelerator:MatchAccelerator|bmLCMP[83]                   ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteMux:noteMux|tinymap[214] ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |MatchDemo|MatchAccelerator:MatchAccelerator|noteMux:noteMux|tinymap[240] ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "MatchAccelerator:MatchAccelerator"                                                              ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port             ; Type   ; Severity ; Details                                                                             ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; noteReg[15..4]   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; lengthReg[15..5] ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; finish           ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 66                          ;
+;     ENA               ; 7                           ;
+;     ENA SLD           ; 17                          ;
+;     SLD               ; 4                           ;
+;     plain             ; 38                          ;
+; arriav_lcell_comb     ; 520                         ;
+;     arith             ; 21                          ;
+;         1 data inputs ; 4                           ;
+;         2 data inputs ; 14                          ;
+;         3 data inputs ; 2                           ;
+;         5 data inputs ; 1                           ;
+;     extend            ; 1                           ;
+;         7 data inputs ; 1                           ;
+;     normal            ; 215                         ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 4                           ;
+;         2 data inputs ; 29                          ;
+;         3 data inputs ; 34                          ;
+;         4 data inputs ; 54                          ;
+;         5 data inputs ; 48                          ;
+;         6 data inputs ; 45                          ;
+;     shared            ; 283                         ;
+;         0 data inputs ; 89                          ;
+;         1 data inputs ; 24                          ;
+;         2 data inputs ; 21                          ;
+;         3 data inputs ; 97                          ;
+;         4 data inputs ; 52                          ;
+; boundary_port         ; 60                          ;
+;                       ;                             ;
+; Max LUT depth         ; 11.10                       ;
+; Average LUT depth     ; 8.03                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:01     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+    Info: Processing started: Wed Dec 11 18:33:31 2019
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off MatchDemo -c MatchDemo
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file notemux.v
+    Info (12023): Found entity 1: noteMux File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/noteMux.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file matchaccelerator.v
+    Info (12023): Found entity 1: MatchAccelerator File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file lengthmux.v
+    Info (12023): Found entity 1: lengthMux File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/lengthMux.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file matchdemo.v
+    Info (12023): Found entity 1: MatchDemo File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 6
+Info (12127): Elaborating entity "MatchDemo" for the top level hierarchy
+Warning (10034): Output port "HEX2" at MatchDemo.v(17) has no driver File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+Warning (10034): Output port "HEX3" at MatchDemo.v(18) has no driver File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+Warning (10034): Output port "HEX4" at MatchDemo.v(19) has no driver File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+Warning (10034): Output port "HEX5" at MatchDemo.v(20) has no driver File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+Info (12128): Elaborating entity "MatchAccelerator" for hierarchy "MatchAccelerator:MatchAccelerator" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 45
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(74): truncated value with size 16 to match size of target (8) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 74
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(85): truncated value with size 32 to match size of target (3) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 85
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(149): truncated value with size 3 to match size of target (2) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 149
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(150): truncated value with size 16 to match size of target (8) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 150
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(161): truncated value with size 32 to match size of target (2) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 161
+Warning (10230): Verilog HDL assignment warning at MatchAccelerator.v(163): truncated value with size 2 to match size of target (1) File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 163
+Info (12128): Elaborating entity "noteMux" for hierarchy "MatchAccelerator:MatchAccelerator|noteMux:noteMux" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 25
+Info (12128): Elaborating entity "lengthMux" for hierarchy "MatchAccelerator:MatchAccelerator|lengthMux:lengthMux" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchAccelerator.v Line: 102
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "HEX2[0]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[1]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[2]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[3]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[4]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[5]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX2[6]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 17
+    Warning (13410): Pin "HEX3[0]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[1]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[2]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[3]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[4]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[5]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX3[6]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 18
+    Warning (13410): Pin "HEX4[0]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[1]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[2]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[3]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[4]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[5]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX4[6]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 19
+    Warning (13410): Pin "HEX5[0]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[1]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[2]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[3]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[4]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[5]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+    Warning (13410): Pin "HEX5[6]" is stuck at GND File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 20
+Info (286030): Timing-Driven Synthesis is running
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 5 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "CLOCK2_50" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 9
+    Warning (15610): No output dependent on input pin "CLOCK3_50" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 10
+    Warning (15610): No output dependent on input pin "CLOCK4_50" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 11
+    Warning (15610): No output dependent on input pin "KEY[1]" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 23
+    Warning (15610): No output dependent on input pin "KEY[2]" File: C:/Users/ECE_STUDENT/Documents/ACCEL/MatchDemo/MatchDemo.v Line: 23
+Info (21057): Implemented 611 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 18 input pins
+    Info (21059): Implemented 42 output pins
+    Info (21061): Implemented 551 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 46 warnings
+    Info: Peak virtual memory: 4879 megabytes
+    Info: Processing ended: Wed Dec 11 18:33:40 2019
+    Info: Elapsed time: 00:00:09
+    Info: Total CPU time (on all processors): 00:00:18
+
+
