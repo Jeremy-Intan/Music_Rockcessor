@@ -1,4 +1,4 @@
-module cmpalu(input clk, input start, input [63:0] bitcolumn, input [23:0] bitrowtop, input [23:0] bitrowbot, input nextrowtopready, input nextrowbotready, input nextcolumnready, input lastcolumn, output [12:0] result, output done, output nextcolumn, output nextrowtop, output nextrowbot);
+module cmpalu(output [3:0] LEDR, input clk, input start, input [63:0] bitcolumn, input [23:0] bitrowtop, input [23:0] bitrowbot, input nextrowtopready, input nextrowbotready, input nextcolumnready, input lastcolumn, output [12:0] result, output done, output nextcolumn, output nextrowtop, output nextrowbot, output lastrowbot, output lastrowtop);
 
 //Takes in slices of a 64x24 bitmap and determines how far it should be shifted left and down, and whether or not it should be scaled by 2x
 
@@ -42,6 +42,8 @@ reg lboundaryfound;
 reg topboundaryfound;
 reg botboundaryfound;
 
+assign lastrowbot = botboundaryfound;
+assign lastrowtop = topboundaryfound;
 
 //1 indicates that the boundary has been stored in the result
 reg lboundarystored;
@@ -58,8 +60,11 @@ reg [3:0] calcdone;
 //checks from top to bot
 //and bot to top
 
+
 //finds empty rows on top
 always @(posedge clk) begin
+
+/*
     casez ({rowtopchecked, currrowtop})
         //check each row only once
         //checkrow, rowempty
@@ -84,8 +89,10 @@ always @(posedge clk) begin
                     rowtopchecked <= 1'b1;
                     end
     endcase
+*/
 
 //finds empty rows on bot
+/*
     casez ({rowbotchecked, currrowbot})
         //check each row only once
         //checkrow, rowempty
@@ -109,7 +116,26 @@ always @(posedge clk) begin
                     rowbotchecked <= 1'b1;
                     end
     endcase
-
+*/
+	if (rowbotchecked == 1'b0 && currrowbot == 24'b0) begin
+		emptyrowslower <= emptyrowslower + 1'b1;
+		rowbotchecked <= 1'b1;
+	end
+	else if (rowbotchecked == 1'b0 && currrowbot != 64'b0) begin
+		emptyrowslower <= emptyrowslower;
+		rowbotchecked <= 1'b1;
+		botboundaryfound <= 1'b1;
+	end 
+	
+	if (rowtopchecked == 1'b0 && currrowtop == 24'b0) begin
+		emptyrowsupper <= emptyrowsupper + 1'b1;
+		rowbotchecked <= 1'b1;
+	end
+	else if (rowtopchecked == 1'b0 && currrowtop != 64'b0) begin
+		emptyrowsupper <= emptyrowsupper;
+		rowtopchecked <= 1'b1;
+		topboundaryfound <= 1'b1;
+	end 
 //row store logic
     
     //store number of empty rows top
@@ -120,7 +146,7 @@ always @(posedge clk) begin
                 end
         default: begin
 				//emptyrows <= emptyrows;
-				topboundarystored <= topboundarystored;
+				//topboundarystored <= topboundarystored;
 				end
     endcase
 
@@ -129,14 +155,14 @@ always @(posedge clk) begin
         2'b10 : begin
                 emptyrows <= emptyrows + emptyrowslower;
                 res [10:5] <= emptyrowslower;
-                calcdone[2] <= 1'b1;
+                calcdone[1] <= 1'b1;
                 botboundarystored <= 1'b1;
                 end 
         default : 	begin
 					//emptyrows <= emptyrows;
 					//res [10:5] <= res[10:5];
-					calcdone[2] <= calcdone[2];
-					botboundarystored <= botboundarystored;
+					calcdone[1] <= calcdone[1];
+					//botboundarystored <= botboundarystored;
 					end
     endcase
 
@@ -190,14 +216,14 @@ always @(posedge clk) begin
 */	
 	if (lastcolumn == 1'b1 && emptycolumns > 11) begin
 		res [11] <= 1'b1;
-        calcdone [1] <= 1'b1;
+        calcdone [2] <= 1'b1;
         end
 	else if (lastcolumn == 1'b1 && emptycolumns  < 12) begin
 		res [11] <= 1'b0;
-        calcdone [1] <= 1'b1;
+        calcdone [2] <= 1'b1;
         end
 	else begin
-		calcdone[1] <= calcdone[1];
+		calcdone[2] <= calcdone[2];
 	end
 
 /*
@@ -285,8 +311,8 @@ always @(posedge clk) begin
                 emptycolumns <= 5'b0;
                 emptyrows <= 6'b0;
 				colchecked <= 1'b1;
-				//rowbotchecked <= 1'b1;
-				//rowtopchecked <= 1'b1;
+				rowbotchecked <= 1'b1;
+				rowtopchecked <= 1'b1;
                 emptyrowsupper <= 6'b0;
                 emptyrowslower <= 6'b0;
                 lboundaryfound <= 1'b0;
@@ -298,6 +324,7 @@ always @(posedge clk) begin
                 res <= 13'h0000;
 				calcdone<= 4'b0;
                 end
+					 
 end
 
 endmodule

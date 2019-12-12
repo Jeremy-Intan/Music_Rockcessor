@@ -11,6 +11,14 @@ module cmpacc_demo(
 	input 		          		CLOCK4_50,
 	input 		          		CLOCK_50,
 
+	//////////// SEG7 //////////
+	output		     [6:0]		HEX0,
+	output		     [6:0]		HEX1,
+	output		     [6:0]		HEX2,
+	output		     [6:0]		HEX3,
+	output		     [6:0]		HEX4,
+	output		     [6:0]		HEX5,
+
 	//////////// KEY //////////
 	input 		     [3:0]		KEY,
 
@@ -42,17 +50,25 @@ wire nextcol;
 wire nextrowbot;
 wire nextrowtop;
 wire done;
+wire lastrowbot;
+wire lastrowtop;
 //=======================================================
 //  Structural coding
 //=======================================================
 
-assign LEDR[8:0] = res;
-assign LEDR[9] = done;
+assign LEDR[0] = done;
 
+// digitize output. order is: vertical shift, horizontal shift, dshift, lshift
+SEG7_LUT_6 	digital_display	(	
+							.oSEG0(HEX0),.oSEG1(HEX1),
+							.oSEG2(HEX2),.oSEG3(HEX3),
+							.oSEG4(HEX4),.oSEG5(HEX5),
+							.iDIG({3'h0, res[12], 3'h0, res[11], 2'h0, res[10:5], 3'h0, res[4:0]})
+						   );
 
-bmpreg bitmapreg(.clk(CLOCK_50), .wren(SW[0]), .bmpin(bitmap), .nextcol(nextcol), .nextrowbot(nextrowbot), .nextrowtop(nextrowtop), .columnout(columnout), .toprowout(toprowout), .botrowout(botrowout), .alustart(alustart), .rowbotready(rowbotready), .rowtopready(rowtopready), .colready(colready), .finalcolumn(finalcolumn));
+bmpreg bitmapreg(.clk(CLOCK_50), .wren(SW[0]), .bmpin(bitmap), .lastrowtop(lastrowtop), .lastrowbot(lastrowbot), .nextcol(nextcol), .nextrowbot(nextrowbot), .nextrowtop(nextrowtop), .columnout(columnout), .toprowout(toprowout), .botrowout(botrowout), .alustart(alustart), .rowbotready(rowbotready), .rowtopready(rowtopready), .colready(colready), .finalcolumn(finalcolumn));
 
-cmpalu alu(.clk(CLOCK_50), .start(alustart), .bitcolumn(columnout), .bitrowbot(botrowout), .bitrowtop(toprowout), .nextrowtopready(rowtopready), .nextrowbotready(rowbotready), .nextcolumnready(colready), .lastcolumn(finalcolumn), .result(res), .done(done), .nextcolumn(nextcol), .nextrowtop(nextrowtop), .nextrowbot(nextrowbot));
+cmpalu alu(.LEDR(LEDR[9:6]), .clk(CLOCK_50), .start(alustart), .bitcolumn(columnout), .bitrowbot(botrowout), .bitrowtop(toprowout), .nextrowtopready(rowtopready), .nextrowbotready(rowbotready), .nextcolumnready(colready), .lastcolumn(finalcolumn), .result(res), .done(done), .nextcolumn(nextcol), .nextrowtop(nextrowtop), .lastrowbot(lastrowbot), .lastrowtop(lastrowtop), .nextrowbot(nextrowbot));
 
 
 assign bitmap = 
@@ -119,7 +135,7 @@ assign bitmap =
 	24'h3f0000, 
 	24'h3f0000, 
 	24'h3f0000, 
-	24'h000000,
+	24'h3f0000,
 	24'h000000};
 
 endmodule

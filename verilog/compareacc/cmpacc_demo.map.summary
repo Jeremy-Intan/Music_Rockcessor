@@ -1,11 +1,11 @@
-Analysis & Synthesis Status : Successful - Wed Dec 11 16:48:45 2019
+Analysis & Synthesis Status : Successful - Thu Dec 12 15:18:18 2019
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : cmpacc_demo
 Top-level Entity Name : cmpacc_demo
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 63
-Total pins : 28
+Total registers : 83
+Total pins : 70
 Total virtual pins : 0
 Total block memory bits : 0
 Total DSP Blocks : 0

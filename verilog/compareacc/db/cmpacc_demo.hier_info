@@ -3,20 +3,62 @@ CLOCK2_50 => ~NO_FANOUT~
 CLOCK3_50 => ~NO_FANOUT~
 CLOCK4_50 => ~NO_FANOUT~
 CLOCK_50 => CLOCK_50.IN2
+HEX0[0] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[1] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[2] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[3] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[4] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[5] <= SEG7_LUT_6:digital_display.oSEG0
+HEX0[6] <= SEG7_LUT_6:digital_display.oSEG0
+HEX1[0] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[1] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[2] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[3] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[4] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[5] <= SEG7_LUT_6:digital_display.oSEG1
+HEX1[6] <= SEG7_LUT_6:digital_display.oSEG1
+HEX2[0] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[1] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[2] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[3] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[4] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[5] <= SEG7_LUT_6:digital_display.oSEG2
+HEX2[6] <= SEG7_LUT_6:digital_display.oSEG2
+HEX3[0] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[1] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[2] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[3] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[4] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[5] <= SEG7_LUT_6:digital_display.oSEG3
+HEX3[6] <= SEG7_LUT_6:digital_display.oSEG3
+HEX4[0] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[1] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[2] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[3] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[4] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[5] <= SEG7_LUT_6:digital_display.oSEG4
+HEX4[6] <= SEG7_LUT_6:digital_display.oSEG4
+HEX5[0] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[1] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[2] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[3] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[4] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[5] <= SEG7_LUT_6:digital_display.oSEG5
+HEX5[6] <= SEG7_LUT_6:digital_display.oSEG5
 KEY[0] => ~NO_FANOUT~
 KEY[1] => ~NO_FANOUT~
 KEY[2] => ~NO_FANOUT~
 KEY[3] => ~NO_FANOUT~
-LEDR[0] << cmpalu:alu.result
-LEDR[1] << cmpalu:alu.result
-LEDR[2] << cmpalu:alu.result
-LEDR[3] << cmpalu:alu.result
-LEDR[4] << cmpalu:alu.result
-LEDR[5] << cmpalu:alu.result
-LEDR[6] << cmpalu:alu.result
-LEDR[7] << cmpalu:alu.result
-LEDR[8] << cmpalu:alu.result
-LEDR[9] << cmpalu:alu.done
+LEDR[0] <= cmpalu:alu.done
+LEDR[1] <= <GND>
+LEDR[2] <= <GND>
+LEDR[3] <= <GND>
+LEDR[4] <= <GND>
+LEDR[5] <= <GND>
+LEDR[6] <= cmpalu:alu.LEDR
+LEDR[7] <= cmpalu:alu.LEDR
+LEDR[8] <= cmpalu:alu.LEDR
+LEDR[9] <= cmpalu:alu.LEDR
 SW[0] => SW[0].IN1
 SW[1] => ~NO_FANOUT~
 SW[2] => ~NO_FANOUT~
@@ -27,6 +69,159 @@ SW[6] => ~NO_FANOUT~
 SW[7] => ~NO_FANOUT~
 SW[8] => ~NO_FANOUT~
 SW[9] => ~NO_FANOUT~
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display
+oSEG0[0] <= SEG7_LUT:u0.port0
+oSEG0[1] <= SEG7_LUT:u0.port0
+oSEG0[2] <= SEG7_LUT:u0.port0
+oSEG0[3] <= SEG7_LUT:u0.port0
+oSEG0[4] <= SEG7_LUT:u0.port0
+oSEG0[5] <= SEG7_LUT:u0.port0
+oSEG0[6] <= SEG7_LUT:u0.port0
+oSEG1[0] <= SEG7_LUT:u1.port0
+oSEG1[1] <= SEG7_LUT:u1.port0
+oSEG1[2] <= SEG7_LUT:u1.port0
+oSEG1[3] <= SEG7_LUT:u1.port0
+oSEG1[4] <= SEG7_LUT:u1.port0
+oSEG1[5] <= SEG7_LUT:u1.port0
+oSEG1[6] <= SEG7_LUT:u1.port0
+oSEG2[0] <= SEG7_LUT:u2.port0
+oSEG2[1] <= SEG7_LUT:u2.port0
+oSEG2[2] <= SEG7_LUT:u2.port0
+oSEG2[3] <= SEG7_LUT:u2.port0
+oSEG2[4] <= SEG7_LUT:u2.port0
+oSEG2[5] <= SEG7_LUT:u2.port0
+oSEG2[6] <= SEG7_LUT:u2.port0
+oSEG3[0] <= SEG7_LUT:u3.port0
+oSEG3[1] <= SEG7_LUT:u3.port0
+oSEG3[2] <= SEG7_LUT:u3.port0
+oSEG3[3] <= SEG7_LUT:u3.port0
+oSEG3[4] <= SEG7_LUT:u3.port0
+oSEG3[5] <= SEG7_LUT:u3.port0
+oSEG3[6] <= SEG7_LUT:u3.port0
+oSEG4[0] <= SEG7_LUT:u4.port0
+oSEG4[1] <= SEG7_LUT:u4.port0
+oSEG4[2] <= SEG7_LUT:u4.port0
+oSEG4[3] <= SEG7_LUT:u4.port0
+oSEG4[4] <= SEG7_LUT:u4.port0
+oSEG4[5] <= SEG7_LUT:u4.port0
+oSEG4[6] <= SEG7_LUT:u4.port0
+oSEG5[0] <= SEG7_LUT:u5.port0
+oSEG5[1] <= SEG7_LUT:u5.port0
+oSEG5[2] <= SEG7_LUT:u5.port0
+oSEG5[3] <= SEG7_LUT:u5.port0
+oSEG5[4] <= SEG7_LUT:u5.port0
+oSEG5[5] <= SEG7_LUT:u5.port0
+oSEG5[6] <= SEG7_LUT:u5.port0
+iDIG[0] => iDIG[0].IN1
+iDIG[1] => iDIG[1].IN1
+iDIG[2] => iDIG[2].IN1
+iDIG[3] => iDIG[3].IN1
+iDIG[4] => iDIG[4].IN1
+iDIG[5] => iDIG[5].IN1
+iDIG[6] => iDIG[6].IN1
+iDIG[7] => iDIG[7].IN1
+iDIG[8] => iDIG[8].IN1
+iDIG[9] => iDIG[9].IN1
+iDIG[10] => iDIG[10].IN1
+iDIG[11] => iDIG[11].IN1
+iDIG[12] => iDIG[12].IN1
+iDIG[13] => iDIG[13].IN1
+iDIG[14] => iDIG[14].IN1
+iDIG[15] => iDIG[15].IN1
+iDIG[16] => iDIG[16].IN1
+iDIG[17] => iDIG[17].IN1
+iDIG[18] => iDIG[18].IN1
+iDIG[19] => iDIG[19].IN1
+iDIG[20] => iDIG[20].IN1
+iDIG[21] => iDIG[21].IN1
+iDIG[22] => iDIG[22].IN1
+iDIG[23] => iDIG[23].IN1
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u0
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u1
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u2
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u3
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u4
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
+
+
+|cmpacc_demo|SEG7_LUT_6:digital_display|SEG7_LUT:u5
+oSEG[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+oSEG[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+iDIG[0] => Decoder0.IN3
+iDIG[1] => Decoder0.IN2
+iDIG[2] => Decoder0.IN1
+iDIG[3] => Decoder0.IN0
 
 
 |cmpacc_demo|bmpreg:bitmapreg
@@ -1701,7 +1896,7 @@ clk => currcolumn[61].CLK
 clk => currcolumn[62].CLK
 clk => currcolumn[63].CLK
 clk => lastcolumn.CLK
-wren => Decoder2.IN0
+wren => Decoder0.IN0
 bmpin[0] => data[0].DATAIN
 bmpin[1] => data[1].DATAIN
 bmpin[2] => data[2].DATAIN
@@ -3239,8 +3434,10 @@ bmpin[1533] => data[1533].DATAIN
 bmpin[1534] => data[1534].DATAIN
 bmpin[1535] => data[1535].DATAIN
 nextcol => Equal1.IN2
-nextrowbot => Decoder1.IN0
-nextrowtop => Decoder0.IN0
+nextrowbot => Equal3.IN2
+lastrowtop => Equal2.IN2
+lastrowbot => Equal3.IN3
+nextrowtop => Equal2.IN3
 columnout[0] <= currcolumn[0].DB_MAX_OUTPUT_PORT_TYPE
 columnout[1] <= currcolumn[1].DB_MAX_OUTPUT_PORT_TYPE
 columnout[2] <= currcolumn[2].DB_MAX_OUTPUT_PORT_TYPE
@@ -3361,6 +3558,10 @@ finalcolumn <= lastcolumn.DB_MAX_OUTPUT_PORT_TYPE
 
 
 |cmpacc_demo|cmpalu:alu
+LEDR[0] <= <GND>
+LEDR[1] <= <GND>
+LEDR[2] <= <GND>
+LEDR[3] <= <GND>
 clk => finished.CLK
 clk => currrowbot[0].CLK
 clk => currrowbot[1].CLK
@@ -3507,14 +3708,6 @@ clk => emptyrows[2].CLK
 clk => emptyrows[3].CLK
 clk => emptyrows[4].CLK
 clk => emptyrows[5].CLK
-clk => botboundaryfound.CLK
-clk => rowbotchecked.CLK
-clk => emptyrowslower[0].CLK
-clk => emptyrowslower[1].CLK
-clk => emptyrowslower[2].CLK
-clk => emptyrowslower[3].CLK
-clk => emptyrowslower[4].CLK
-clk => emptyrowslower[5].CLK
 clk => topboundaryfound.CLK
 clk => rowtopchecked.CLK
 clk => emptyrowsupper[0].CLK
@@ -3523,6 +3716,14 @@ clk => emptyrowsupper[2].CLK
 clk => emptyrowsupper[3].CLK
 clk => emptyrowsupper[4].CLK
 clk => emptyrowsupper[5].CLK
+clk => botboundaryfound.CLK
+clk => rowbotchecked.CLK
+clk => emptyrowslower[0].CLK
+clk => emptyrowslower[1].CLK
+clk => emptyrowslower[2].CLK
+clk => emptyrowslower[3].CLK
+clk => emptyrowslower[4].CLK
+clk => emptyrowslower[5].CLK
 start => emptycolumns.OUTPUTSELECT
 start => emptycolumns.OUTPUTSELECT
 start => emptycolumns.OUTPUTSELECT
@@ -3535,6 +3736,8 @@ start => emptyrows.OUTPUTSELECT
 start => emptyrows.OUTPUTSELECT
 start => emptyrows.OUTPUTSELECT
 start => colchecked.OUTPUTSELECT
+start => rowbotchecked.OUTPUTSELECT
+start => rowtopchecked.OUTPUTSELECT
 start => emptyrowsupper.OUTPUTSELECT
 start => emptyrowsupper.OUTPUTSELECT
 start => emptyrowsupper.OUTPUTSELECT
@@ -3704,5 +3907,7 @@ done <= finished.DB_MAX_OUTPUT_PORT_TYPE
 nextcolumn <= colchecked.DB_MAX_OUTPUT_PORT_TYPE
 nextrowtop <= rowtopchecked.DB_MAX_OUTPUT_PORT_TYPE
 nextrowbot <= rowbotchecked.DB_MAX_OUTPUT_PORT_TYPE
+lastrowbot <= botboundaryfound.DB_MAX_OUTPUT_PORT_TYPE
+lastrowtop <= topboundaryfound.DB_MAX_OUTPUT_PORT_TYPE
 
 

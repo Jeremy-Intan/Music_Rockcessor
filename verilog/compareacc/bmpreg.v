@@ -1,4 +1,4 @@
-module bmpreg(input clk, input wren, input [1535:0] bmpin, input nextcol, input nextrowbot, input nextrowtop, output [63:0] columnout, output [23:0] botrowout, output [23:0] toprowout, output alustart, output rowtopready, output rowbotready, output colready, output finalcolumn);
+module bmpreg(input clk, input wren, input [1535:0] bmpin, input nextcol, input nextrowbot, input lastrowtop, input lastrowbot, input nextrowtop, output [63:0] columnout, output [23:0] botrowout, output [23:0] toprowout, output alustart, output rowtopready, output rowbotready, output colready, output finalcolumn);
 
 //bmpreg takes in a 24x64 bitmap and stores it in a register. It then sends it slice by slice to the ALU
 
@@ -39,6 +39,7 @@ assign columnout = currcolumn;
 assign toprowout = currrowtop;
 assign botrowout = currrowbot;
 
+
 //is this the last column?
 always @(posedge clk) begin
         case (colcount)
@@ -51,53 +52,53 @@ always @(posedge clk) begin
 //will not send another column if it is the last column
     case ({nextcol, lastcolumn})
         2'b10 :begin
-              currcolumn = bitcolumns [colcount];
-              colcount = colcount - 1'b1;
-              nextcolready = 1'b1;
+              currcolumn <= bitcolumns [colcount];
+              colcount <= colcount - 1'b1;
+              nextcolready <= 1'b1;
               end
         default :begin
-				currcolumn = bitcolumns [colcount];
+				currcolumn <= bitcolumns [colcount];
                 //colcount = colcount;
-                nextcolready = 1'b0;
+                nextcolready <= 1'b0;
                 end
     endcase
 
 //increments top row counter, and selects the next row slice to send to ALU
-    case (nextrowtop)
-        1'b1 :begin
-              currrowtop = bitrows [toprowcount];
-              toprowcount = toprowcount - 1'b1;
-              nextrowtopready = 1'b1;
+    case ({nextrowtop, lastrowtop})
+        2'b10 :begin
+              currrowtop <= bitrows [toprowcount];
+              toprowcount <= toprowcount - 1'b1;
+              nextrowtopready <= 1'b1;
               end
         default :begin
-				currrowtop = bitrows [toprowcount];
+				currrowtop <= bitrows [toprowcount];
                 //toprowcount = toprowcount;
-                nextrowtopready = 1'b0;
+                nextrowtopready <= 1'b0;
                 end
     endcase
 
 //increments bot row counter, and selects the next row slice to send to ALU
-    case (nextrowbot)
-        1'b1 :begin
-              currrowbot = bitrows [botrowcount];
-              botrowcount = botrowcount + 1'b1;
-              nextrowbotready = 1'b1;
+    case ({nextrowbot, lastrowbot})
+        2'b10 :begin
+              currrowbot <= bitrows [botrowcount];
+              botrowcount <= botrowcount + 1'b1;
+              nextrowbotready <= 1'b1;
               end
         default :begin
-				currrowbot = bitrows [botrowcount];
+				currrowbot <= bitrows [botrowcount];
                 //botrowcount = botrowcount;
-                nextrowbotready = 1'b0;
+                nextrowbotready <= 1'b0;
                 end
     endcase
-	
+
 //writes default values when a bitmap is passed in
     case (wren)
         1'b1:   begin
-				data = bmpin;
-                colcount = 6'b010111;
-                botrowcount = 6'b0;
-                toprowcount = 6'h3f;
-				ready = 1'b1; 
+				data <= bmpin;
+                colcount <= 6'b010111;
+                botrowcount <= 6'b0;
+                toprowcount <= 6'h3f;
+				ready <= 1'b1; 
                 end
         default: begin
 				data <= data;
